@@ -1,0 +1,504 @@
+/* Paramètres généraux */
+body {
+	font-family:Helvetica,sans-serif,Verdana;
+	margin:0px;
+	padding:0px;
+	background-image:url('../images/background.png');
+	font-size:13px;
+}
+
+p {
+	text-align:justify;
+	padding:3px;
+	padding-bottom:0px;
+	margin-bottom:5px;
+}
+a {
+	color:#00774B;
+}
+a img {
+	text-decoration:none;
+}
+h3 {
+	margin:5px;
+	margin-top:5px;
+	color: #00774B;
+}
+h4 {
+	font-variant: small-caps
+}
+
+	
+.link {
+	cursor:pointer;	
+}
+.bouton {
+	padding-bottom:2px;
+	border:1px solid #00774B;
+	border-radius:3px;
+	text-align:center; 
+	margin-auto; 
+	margin-top:0px;	
+	margin-bottom:0px;
+	color:#00774B;
+	font-weight:bold;
+}
+.bouton img {
+	height:12px;	
+}
+#conteneur {
+	width:1000px;
+	margin:auto;
+	background-color:white;
+	border:1px solid #00774B;
+}
+
+/* Entêtes du site */
+#header {
+	border:1px solid #00774B;
+	padding:0px;
+	height:105px;
+/*	background: linear-gradient(top left, green, rgba(0,255,0,0));*/
+}
+
+#header h1 {
+	margin-top:10px;
+	margin-bottom:10px;
+	color:#00774B;
+	font-size:14px;
+	text-align:center;
+
+}
+
+#header table {
+	width:100%;
+	border-collapse:collapse;
+}
+#photo {
+	width:150px;
+	text-align:left;
+}
+#header_titre {
+	text-align:left;
+	font-size:14px;
+}
+#hekla {
+	width:350px;
+	text-align:right;
+	padding-right:10px;
+	
+}
+#td_login {
+	font-size:10px;
+	width:310px;
+}
+#td_login table {
+	width:310px;
+}
+#td_login table td input {
+	font-size:10px;
+
+}
+/* Propriétés du menu */
+#menu {
+	border:1px solid #00774B;
+	background-color:#00774B;
+}
+#menu ul {
+	margin:0px;
+	padding:0px;
+	text-align:right;
+}
+#menu ul li {
+	display:inline;
+	background-color:#00774B;
+	color:white;
+	padding-left:5px;
+	padding-right:10px;
+	font-weight:bold;
+	font-size:13px;
+}
+
+
+#menu ul li:hover {
+	background-color:white;
+	color:#00774B;
+	cursor:pointer;
+}
+
+/* Style des pages */
+#page {
+	min-height:400px;
+	border:1px solid #00774B;
+	padding:10px;
+	padding-bottom:10px;
+	background-image:url('../images/logo_background.png') ;
+}
+#page h2 {
+	margin:5px;
+	color: #00774B;
+	border-bottom:2px solid  #00774B;
+}
+
+
+/* Style du pied de page */
+#footer {
+	border:1px solid #00774B;
+	font-size:13px;
+	padding-top:3px;
+	text-align:center;
+	color:black;
+	background-image:url('../images/pol-ukr.png');
+	font-weight:bolder;	
+	height:15px;
+}
+#footer a {
+	color: black;
+	font-weight:bolder;	
+}
+	
+/* Element pour mise à jour */
+#update_titre, #update_url, #update_chargement {
+	display:none;
+}
+
+/* page d'accueil  */
+#acc_message {
+	height:210px;
+	
+}
+#acc_message h2 {
+	margin-bottom:10px;
+	margin-top:0px;
+}
+#acc_message ul, #reglement ul {
+	padding-left: 0;
+	margin-top:0px;
+}
+ul.reglement {
+	margin-top:0px;
+}
+
+#acc_message li, #reglement li{
+padding-left: 15px;
+padding-top:3px;
+margin-left:30px;
+list-style-type: none;
+background-image: url(../images/icons/sport_soccer.png);
+background-size: 10px;
+background-repeat: no-repeat;
+background-position: 0 .5em;
+}
+
+
+#accueil_tbl {
+	border-collapse:collapse;
+}
+#accueil_tbl td {
+	vertical-align:top;
+}
+#acc_classement {
+	vertical-align:top;
+	width:250px;
+	padding:5px; 
+	background-color:white;
+}
+#acc_classement p {
+	padding-left:10px;
+	padding-right:10px;
+	text-align:justify;
+	
+}
+#acc_classement div {
+	border:1px solid #00774B;
+	border-radius: 5px;
+}
+#acc_classement div#div_acc_classement {
+	background-color:white;	
+}
+#acc_classement div.bouton {
+	border-radius: 10px;
+	background-color:#00774B;
+	font-weight:bold;
+	padding:5px;
+	width:80%;
+	margin:auto;
+}
+#acc_classement div a {
+	color:white;
+	text-decoration:none;
+}
+
+#acc_classement ul {
+	padding-left:5px;
+	margin:7px;
+}
+#acc_classement li {
+	list-style-type:none;
+}
+#acc_classement div.bouton:hover { 
+	background-color:white;
+	color:#00774B;
+	border:1px solid #00774B;
+	cursor:pointer;
+}
+#acc_classement div a:hover {
+		color:#00774B;
+}
+#acc_classement h3 {
+	color:#00774B;
+	text-align:center;	
+	margin-top:10px;
+}
+
+
+#acc_matchs {
+	width:270px;
+	/*border:1px solid #00774B;
+	border-radius:5px 5px 0px 0px;*/
+	background-color:white;
+}
+#acc_matchs table {
+		
+}
+#acc_matchs ul li {
+	list-style-type:none;
+}
+#acc_rss{
+	padding-left:10px;
+	
+}
+#acc_rss, #acc_matchs {
+	padding:0px;
+	margin-left:5px;
+	margin-right:150px;
+	font-size:12px;
+	
+	vertical-align:top;
+	
+}
+#acc_rss h3 {
+	border-bottom: 2px solid #00774B;	
+	color:#00774B;
+	margin:0px;
+	padding:6px;
+	
+}
+#acc_matchs h3 {
+	margin:0px;
+	padding:5px;
+	padding-left:15px;
+	background-color:#00774B;
+	color:white;
+	border-radius:5px 5px 0px 0px;
+}
+#acc_matchs table { 
+	margin:auto;	
+}
+#acc_rss ul li a{
+	color:black; 
+}
+#acc_rss h4 {
+	margin:0px;
+	padding:3px;
+}
+#acc_rss ul, #acc_matchs ul {
+	margin-top:0px;
+	margin-left:10px;
+	padding-left:30px;
+}
+#acc_rss div {
+	
+	padding-top:10px;
+	padding-left:10px;
+}
+.news_link {
+	color:#333333;	
+}
+
+/* Style de la page résulats */
+#poules {
+	width:100%;
+	border-collapse:collapse;
+	font-size:12px;
+}
+#poules th {
+	color:#00774B;
+	border:1px solid #00774B;
+	background-color:white;
+	
+}
+#poules td {
+	padding:3px;
+	vertical-align:top;
+}
+.td_poule {
+	width:13%;
+}
+.td_poule table {
+	background-color:white;
+}
+.td_poule {
+
+}
+.poule {
+	border-collapse:collapse;
+	width:230px;
+	margin:auto;
+}
+#poules .poule th {
+	padding:0px;
+	vertical-align:top;
+	border:0px;
+	color:white;
+	background-color:#00774B;
+	font-size:10px;
+}
+.poule td {
+	padding:0px;
+	vertical-align:top;
+	font-size:10px;
+	border:1px solid #00774B;
+	text-align:center;
+	background-color:white;
+}
+.td_poule table {
+	margin:auto;	
+}
+.td_poule ul {
+	padding-left:5px;
+	margin-top:5px;	
+	margin-left:5px;
+	background-color:white;
+	text-align:center;
+}
+.td_poule ul li {
+	list-style-type:none;	
+}
+
+.td_matchs {
+	width:12%;
+}
+.td_matchs ul {
+	padding-left:20px;
+	margin:0px;
+}
+
+.date {
+	font-size:10px;
+	font-weight:bold;
+}
+.equipe {
+	font-size:12px;
+	color:#00774B;
+	font-weight:bold;
+	cursor:help;
+}
+
+.match {
+	background-color:#00774B;
+	text-align:center;
+	color:white;
+	font-weight:bold;
+	border-radius: 0px 20px 0px 20px;
+	
+}
+#tableau_final {
+	width:950px;
+	height:400px;
+	margin:auto;
+	background-color:white;
+	/*border:3px solid black;*/
+}
+#tableau_final div.div_tour {
+	height:400px;
+	width:300px;
+	border:2px solid black;
+	float:left;
+}
+
+
+/* Règlement */
+
+.table_reglement {
+	border:2px solid #00774B;
+	background-color:white;
+	padding:5px;
+	margin:auto;
+	margin-bottom:10px;
+	border-radius:8px;
+}
+div.table_reglement {
+	width:300px;
+	text-align:center;	
+}
+.table_reglement td {
+	padding:5px;
+	
+}
+.td_poule ul li {
+	padding-left:5px;
+}
+.special {
+	border:2px solid #E23D28;
+	padding:2px;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+
+/* Concours */
+#tbl_concours {
+	width:100%;
+}
+#tbl_concours td {
+	vertical-align:top;
+}
+/* Page d'inscription */
+#inscription{
+	border:1px solid #00774B;
+	padding:10px;
+	margin:auto;
+}
+/* Mon espace */
+#mon_classement, #mes_infos {
+	float:left;
+	border:1px;
+	text-align:justify;
+	margin:5px;
+}
+#mon_classement {
+	width:200px;
+	padding:5px;	
+}
+#mes_infos {
+	width:300px;
+	padding:5px;	
+}
+.score {
+	width:20px;
+	text-align:center;	
+}
+
+/* ADMIN */
+#menu_espace li, #menu_admin li {
+	display:inline;
+	border:1px solid #00774B;
+	padding-left:10px;
+	padding-right:10px;
+	cursor:pointer; 
+}
+#menu_espace li:hover, #menu_admin li:hover {
+	border:1px solid #E23D28;
+	color:white;
+	background-color: #00774B;
+}
+
+#tbl_groupe {
+	border:1px solid #00774B;
+}
+#tbl_groupe th {
+	color:white;
+	background-color:#00774B;
+	
+	padding:5px;
+}

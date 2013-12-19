@@ -1,0 +1,348 @@
+/* Paramètres généraux */
+body {
+	font-family:Helvetica,sans-serif,Verdana;
+	margin:0px;
+	padding:0px;
+	background-image:url('../images/background.png');
+	font-size:12px;
+}
+a {
+	color:#00774B;
+}
+a img {
+	text-decoration:none;
+}
+h3 {
+	margin:5px;
+	margin-top:0px;
+	color: #00774B;
+}
+h4 {
+	font-variant: small-caps
+}
+.link {
+	cursor:pointer;	
+}
+#conteneur {
+	width:1000px;
+	margin:auto;
+	background-color:white;
+	border:1px solid #00774B;
+}
+
+/* Entêtes du site */
+#header {
+	border:1px solid #00774B;
+	padding:0px;
+	height:105px;
+}
+
+#header h1 {
+	margin-top:10px;
+	margin-bottom:10px;
+	color:#00774B;
+	font-size:14px;
+	text-align:center;
+
+}
+
+#header table {
+	width:100%;
+	border-collapse:collapse;
+}
+#photo {
+	width:150px;
+	text-align:left;
+}
+#header_titre {
+	text-align:left;
+	font-size:14px;
+}
+#hekla {
+	width:350px;
+	text-align:right;
+	padding-right:10px;
+	
+}
+#td_login {
+	font-size:10px;
+	width:250px;
+}
+#td_login table {
+	width:250px;
+}
+#td_login table td input {
+	font-size:10px;
+
+}
+/* Propriétés du menu */
+#menu {
+	border:1px solid #00774B;
+	background-color:#00774B;
+}
+#menu ul {
+	margin:0px;
+	padding:0px;
+	text-align:right;
+}
+#menu ul li {
+	display:inline;
+	background-color:#00774B;
+	color:white;
+	padding-left:5px;
+	padding-right:10px;
+	font-weight:bold;
+	font-size:13px;
+}
+
+
+#menu ul li:hover {
+	background-color:white;
+	color:#00774B;
+	cursor:pointer;
+}
+
+/* Style des pages */
+#page {
+	min-height:400px;
+	border:1px solid #00774B;
+	padding:10px;
+	background-image:url('../images/logo_background.png') ;
+}
+#page h2 {
+	margin:5px;
+	color: #00774B;
+	border-bottom:2px solid  #00774B;
+}
+
+
+/* Style du pied de page */
+#footer {
+	border:1px solid #00774B;
+	background-color:#00774B;
+	font-size:12px;
+	padding-top:3px;
+	text-align:center;
+	color:white;
+	background-image:url('../images/pol-ukr.png');
+	font-weight:bolder;	
+	height:15px;
+}
+#footer a {
+	color:white;
+	font-weight:bolder;	
+}
+	
+/* Element pour mise à jour */
+#update_titre, #update_url, #update_chargement {
+	display:none;
+}
+
+/* page d'accueil  */
+#tbl_accueil {
+	border-spacing: 15px;
+}
+#tbl_accueil td {
+	vertical-align:top;
+}
+#acc_classement {
+	vertical-align:top;
+	width:250px;
+	border:1px solid #00774B;
+	padding:5px; 
+	background-color:white;
+}
+#acc_classement ul {
+	padding-left:5px;
+}
+#acc_classement li {
+	list-style-type:none;
+}
+#acc_classement h3 {
+	color:#00774B;
+	text-align:center;	
+}
+#infos_matchs {
+	width:300px;
+}
+#infos_rss, #infos_matchs {
+	font-size:12px;
+	background-color:white;
+}
+#infos_rss h3, #infos_matchs h3 {
+	margin:3px;
+	width:200px;
+	padding:5px;
+	padding-left:15px;
+	background-color:#00774B;
+	color:white;
+}
+#infos_matchs ul li {
+	list-style-type:none;
+}
+#infos_rss ul li a{
+	color:black; 
+}
+#infos_rss h4 {
+	margin:0px;
+	padding:3px;
+}
+#infos_rss ul, #infos_matchs ul {
+	margin-top:0px;
+	padding-left:18px;
+}
+
+/* Style de la page résulats */
+#poules {
+	width:100%;
+	border-collapse:collapse;
+	font-size:12px;
+}
+#poules th {
+	color:#00774B;
+	border:1px inset #00774B;
+}
+#poules td {
+	padding:3px;
+	vertical-align:top;
+}
+.td_poule {
+	width:13%;
+}
+.td_poule {
+
+}
+.poule {
+	border-collapse:collapse;
+	width:230px;
+	margin:auto;
+}
+#poules .poule th {
+	padding:0px;
+	vertical-align:top;
+	border:0px;
+	color:white;
+	background-color:#00774B;
+	font-size:10px;
+}
+.poule td {
+	padding:0px;
+	vertical-align:top;
+	font-size:10px;
+	border:1px solid #00774B;
+	text-align:center;
+	background-color:white;
+}
+.td_poule ul {
+	padding-left:5px;
+	margin-top:5px;	
+	margin-left:5px;
+	background-color:white;
+
+}
+.td_poule ul li {
+	list-style-type:none;	
+}
+
+.td_matchs {
+	width:12%;
+}
+.td_matchs ul {
+	padding-left:20px;
+	margin:0px;
+}
+
+.date {
+	font-size:10px;
+	font-weight:bold;
+}
+.equipe {
+	font-size:10px;
+	color:#00774B;
+}
+#tableau_final {
+	width:950px;
+	margin:auto;
+}
+#tableau_final th {
+	background-color:#00774B;
+	color:white;
+	font-variant:smallcaps;
+}
+#tableau_final td {
+	padding:5px;
+	font-size:10px;
+}
+#tableau_final td.match {
+	border:1px solid #00774B;
+	min-width:80px;
+	background-color:white;
+	vertical-align:top;
+}
+
+#tableau_final td.match ul{
+	margin:0px;
+	padding:0px;
+	height:30px;
+}
+#tableau_final td.match ul li{
+	list-style-type:none;
+}
+
+
+/* Règlement */
+.table_reglement {
+	border:2px solid #00774B;
+	background-color:white;
+	padding:5px;
+}
+.table_reglement td {
+	padding:5px;
+	
+}
+.td_poule ul li {
+	padding-left:5px;
+}
+.special {
+	border:2px solid #E23D28;
+	padding:2px;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+
+/* Concours */
+#tbl_concours {
+	width:100%;
+}
+#tbl_concours td {
+	vertical-align:top;
+}
+/* Page d'inscription */
+#inscription{
+	border:1px solid #00774B;
+	padding:10px;
+	margin:auto;
+}
+/* ADMIN */
+#menu_espace li, #menu_admin li {
+	display:inline;
+	border:1px solid #00774B;
+	padding-left:10px;
+	padding-right:10px;
+	cursor:pointer; 
+}
+#menu_espace li:hover, #menu_admin li:hover {
+	border:1px solid #E23D28;
+	color:white;
+	background-color: #00774B;
+}
+
+#tbl_groupe {
+	border:1px solid #00774B;
+}
+#tbl_groupe th {
+	color:white;
+	background-color:#00774B;
+	
+	padding:5px;
+}

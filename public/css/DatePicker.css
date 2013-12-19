@@ -1,0 +1,78 @@
+input.DatePicker{
+	display: block;
+	width: 150px;
+	padding: 3px 3px 3px 24px;
+	font-size: 13px;
+	background: #fff url('../images/icons/date.png') no-repeat top left;
+	cursor: pointer;
+	border:0px;
+}
+input:focus.DatePicker{
+	background: #fffce9 url('../images/icons/date_edit.png') no-repeat top left;
+}
+.dp_container{
+	position: relative;
+	padding: 0;
+	z-index: 500;
+}
+.dp_cal{
+	background-color: #fff;
+	border: 1px solid #005959;
+	position: absolute;
+	width: 177px;
+	top: 24px;
+	left: 0;
+	margin: 0px 0px 3px 0px;
+}
+.dp_cal table{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.dp_cal select{
+	margin: 2px 3px;
+	font-size: 11px;
+}
+.dp_cal select option{
+	padding: 1px 3px;
+}
+.dp_cal th,
+.dp_cal td{
+	width: 14.2857%;
+	text-align: center;
+	font-size: 11px;
+	padding: 2px 0;
+}
+.dp_cal th{
+	border: solid #white;
+	border-width: 1px 0;
+	color: white;
+	background: #005959;
+	font-weight: bold;
+}
+.dp_cal td{
+	cursor: pointer;
+}
+.dp_cal thead th{
+	background: #005959;
+}
+.dp_cal td.dp_roll{
+	color: #000;
+	background: #bbe7e7;
+}
+/* must have this for the IE6 select box hiding */
+.dp_hide{
+	visibility: hidden;
+}
+.dp_empty{
+	background: #bbe7e7;
+}
+.dp_today{
+	background: #005959;
+	color:white;
+}
+.dp_selected{
+	color: #fff;
+	background: #005959;
+	font-weight:bold;
+}
