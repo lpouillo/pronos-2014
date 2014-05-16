@@ -1,5 +1,6 @@
 <?php
 // Configuration
+
 require_once('app/includes/config.php');
 session_start();
 // Fonctions du site
