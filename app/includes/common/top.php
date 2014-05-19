@@ -25,10 +25,10 @@ $html_top.='
 		<div id="header">
 		<table>
 			<tr>
-				<td id="photo"><img height="100px" src="public/images/'.$cup_logo.'" alt="Image de la page '.$page.'"/></td>
+				<td id="photo"><img height="100px" src="http://upload.wikimedia.org/wikipedia/en/thumb/e/e8/WC-2014-Brasil.svg/160px-WC-2014-Brasil.svg.png" alt="Image de la page '.$page.'"/></td>
 				<td id="header_titre">
 					<h1><a style="text-decoration:none" href="index.php" title="Retourner à l\'accueil du site de pronostics IPGP">
-						Concours de pronostics Hekla : <span style="font-variant: small-caps">Euro 2012 
+						Concours de pronostics Hekla : <span style="font-variant: small-caps">Euro 2012
 						<p style="text-align:center">
 						 <img src="public/images/flags/POL.gif" alt="flag" /> Pologne -
 						 Ukraine <img src="public/images/flags/UKR.gif" alt="flag" /></p></span></a></h1>
@@ -54,10 +54,10 @@ if (empty($_SESSION['id_user'])) {
 							<td colspan="2" style="text-align:center"><input type="submit" value="Connexion" class="input_submit"/>
 							<a href="index.php?page=inscription&amp;token=new">Mot de passe oublié</a>
 							<a href="https://hekla.ipgp.fr/"><img style="border:none;height:25px;" src="public/images/hekla.jpg"  alt="Logo de l\'Hekla"/></a>
-							</td>	
+							</td>
 						</tr>
 					</table>
-					</form>'; 
+					</form>';
 } else {
 // sinon on lui affiche son nom et le lien vers son espace
 	$colspan=($_SESSION['is_admin'])?'':'colspan="2"';
@@ -65,8 +65,8 @@ if (empty($_SESSION['id_user'])) {
 				<tr>
 					<td colspan="2" style="text-align:right;padding:4px;"><span style="font-size:13px;color:#00774B;font-weight:bolder;"><em>'.$_SESSION['login'].'</em></span>
 					&nbsp;&nbsp;&nbsp;
-					'.$_SESSION['points'].' pts &nbsp;&nbsp;&nbsp;	 
-					<img  border="0" src="public/images/icons/arrow_right.png" height="10px" alt="evolution"/> <strong>'.$_SESSION['classement'].'</strong>  
+					'.$_SESSION['points'].' pts &nbsp;&nbsp;&nbsp;
+					<img  border="0" src="public/images/icons/arrow_right.png" height="10px" alt="evolution"/> <strong>'.$_SESSION['classement'].'</strong>
 					<a href="index.php?page=deconnexion" title="Déconnexion"><img  border="0"src="public/images/icons/door_out.png" alt="logout"/></a></td>
 					<td rowspan="3"><p style="margin:auto;margin-top:5px;margin-bottom:5px" onclick="affElement(\'mon_espace\',\'\',\'\',\'\',\'page\')">
 						<img  height="75px"  src="public/images/photos/inconnu_small.jpg" alt="photo"/></p></td>
@@ -75,7 +75,7 @@ if (empty($_SESSION['id_user'])) {
 					<td '.$colspan.'><p class="link bouton" onclick="affElement(\'mon_espace\',\'\',\'\',\'\',\'page\')">
 								<img  border="0" src="public/images/icons/mon_espace.png" alt="mon_espace"/> Mon compte</p>
 					</td>';
-	
+
 	$html_top.=($_SESSION['is_admin'])?'<td><p class="link bouton"<a href="#" onclick="affElement(\'admin\',\'\',\'\',\'\',\'page\')">
 								<img border="0" src="public/images/icons/tux.png" alt="mon_pronos"/> Administration</a></p></td>':'';
 	$html_top.='</tr>
@@ -89,8 +89,8 @@ if (empty($_SESSION['id_user'])) {
 								<img border="0" src="public/images/icons/group.png" alt="mon_pronos"/> Mes groupes </p>
 					</td>
 				</tr>
-								
-					
+
+
 							</table>';
 	$html_top.='</p>';
 }
@@ -104,7 +104,7 @@ $html_top.='
 		</div>
 		<div id="menu">
 			<ul>';
-	
+
 $menu=array();
 // titr
 foreach($pages as $k_page => $data) {
