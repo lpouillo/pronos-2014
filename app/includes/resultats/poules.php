@@ -1,6 +1,6 @@
 <?php
 $html.='<h2>Poules</h2>
-<p style="text-align:center">Les matchs encadrés en <span class="special">ROUGE</span> comptent double. 
+<p style="text-align:center">Les matchs encadrés en <span class="special">ROUGE</span> comptent double.
 	<a href="#" onclick="affElement(\'reglement\',\'\',\'\',\'\',\'page\');">Voir le règlement du concours.</a></p>';
 // Récupération des équipes
 $s_eq_poules="SELECT * FROM equipes ORDER BY poule, classement, nom";
@@ -9,7 +9,7 @@ $r_eq_poules=mysql_query($s_eq_poules);
 $poules=array();
 while ($d_eq_poules=mysql_fetch_array($r_eq_poules)) {
 	$poules[$d_eq_poules['poule']][]=array(
-		'nom'=> $d_eq_poules['nom'], 
+		'nom'=> $d_eq_poules['nom'],
 		'acronym' => $d_eq_poules['acronym'],
 		'V' => $d_eq_poules['victoires'],
 		'N' => $d_eq_poules['nuls'],
@@ -27,7 +27,7 @@ $s_matchs="SELECT M.date_match, M.heure, EQ1.acronym AS ac1, EQ1.nom AS eq1, EQ1
 			INNER JOIN equipes EQ2
 				ON EQ2.id_equipe=M.id_equipe2
 			WHERE M.type='poule'
-			ORDER BY M.poule, M.date_match, M.heure";
+			ORDER BY EQ1.poule, M.date_match, M.heure";
 
 $r_matchs=mysql_query($s_matchs)
 	or die($s_matchs.'<br/>'.mysql_error());
@@ -39,7 +39,7 @@ $html.='<table id="poules" border="0">
 		<tr>';
 
 for ($j=1;$j<=4;$j++) {
-	$html.='<th>Poule '.$j.'</th>';	
+	$html.='<th>Poule '.$j.'</th>';
 }
 $html.='</tr><tr>';
 for ($j=1;$j<=4;$j++) {
@@ -57,7 +57,7 @@ for ($j=1;$j<=4;$j++) {
 					<td>'.$poules[$j][$k]['N'].'</td>
 					<td>'.$poules[$j][$k]['D'].'</td>
 					<td>'.$poules[$j][$k]['diff'].'</td>
-					
+
 				</tr>';
 	}
 	$html.='</table>
@@ -75,15 +75,15 @@ for ($j=1;$j<=4;$j++) {
 	} else {
 		$html.='<tr></td>Aucun match dans la base pour l\'instant</td></tr>';
 	}
-	$html.='</table></td>';	
+	$html.='</table></td>';
 }
 $html.='</tr>';
 
 if (count($poules)==8) {
 	$html .='<tr>';
-	
+
 	for ($j=5;$j<=8;$j++) {
-		$html.='<th>Poule '.$j.'</th>';	
+		$html.='<th>Poule '.$j.'</th>';
 	}
 	$html.='<tr>';
 	for ($j=5;$j<=8;$j++) {
@@ -101,7 +101,7 @@ if (count($poules)==8) {
 						<td>'.$poules[$j][$k]['N'].'</td>
 						<td>'.$poules[$j][$k]['D'].'</td>
 						<td>'.$poules[$j][$k]['diff'].'</td>
-						
+
 					</tr>';
 		}
 		$html.='</table>
@@ -116,7 +116,7 @@ if (count($poules)==8) {
 		} else {
 			$html.='<li>Aucun match dans la base pour l\'instant</li>';
 		}
-		$html.='</ul></td>';	
+		$html.='</ul></td>';
 	}
 	$html.='</tr>';
 }

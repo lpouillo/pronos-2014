@@ -1,6 +1,6 @@
 
 
-<?php 
+<?php
 $html='<h3>Derniers matchs joués</h3>
 <div style="border:1px solid #00774B;border-radius:0px 0px 5px 5px;padding-bottom:5px;">';
 
@@ -23,7 +23,7 @@ if (mysql_num_rows($r_matchs)>0) {
 	while ($d_matchs=mysql_fetch_array($r_matchs)) {
 		$win1=($d_matchs['diff']>0)?'bold':'normal';
 		$win2=($d_matchs['diff']<0)?'bold':'normal';
-		
+
 		$html.='<tr>
 		<th colspan="5" style="text-align:center;"><span class="date">Le '.dateMysqlToFormatted($d_matchs['date_match'],$d_matchs['heure']).'</span></th>
 		</tr>
@@ -55,17 +55,17 @@ echo $html;
 		<h3>Prochains matchs</h3>
 <?php
 
-$s_matchs="SELECT M.id_match, M.date_match, M.heure, 
-				EQ1.acronym AS acro1, EQ1.nom AS eq1, EQ2.acronym AS acro2, EQ2.nom AS eq2, M.score1, M.score2, 
+$s_matchs="SELECT M.id_match, M.date_match, M.heure,
+				EQ1.acronym AS acro1, EQ1.nom AS eq1, EQ2.acronym AS acro2, EQ2.nom AS eq2, M.score1, M.score2,
 				M.joue, M.cote_1, M.cote_N, M.cote_2
 				FROM matchs M
-				INNER JOIN equipes EQ1 
+				INNER JOIN equipes EQ1
 					ON M.id_equipe1=EQ1.id_equipe
-				INNER JOIN equipes EQ2 
+				INNER JOIN equipes EQ2
 					ON M.id_equipe2=EQ2.id_equipe
 				WHERE joue<>1
 				ORDER BY M.date_match, M.heure
-				LIMIT ".(10-$count_matchs_joues);
+				LIMIT ".(6-$count_matchs_joues);
 $r_matchs=mysql_query($s_matchs);
 $html='<table>';
 while ($d_matchs=mysql_fetch_array($r_matchs)) {
@@ -80,5 +80,5 @@ while ($d_matchs=mysql_fetch_array($r_matchs)) {
 			</tr>';
 }
 $html.='</table></div>';
-echo $html;		
+echo $html;
 ?>
