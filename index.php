@@ -6,15 +6,16 @@ if (file_exists($setup)) {
 } else {
 	// Configuration
 	require_once('app/config.php');
-	// Fuseau horaire et françisation
-	setlocale (LC_TIME, 'fr_FR.utf8','fra');
-	date_default_timezone_set('Europe/Paris');
 	session_start();
+
 	// Fonctions du site
 	require_once('app/includes/common/fonctions.php');
 
 	// Connexion à la base de données
 	require_once('app/includes/common/db_connect.php');
+
+	// Fuseau horaire, françisation et date
+	require_once('app/includes/common/set_time.php');
 
 	// Test de connexion d'un utilisateur
 	require_once('app/includes/common/user_connect.php');
