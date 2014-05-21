@@ -8,7 +8,7 @@ $db_pronos=mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_passwd
 			'avec l\'utilisateur '. $_POST['db_user'].'.');;
 $db_test = mysql_select_db($_POST['db_name'], $db_pronos)
 	or die('Impossible d\'utiliser la base '.$_POST['db_name'].'.');
-mysql_query("SET NAMES utf8", $db_pronos)
+mysqli_query($db_pronos, "SET NAMES utf8")
 	or die('Impssible de sélectionner le charset utf8.');
 
 $content .= "<p>Création des tables :</p>\n";
@@ -123,24 +123,24 @@ $creation_tables = ['connexions' => "CREATE TABLE IF NOT EXISTS `connexions` (
 ];
 $content .= "<ul>\n";
 foreach ($creation_tables as $table => $sql) {
-	mysql_query($sql, $db_pronos);
+	mysqli_query($db_pronos, $sql);
 	$content .= "<li>".$table."</li>\n";
             }
 $content .= "</ul>\n";
 $fill_pages = "REPLACE INTO `pages` (`id_page`, `date_in`, `date_modif`, `libelle`, `titre`, `titre_menu`, `position_menu`) VALUES
-(1, '2010-03-22', '2010-03-22', 'accueil', 'Derniers résultats, les news du tournoi, les 15 premiers ...', 'Accueil', 1),
-(2, '2010-03-22', '2010-03-22', 'resultats', 'Tous les résultats des poules, classements, tournoi', 'Résultats', 3),
-(3, '2010-03-22', '2010-03-22', 'concours', 'classement du concours, groupes de parieurs', 'Concours', 4),
-(4, '2010-03-22', '2010-03-22', 'reglement', 'Le règlement complet, matchs spéciaux, calcul', 'Règlement', 2),
+(1, '2010-03-22', '2010-03-22', 'accueil', 'Bienvenue à toutes et à tous', 'Accueil', 1),
+(2, '2010-03-22', '2010-03-22', 'resultats', 'Tous les résultats des poules et du tournoi', 'Résultats', 3),
+(3, '2010-03-22', '2010-03-22', 'concours', 'Classement du concours', 'Concours', 4),
+(4, '2010-03-22', '2010-03-22', 'reglement', 'Le règlement complet du concours', 'Règlement', 2),
 (5, '2010-03-22', '2010-03-22', 'inscription', 'Formulaire d''inscription au concours', 'Inscription', 5),
-(6, '2010-03-22', '2010-03-22', 'mon_espace', 'Mes informations, mes pronostiques, mes groupes', 'Mon espace', 6),
+(6, '2010-03-22', '2010-03-22', 'mon_espace', 'Gérer mon compte', 'Mon espace', 6),
 (7, '2010-03-22', '2010-03-22', 'liens', 'Liens utiles', 'Liens', 7),
 (8, '2010-03-22', '2010-03-22', 'admin', 'Administration du site', '', 0),
 (9, '2010-03-22', '2010-03-22', 'not_found', 'Page non trouvée', '', 0),
 (10, '2010-03-22', '2010-03-22', 'forbidden', 'Page non autorisée', '', 0),
 (11, '2010-05-25', '2010-05-25', 'deconnexion', 'Déconnexion du site', 'Déconnexion', 0),
 (12, '2010-06-17', '2010-06-17', 'graphs', '', '', 0);";
-mysql_query($fill_pages, $db_pronos)
+mysqli_query($db_pronos, $fill_pages)
 	or die (mysql_error());
 
 $fill_equipes = "REPLACE INTO `equipes` (`id_equipe`, `date_in`, `date_modif`, `nom`, `acronym`, `poule`) VALUES
@@ -176,7 +176,7 @@ $fill_equipes = "REPLACE INTO `equipes` (`id_equipe`, `date_in`, `date_modif`, `
 (30, '2014-05-20', '2014-05-20', 'Algérie', 'dz', 8),
 (31, '2014-05-20', '2014-05-20', 'Russie', 'ru', 8),
 (32, '2014-05-20', '2014-05-20', 'Corée', 'kr', 8)";
-mysql_query($fill_equipes, $db_pronos)
+mysqli_query($db_pronos, $fill_equipes)
 	or die (mysql_error());
 
 $fill_matchs = "REPLACE INTO `matchs` (`id_match`, `date_in`, `date_modif`, `id_equipe1`, `id_equipe2`, `date_match`, `heure`, `type`) VALUES
@@ -227,15 +227,33 @@ $fill_matchs = "REPLACE INTO `matchs` (`id_match`, `date_in`, `date_modif`, `id_
 (31, '2014-05-20', '2014-05-20', 29, 31, '2014-06-22', '13:00', 'poule'),
 (32, '2014-05-20', '2014-05-20', 32, 30, '2014-06-22', '16:00', 'poule'),
 (47, '2014-05-20', '2014-05-20', 32, 29, '2014-06-26', '17:00', 'poule'),
-(48, '2014-05-20', '2014-05-20', 30, 31, '2014-06-26', '17:00', 'poule')";
-mysql_query($fill_matchs, $db_pronos)
+(48, '2014-05-20', '2014-05-20', 30, 31, '2014-06-26', '17:00', 'poule'),
+(49, '2014-05-20', '2014-05-20', 0, 0, '2014-06-28', '18:00', 'Huitieme1'),
+(50, '2014-05-20', '2014-05-20', 0, 0, '2014-06-28', '22:00', 'Huitieme2'),
+(51, '2014-05-20', '2014-05-20', 0, 0, '2014-06-29', '18:00', 'Huitieme3'),
+(52, '2014-05-20', '2014-05-20', 0, 0, '2014-06-29', '22:00', 'Huitieme4'),
+(53, '2014-05-20', '2014-05-20', 0, 0, '2014-06-30', '18:00', 'Huitieme5'),
+(54, '2014-05-20', '2014-05-20', 0, 0, '2014-06-30', '22:00', 'Huitieme6'),
+(55, '2014-05-20', '2014-05-20', 0, 0, '2014-07-01', '18:00', 'Huitieme7'),
+(56, '2014-05-20', '2014-05-20', 0, 0, '2014-07-01', '22:00', 'Huitieme8'),
+(57, '2014-05-20', '2014-05-20', 0, 0, '2014-07-04', '18:00', 'Quart1'),
+(58, '2014-05-20', '2014-05-20', 0, 0, '2014-07-04', '22:00', 'Quart2'),
+(59, '2014-05-20', '2014-05-20', 0, 0, '2014-07-05', '18:00', 'Quart3'),
+(60, '2014-05-20', '2014-05-20', 0, 0, '2014-07-05', '22:00', 'Quart4'),
+(61, '2014-05-20', '2014-05-20', 0, 0, '2014-07-08', '22:00', 'Demi1'),
+(62, '2014-05-20', '2014-05-20', 0, 0, '2014-07-09', '22:00', 'Demi2'),
+(63, '2014-05-20', '2014-05-20', 0, 0, '2014-07-12', '22:00', 'p_finale'),
+(64, '2014-05-20', '2014-05-20', 0, 0, '2014-07-13', '21:00', 'Finale');";
+
+mysqli_query($db_pronos, $fill_matchs)
 	or die (mysql_error());
 
 $content .= "<p>Remplissage des tables effectué</p>\n";
 
-print_r ($_POST);
-//mysql_query("REPLACE INTO users ('')");
+$s_admin = "REPLACE INTO users (`login`)";
+mysqli_query($db_pronos, $s_admin);
 
+$content .= "<p>Compte admin créé</p>\n";
 
 
 ?>
