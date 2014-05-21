@@ -1,7 +1,7 @@
 <?php
-
+/*
 if (empty($_SESSION['id_user'])) {
-	$html.='<p>Vous devez vous connecter pour accéder à cette page. Si vous n\'avez pas encore de compte, cliquez 
+	$html.='<p>Vous devez vous connecter pour accéder à cette page. Si vous n\'avez pas encore de compte, cliquez
 		<a href="#" onclick="affElement(\'inscription\',\'\',\'\',\'\',\'page\');">ici</a></p>';
 } else {
 	$html='<ul id="menu_espace">
@@ -17,5 +17,5 @@ if (empty($_SESSION['id_user'])) {
 	}
 }
 
-echo $html;
+echo $html;*/
 ?>

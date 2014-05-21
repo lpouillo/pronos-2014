@@ -1,5 +1,4 @@
-<div id="reglement">
-
+<div class="box">
 <h2>Dates limites de paris</h2>
 <p>
 Les pronostics vont se dérouler en 2 etapes : une première étape concerne la phase des poules, avec des
@@ -54,12 +53,12 @@ Vous l'avez compris, il faut obtenir le moins de points à la fin pour gagner.
 4 matchs du premier tour sont classés comme matchs speciaux : le resultat du calcul precedent sera multiplie par 2 pour mettre
 un peu de piment dans cette premiere phase. Ces 4 matchs sont les suivants :
 <ul>
-<?php 
-$s_matchs_speciaux="SELECT M.id_match, UNIX_TIMESTAMP( M.date_match ) as date_match , M.heure, EQ1.nom AS eq1, EQ2.nom AS eq2
+<?php
+/*$s_matchs_speciaux="SELECT M.id_match, UNIX_TIMESTAMP( M.date_match ) as date_match , M.heure, EQ1.nom AS eq1, EQ2.nom AS eq2
 				FROM matchs M
-				INNER JOIN equipes EQ1 
+				INNER JOIN equipes EQ1
 					ON M.id_equipe1=EQ1.id_equipe
-				INNER JOIN equipes EQ2 
+				INNER JOIN equipes EQ2
 					ON M.id_equipe2=EQ2.id_equipe
 				WHERE special=1
 				ORDER BY M.date_match, M.heure";
@@ -67,7 +66,7 @@ $r_matchs_speciaux=mysql_query($s_matchs_speciaux);
 while ($d_matchs_speciaux=mysql_fetch_array($r_matchs_speciaux)) {
 	echo '<li>'.$d_matchs_speciaux['eq1'].' - '.$d_matchs_speciaux['eq2'].
 	', le '.strftime('%A %d %B %G',$d_matchs_speciaux['date_match']).' à '.$d_matchs_speciaux['heure'].' </li>';
-}
+}*/
 ?>
 </ul>
 

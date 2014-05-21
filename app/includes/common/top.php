@@ -1,19 +1,281 @@
-<?php
-$html_top='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+<html>
 	<head>
-		<title>'.$titre.' - Concours de pronostics pour l\'Euro 2012</title>
-		<link rel="shortcut icon" type="image/png" href="public/images/icons/equipe.png" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="keywords" content="Pronostiques de foot, tournoi, Institut de Physique du Globe de Paris, 2012, championnat d\'Europe des Nations, Pologne, Ukraine, UEFA"/>
-		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="public/css/design.css"/>
-		<link rel="stylesheet" media="screen" type="text/css" title="DatePicker" href="public/css/DatePicker.css"/>
-		<script type="text/javascript" src="public/javascript/mootools-1.2.2-core-yc.js"></script>
-		<script type="text/javascript" src="public/javascript/mootools-1.2.2.2-more.js"></script>
-		<script type="text/javascript" src="public/javascript/main.js"> </script>
-		<script type="text/javascript" src="public/javascript/DatePicker.js"> </script>
-	</head>';
-// Si l'utilisateur n'est pas connecté on lui met le focus dans le formulaire de login
+		<title><?=$titre?> - Concours de Pronostiques World Cup 2014</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,900,300italic" rel="stylesheet" />
+		<script src="public/js/jquery.min.js"></script>
+		<script src="public/js/jquery.dropotron.min.js"></script>
+		<script src="public/js/config.js"></script>
+		<script src="public/js/skel.min.js"></script>
+		<script src="public/js/skel-panels.min.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="public/css/skel-noscript.css" />
+			<link rel="stylesheet" href="public/css/style.css" />
+			<link rel="stylesheet" href="public/css/design.css" />
+			<link rel="stylesheet" href="public/css/style-desktop.css" />
+		</noscript>
+		<!--[if lte IE 8]><script src="public/js/html5shiv.js"></script><link rel="stylesheet" href="public/css/ie8.css" /><![endif]-->
+	</head>
+	<body class="homepage">
+
+		<!-- Header Wrapper -->
+			<div id="header-wrapper">
+				<div class="container">
+					<div class="row">
+						<section id="header">
+							<div class="12u">
+								<div class="row">
+									<div class="1u">
+										<img height="80px" src="http://upload.wikimedia.org/wikipedia/en/thumb/e/e8/WC-2014-Brasil.svg/160px-WC-2014-Brasil.svg.png" alt="Image de la page '.$page.'"/>
+									</div>
+									<div class="8u" id="titre">
+										<a class="button" href="index.php">Concours de Pronostiques World Cup 2014</a>
+									</div>
+									<div class="3u" id="login">
+										<form method="post" action="index.php" id="form_login">
+											<table cellspacing="3" cellpadding="3" border="0" >
+												<tr>
+													<td>Login</td>
+													<td><input type="text" id="login" name="login"/></td>
+													<td>Password</td><td><input type="password" name="password"/></td>
+													<td><input type="submit" value="OK" class="OK"/>
+												</tr>
+												<tr>
+													<td colspan="4" id="oubli_inscription">
+													 <?=($login_error)?' <em style="color:red"> Mauvais identifiants</em>':'';?>
+													<a href="#">Mot de passe oublié</a> -
+													<a href="#">Inscription</a></td>
+												</tr>
+											</table>
+										</form>
+									</div>
+								</div>
+								<nav id="nav">
+									<ul>
+										<li<?=($page=='reglement')?' class="current_page_item"':''?>><a href="index.php?page=reglement">Réglement</a></li>
+										<li<?=($page=='resultats')?' class="current_page_item"':''?>><a href="index.php?page=resultats">Résultats</a></li>
+										<li<?=($page=='concours')?' class="current_page_item"':''?>>
+											<a href="index.php?page=concours">Concours</a>
+											<ul>
+												<li><a href="index.php?page=concours&section=general">Classement général</a></li>
+												<li><a href="index.php?page=concours&section=relief">Classement en relief</a></li>
+												<li><a href="index.php?page=concours&section=groupes">Classement par groupe</a></li>
+												<li><a href="index.php?page=concours&section=groupes">Informations sur les parieurs</a></li>
+											</ul>
+										</li>
+										<li<?=($page=='mon_espace')?' class="current_page_item"':''?>><a href="index.php?page=mon_espace">Mon espace</a></li>
+
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+
+			<div id="main-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="12u">
+							<section>
+								<header class="major">
+									<h2><?=$titre?></h2>
+								</header>
+
+<?php /*
+					<div class="row">
+						<div class="12u">
+
+							<!-- Intro -->
+								<section id="intro">
+
+									<div>
+										<div class="row">
+											<div class="4u">
+												<section class="first">
+													<span class="pennant"><span class="fa fa-cog"></span></span>
+													<header>
+														<h2>Ipsum consequat</h2>
+													</header>
+													<p>Nisl amet dolor sit ipsum veroeros sed blandit consequat veroeros et magna tempus.</p>
+												</section>
+											</div>
+											<div class="4u">
+												<section class="middle">
+													<span class="pennant pennant-alt"><span class="fa fa-flash"></span></span>
+													<header>
+														<h2>Magna etiam dolor</h2>
+													</header>
+													<p>Nisl amet dolor sit ipsum veroeros sed blandit consequat veroeros et magna tempus.</p>
+												</section>
+											</div>
+											<div class="4u">
+												<section class="last">
+													<span class="pennant pennant-alt2"><span class="fa fa-star"></span></span>
+													<header>
+														<h2>Tempus adipiscing</h2>
+													</header>
+													<p>Nisl amet dolor sit ipsum veroeros sed blandit consequat veroeros et magna tempus.</p>
+												</section>
+											</div>
+										</div>
+									</div>
+
+									<div class="actions">
+										<a href="#" class="button big">Get Started</a>
+										<a href="#" class="button alt big">Learn More</a>
+									</div>
+
+								</section>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<!-- Main Wrapper -->
+			<div id="main-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="12u">
+
+							<!-- Portfolio -->
+								<section>
+									<header class="major">
+										<h2>My Portfolio</h2>
+									</header>
+									<div>
+										<div class="row">
+											<div class="4u">
+												<section class="box">
+													<a href="http://facebook.com/DreametryDoodle" class="image image-full"><img src="images/pic02.jpg" alt="" /></a>
+													<header>
+														<h3>Ipsum feugiat et dolor</h3>
+													</header>
+													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit  adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
+													<footer>
+														<a href="#" class="button alt">Find out more</a>
+													</footer>
+												</section>
+											</div>
+											<div class="4u">
+												<section class="box">
+													<a href="http://facebook.com/DreametryDoodle" class="image image-full"><img src="images/pic03.jpg" alt="" /></a>
+													<header>
+														<h3>Sed etiam lorem nulla</h3>
+													</header>
+													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit  adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
+													<footer>
+														<a href="#" class="button alt">Find out more</a>
+													</footer>
+												</section>
+											</div>
+											<div class="4u">
+												<section class="box">
+													<a href="http://facebook.com/DreametryDoodle" class="image image-full"><img src="images/pic04.jpg" alt="" /></a>
+													<header>
+														<h3>Consequat et tempus</h3>
+													</header>
+													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit  adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
+													<footer>
+														<a href="#" class="button alt">Find out more</a>
+													</footer>
+												</section>
+											</div>
+										</div>
+										<div class="row">
+											<div class="4u">
+												<section class="box">
+													<a href="http://facebook.com/DreametryDoodle" class="image image-full"><img src="images/pic05.jpg" alt="" /></a>
+													<header>
+														<h3>Blandit sed adipiscing</h3>
+													</header>
+													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit  adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
+													<footer>
+														<a href="#" class="button alt">Find out more</a>
+													</footer>
+												</section>
+											</div>
+											<div class="4u">
+												<section class="box">
+													<a href="http://facebook.com/DreametryDoodle" class="image image-full"><img src="images/pic06.jpg" alt="" /></a>
+													<header>
+														<h3>Etiam nisl consequat</h3>
+													</header>
+													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit  adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
+													<footer>
+														<a href="#" class="button alt">Find out more</a>
+													</footer>
+												</section>
+											</div>
+											<div class="4u">
+												<section class="box">
+													<a href="http://facebook.com/DreametryDoodle" class="image image-full"><img src="images/pic07.jpg" alt="" /></a>
+													<header>
+														<h3>Dolore nisl feugiat</h3>
+													</header>
+													<p>Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit  adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
+													<footer>
+														<a href="#" class="button alt">Find out more</a>
+													</footer>
+												</section>
+											</div>
+										</div>
+									</div>
+								</section>
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="12u">
+
+							<!-- Blog -->
+								<section>
+									<header class="major">
+										<h2>The Blog</h2>
+									</header>
+									<div>
+										<div class="row">
+											<div class="6u">
+												<section class="box">
+													<a href="http://facebook.com/DreametryDoodle" class="image image-full"><img src="images/pic08.jpg" alt="" /></a>
+													<header>
+														<h3>Magna tempus consequat lorem</h3>
+														<span class="byline">Posted 45 minutes ago</span>
+													</header>
+													<p>Lorem ipsum dolor sit amet sit veroeros sed et blandit consequat sed veroeros lorem et blandit  adipiscing feugiat phasellus tempus hendrerit, tortor vitae mattis tempor, sapien sem feugiat sapien, id suscipit magna felis nec elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos lorem ipsum dolor sit amet.</p>
+													<footer class="actions">
+														<a href="#" class="button fa fa-file-text">Continue Reading</a>
+														<a href="#" class="button alt fa fa-comment">33 comments</a>
+													</footer>
+												</section>
+											</div>
+											<div class="6u">
+												<section class="box">
+													<a href="http://facebook.com/DreametryDoodle" class="image image-full"><img src="images/pic09.jpg" alt="" /></a>
+													<header>
+														<h3>Aptent veroeros et aliquam</h3>
+														<span class="byline">Posted 45 minutes ago</span>
+													</header>
+													<p>Lorem ipsum dolor sit amet sit veroeros sed et blandit consequat sed veroeros lorem et blandit  adipiscing feugiat phasellus tempus hendrerit, tortor vitae mattis tempor, sapien sem feugiat sapien, id suscipit magna felis nec elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos lorem ipsum dolor sit amet.</p>
+													<footer class="actions">
+														<a href="#" class="button fa fa-file-text">Continue Reading</a>
+														<a href="#" class="button alt fa fa-comment">33 comments</a>
+													</footer>
+												</section>
+											</div>
+										</div>
+									</div>
+								</section>
+
+						</div>
+					</div>
+				</div>
+			</div>';*/
+
+/*// Si l'utilisateur n'est pas connecté on lui met le focus dans le formulaire de login
 if (empty($_SESSION['id_user'])) {
 	$html_top.=' <body onload="document.form_login.login.focus();">';
 } else {
@@ -118,5 +380,5 @@ foreach ($menu as $data) {
 }
 $html_top.='			</ul>
 		</div>
-		<div id="page">';
-echo $html_top;
+		<div id="page">';*/
+/*echo $html_top;*/

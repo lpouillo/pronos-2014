@@ -1,4 +1,5 @@
 <?php
+/*
 // Les inscriptions sont ouvertes tant que le tournoi n'a pas démarré.
 if (time()<$timestamp_poules_debut) {
 	// Si aucun utilisateur n'est connecté, on regarde ce qui est passé comme variable dans l'url :
@@ -42,7 +43,7 @@ if (time()<$timestamp_poules_debut) {
 					$error_login=1;
 				} else {
 					$s_test_login="SELECT login FROM users WHERE login='".secure_mysql($_POST['login'])."'";
-					$r_test_login=mysql_query($s_test_login); 
+					$r_test_login=mysql_query($s_test_login);
 					$error_login=(mysql_num_rows($r_test_login))?1:0;
 				}
 				if (empty($_POST['email'])){
@@ -50,7 +51,7 @@ if (time()<$timestamp_poules_debut) {
 				} else {
 					$error_email=($_POST['email']==$_POST['confirm_email'])?0:1;
 				}
-				
+
 				if ($error_login or $error_email) {
 					// si une ou des erreurs on réaffiche le formulaire d'inscription
 					$html.='
@@ -87,20 +88,20 @@ if (time()<$timestamp_poules_debut) {
 						<p><input type="submit" onclick="submitForm(\'frm_inscription\');" value="Effectuer une demande d\'inscription"/></p>
 						</div>';
 				} else {
-					// si on a tout valide on insère une entrée dans la table users, on mail la personne pour qu'il confirme 
+					// si on a tout valide on insère une entrée dans la table users, on mail la personne pour qu'il confirme
 					// et on balance un mail à l'admin
 					$token=md5(date('Y-m-d h:i:s'));
 					$s_insert="INSERT INTO users (`date_in`,`login`,`nom_reel`,`email`,`token`,`news`) VALUE (CURDATE(),'".$_POST['login']."','".$_POST['nom']."','".$_POST['email']."','".$token."','".$_POST['news']."')";
 					mysql_query($s_insert)
 						or die('Impossible de créer l\'utilisateur <br/>'.$s_insert.'<br/>'.mysql_error());
-					
+
 					// Envoi du mail de confirmation
 					$headers ='From: "Pronos 2012" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2012" <lolo@pouilloux.org>'."\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
-					$headers .='Content-Transfer-Encoding: 8bit';  
-					
+					$headers .='Content-Transfer-Encoding: 8bit';
+
 					$message='Bonjour '.htmlentities($_POST['nom_reel']).'.<br/><br/>
-		
+
 						Quelqu\'un (probablement vous) a utilisé votre adresse email pour s\'inscrire sur le site de pronostics de l\'association Hekla avec
 						le login : <br/>
 						'.$_POST['login'].'
@@ -112,10 +113,10 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2012 IPGP] Activation de votre compte sur le site de pronostiques 2012',$message,$headers) 
+					mail($_POST['email'],'[Pronos 2012 IPGP] Activation de votre compte sur le site de pronostiques 2012',$message,$headers)
 						or die('Impossible d\'envoyer l\'email de confirmation ...');
-						
-					$html.='<p>Un compte a été créé sur le site du concours. Pour l\'activer, veuillez suivre le lien que vous allez recevoir par email d\'ici quelques minutes. 
+
+					$html.='<p>Un compte a été créé sur le site du concours. Pour l\'activer, veuillez suivre le lien que vous allez recevoir par email d\'ici quelques minutes.
 						ATTENTION, il est fort possible qu\'il finisse en SPAM .. <br/>
 						Une fois votre mot de passe choisi, vous pourrez soumettre vos pronostiques. Bonne chance !!</p>';
 				}
@@ -133,10 +134,10 @@ if (time()<$timestamp_poules_debut) {
 					// Envoi du mail de confirmation
 					$headers ='From: "Pronos 2012" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2012" <lolo@pouilloux.org>'."\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
-					$headers .='Content-Transfer-Encoding: 8bit';  
-					
+					$headers .='Content-Transfer-Encoding: 8bit';
+
 					$message='Bonjour '.htmlentities($_POST['nom_reel']).'.<br/><br/>
-		
+
 						Quelqu\'un (probablement vous) a utilisé demander à réinitialiser votre mot de passe.<br/><br/>
 						Pour choisir un nouveau mot de passe, il vous suffit de cliquer sur le le lien suivant :<br/>
 						<a href="http://'.$_SERVER['HTTP_HOST'].'/'.$site_path.'/index.php?page=inscription&token='.$token.'">
@@ -146,9 +147,9 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2012 IPGP] Nouveau mot de passe sur le site de pronostiques IPGP 2012',$message,$headers) 
+					mail($_POST['email'],'[Pronos 2012 IPGP] Nouveau mot de passe sur le site de pronostiques IPGP 2012',$message,$headers)
 						or die('Impossible d\'envoyer l\'email de confirmation ...');
-						
+
 					$html.='<p>Un lien pour réinitialiser votre mot de passe vous a été envoyé.</p>';
 				} else {
 					if (isset($_POST['login'])) {
@@ -205,7 +206,7 @@ if (time()<$timestamp_poules_debut) {
 							</div>';
 					} else {
 						$token=$_POST['token'];
-					
+
 						if ($_POST['password']!=$_POST['password2'] or empty($_POST['password'])) {
 							$html.='<h3>Confirmation de votre inscription au concours de pronostiques</h3>
 								<div style="width:500px;margin:auto;">
@@ -236,11 +237,11 @@ if (time()<$timestamp_poules_debut) {
 							$_SESSION['nom_reel']=htmlentities($d_user['nom_reel']);
 							$_SESSION['email']=htmlentities($d_user['email']);
 							$_SESSION['is_admin']=$d_user['is_admin'];
-		
+
 							$s_update="UPDATE users SET `password`='".md5($_POST['password'])."', token='', date_recup=CURDATE(), actif=1, classement=10000 WHERE token='".$token."'";
 							mysql_query($s_update)
 								or die(mysql_error());
-							$html.='<p>Votre compte a été activé. Redirection vers votre 
+							$html.='<p>Votre compte a été activé. Redirection vers votre
 							<a href="#" onclick="affElement(\'mon_espace\',\'\',\'\',\'\',\'page\');">espace</a> en cours ....</p>';
 						}
 					}
@@ -279,4 +280,5 @@ if (time()<$timestamp_poules_debut) {
 } else {
 	$html.='Les inscriptions sont terminees.';
 }
-echo $html;
+echo $html;*/
+?>

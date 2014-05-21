@@ -1,7 +1,7 @@
 <?php
-if (empty($_POST['section'])) {
-	/* Par défaut on affiche le classement des parieurs et des groupes */
-	// récupération des parieurs 
+/*if (empty($_POST['section'])) {
+	// Par défaut on affiche le classement des parieurs et des groupes
+	// récupération des parieurs
 	$s_parieurs="SELECT id_user, login, nom_reel, classement, points, date_in FROM users WHERE actif=1 ORDER BY classement, date_in DESC, login";
 	$r_parieurs=mysql_query($s_parieurs);
 	$class=0;
@@ -18,10 +18,10 @@ if (empty($_POST['section'])) {
 				$html_parieurs.='<li style="background-image:none;padding-left:0px;list-style-type:none;padding:px;font-variant: small-caps;font-weight:bold;color:#00774B;";>
 					'.dateMysqlToFormatted($d_parieurs['date_in'],'00:00','%A %d %B').'</li>';
 				$count_parieurs++;
-				$count_date++;	
+				$count_date++;
 			}
 			$cestmoi=($_SESSION['id_user']==$d_parieurs['id_user'])?'<strong>'.$d_parieurs['login'].'</strong>':$d_parieurs['login'];
-			$html_parieurs.='<li title="'.$d_parieurs['nom_reel'].'" style="margin-left:40px;">'.$d_parieurs['classement'].' 
+			$html_parieurs.='<li title="'.$d_parieurs['nom_reel'].'" style="margin-left:40px;">'.$d_parieurs['classement'].'
 				'.htmlentities($d_parieurs['login'],ENT_QUOTES,'UTF-8').' ('.$d_parieurs['points'].')</li>';
 			if ($count_parieurs==round((mysql_num_rows($r_parieurs)+$count_date)/3) or $count_parieurs==2*round((mysql_num_rows($r_parieurs)+$count_date)/3)) {
 				$html_parieurs.='</ul></td><td <td style="vertical-align:center;" width="20%"><ul class="reglement">';
@@ -33,25 +33,23 @@ if (empty($_POST['section'])) {
 	} else {
 		$html_parieurs='<p>Il n\'y a aucun utilisateur actif.</p>';
 	}
-	
-	// On récupérer les groupes actifs (il faut récupérer le nombre de membres par groupe ..) 
-	$s_groupes="SELECT G.id_groupe, G.nom, G.description, U.login FROM groupes G 
+
+	// On récupérer les groupes actifs (il faut récupérer le nombre de membres par groupe ..)
+	$s_groupes="SELECT G.id_groupe, G.nom, G.description, U.login FROM groupes G
 		INNER JOIN users U
 			ON G.id_owner=U.id_user
-		
+
 		WHERE G.actif=1
 		ORDER BY G.classement, G.nom";
 	// echo $s_groupes;
 	$r_groupes=mysql_query($s_groupes);
 	$n_groupes=mysql_num_rows($r_groupes);
-	
+
 	if (mysql_num_rows($r_groupes)) {
-		
+
 		$html_groupe.='<ul class="reglement">';
 		while ($d_groupes=mysql_fetch_array($r_groupes)) {
-			/*echo '<pre>';
-			print_r($d_groupes);
-			echo'</pre>';*/
+
 			$html_groupe.='<li title="'.$d_groupes['description'].' - géré par '.htmlentities($d_groupes['login'],ENT_QUOTES,'UTF-8').'"
 			onclick="affElement(\'concours\',\'par_groupe\',\''.$d_groupes['id_groupe'].'\',\'\',\'page\');"
 			 style="cursor:pointer; font-weight:bold;">'.htmlentities($d_groupes['nom'],ENT_QUOTES,'UTF-8').'</li>';
@@ -60,7 +58,7 @@ if (empty($_POST['section'])) {
 	} else {
 		$html_groupe.='<p style="text-align:center;">Aucun groupe actif.</p>';
 	}
-	
+
 	$html='<table id="tbl_concours">
 			   <tr>
 				   <td colspan="'.$cols_parieurs.'"><h2>Classement général du concours</h2></td>
@@ -78,7 +76,7 @@ if (empty($_POST['section'])) {
 } else {
 	switch($_POST['section']) {
 		case 'par_groupe':
-			$s_user="SELECT G.nom, U.login, U.points, U.classement FROM users U 
+			$s_user="SELECT G.nom, U.login, U.points, U.classement FROM users U
 				INNER JOIN l_users_groupes UG
 					ON U.id_user=UG.id_user
 				INNER JOIN groupes G
@@ -96,4 +94,6 @@ if (empty($_POST['section'])) {
 		break;
 	}
 }
-echo $html;
+echo $html;*/
+?>
+Concours
