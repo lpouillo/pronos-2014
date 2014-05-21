@@ -1,5 +1,3 @@
-
-
 <?php
 $html='<h3>Derniers matchs joués</h3>
 <div style="border:1px solid #00774B;border-radius:0px 0px 5px 5px;padding-bottom:5px;">';
@@ -15,12 +13,12 @@ WHERE joue=1
 ORDER BY M.date_match, M.heure
 LIMIT 4";
 
-$r_matchs=mysql_query($s_matchs);
+$r_matchs=mysqli_query($db_pronos, $s_matchs);
 $count_matchs_joues=0;
 
 $html.='<table>';
-if (mysql_num_rows($r_matchs)>0) {
-	while ($d_matchs=mysql_fetch_array($r_matchs)) {
+if (mysqli_num_rows($r_matchs)>0) {
+	while ($d_matchs=mysqli_fetch_array($r_matchs)) {
 		$win1=($d_matchs['diff']>0)?'bold':'normal';
 		$win2=($d_matchs['diff']<0)?'bold':'normal';
 
