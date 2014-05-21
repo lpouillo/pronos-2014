@@ -1,6 +1,7 @@
 <?php
-$html='<div><h4><a href="http://fr.uefa.com">News de l\'UEFA</a></h4>'
-	.lire_rss("http://fr.uefa.com/rssfeed/news/rss.xml",6).'
+$html='<h3>Informations sur le tournoi</h3>' .
+		'<div><h4><a href="http://www.fifa.com/worldcup/">News de la FIFA</a></h4>'
+	.lire_rss("http://www.fifa.com/worldcup/news/rss.xml", 6).'
 	<h4><a href="http://www.cahiersdufootball.net/">Les Cahiers du Football</a></h4>'
 	.lire_rss("http://www.cahiersdufootball.net/rss/rss_article.php",5).'
 	<h4><a href="http://www.lequipe.fr/Football/">L\'Équipe</a></h4>'
