@@ -1,12 +1,48 @@
 <?php
-$html='<h3>Informations sur le tournoi</h3>' .
-		'<div><h4><a href="http://www.fifa.com/worldcup/">News de la FIFA</a></h4>'
-	.lire_rss("http://www.fifa.com/worldcup/news/rss.xml", 6).'
-	<h4><a href="http://www.cahiersdufootball.net/">Les Cahiers du Football</a></h4>'
-	.lire_rss("http://www.cahiersdufootball.net/rss/rss_article.php",5).'
-	<h4><a href="http://www.lequipe.fr/Football/">L\'Équipe</a></h4>'
-	.lire_rss("http://www.lequipe.fr/Xml/Football/Titres/actu_rss.xml",5).'
-	<h4><a href="http://www.football365.fr/">Football365</a></h4>'
-	.lire_rss("http://www.football365.fr/euro-2012/rss.xml",4).'</div>';
+
+$flux = array(
+	 array(
+	 	'src' => "FIFA",
+		'rss' => "http://fr.fifa.com/worldcup/news/rss.xml",
+		'filter' => " ",
+		'post' => "http://fr.fifa.com/"),
+	array(
+		'src' => "CDF",
+		'rss' => "http://www.cahiersdufootball.net/rss/rss_article.php",
+		'filter' => " ",
+		'post' => ""),
+	array(
+		'src' => "EQUIP",
+		'rss' => "http://www.lequipe.fr/rss/actu_rss_Football.xml",
+		'filter' => "Foot - CM",
+		'post' => " "),
+	array(
+		'src' => "F365",
+		'rss' => "http://www.football365.fr/coupe-du-monde-2014/rss.xml",
+		'filter' => " ",
+		'post' => "CM 2014")
+);
+$news=array();
+foreach ($flux as $data) {
+	$news = array_merge($news, get_news($data));
+}
+
+$dates = array();
+foreach ($news as $key => $row)
+{
+    $dates[$key] = $row['date'];
+}
+array_multisort($dates, SORT_DESC, $news);
+$html='<ul id="news">';
+foreach ($news as $info) {
+	$link = str_replace('Foot - CM - ', '', $info['txt']);
+	$link = str_replace('CM 2014 / ', '', $link);
+	$html .= '<li>' .
+			'<a href="'.$info['link'].'">'.$link.'</a>'.
+			'</li>';
+}
+
+$html.='</ul>';
+
 echo $html;
 ?>
