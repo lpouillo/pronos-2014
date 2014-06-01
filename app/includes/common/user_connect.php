@@ -15,9 +15,12 @@
 $login_error=0;
 if (isset($_POST['login']) and isset($_POST['password'])) {
 	// test sur la base locale
+
 	$s_user = "SELECT `id_user`,`login`,`nom_reel`,`is_admin`,`email`,`classement`,`points` FROM users WHERE login='".secure_mysql($_POST['login'])."' AND password='".md5($_POST['password'])."'";
+
 	$r_user = mysqli_query($db_pronos, $s_user)
 		or die ('La requète sur la base locale est mal formulée, tentative d\'injection SQL détectée.');
+
 
 	// si on a trouvé l'user dans la base locale, on récupère son id
 	if ($d_user = mysqli_fetch_array($r_user)) {

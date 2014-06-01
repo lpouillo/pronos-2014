@@ -1,5 +1,5 @@
 <?php
-/*
+$html='';
 // Les inscriptions sont ouvertes tant que le tournoi n'a pas démarré.
 if (time()<$timestamp_poules_debut) {
 	// Si aucun utilisateur n'est connecté, on regarde ce qui est passé comme variable dans l'url :
@@ -12,9 +12,8 @@ if (time()<$timestamp_poules_debut) {
 				$html.='
 					<div style="width:600px;margin:auto;">
 					<h3>Veuillez renseigner ce formulaire pour effectuer une demande d\'inscription.</h3>
-					<form method="post" action="#" id="frm_inscription">
+					<form method="post" action="index.php?page=inscription" id="frm_inscription">
 					<p>
-					<input type="hidden" name="page" value="inscription"/>
 					<input type="hidden" name="inscription_soumise" value="oui"/>
 					</p>
 					<table id="inscription">
@@ -34,8 +33,8 @@ if (time()<$timestamp_poules_debut) {
 							<th style="text-align:left;">Recevoir les news par email</th><td><input type="checkbox" name="news"/></td>
 						</tr>
 					</table>
+					<p style="text-align:center"><input type="submit" value="Effectuer une demande d\'inscription"/></p>
 					</form>
-					<p style="text-align:center"><input type="submit" onclick="submitForm(\'frm_inscription\');" value="Effectuer une demande d\'inscription"/></p>
 					</div>';
 			} else {
 				// Si le formulaire a été soumis, on teste le login (existe dans la base ?) et l'adresse email est correcte dans les deux cas
@@ -43,8 +42,8 @@ if (time()<$timestamp_poules_debut) {
 					$error_login=1;
 				} else {
 					$s_test_login="SELECT login FROM users WHERE login='".secure_mysql($_POST['login'])."'";
-					$r_test_login=mysql_query($s_test_login);
-					$error_login=(mysql_num_rows($r_test_login))?1:0;
+					$r_test_login=mysqli_query($db_pronos, $s_test_login);
+					$error_login=(mysqli_num_rows($r_test_login))?1:0;
 				}
 				if (empty($_POST['email'])){
 					$error_email=1;
@@ -84,30 +83,29 @@ if (time()<$timestamp_poules_debut) {
 								<th style="text-align:left;">Recevoir les news par email</th><td><input type="checkbox" name="news" checked="checked"/></td>
 							</tr>
 						</table>
+						<p><input type="submit" value="Effectuer une demande d\'inscription"/></p>
 						</form>
-						<p><input type="submit" onclick="submitForm(\'frm_inscription\');" value="Effectuer une demande d\'inscription"/></p>
 						</div>';
 				} else {
 					// si on a tout valide on insère une entrée dans la table users, on mail la personne pour qu'il confirme
 					// et on balance un mail à l'admin
 					$token=md5(date('Y-m-d h:i:s'));
 					$s_insert="INSERT INTO users (`date_in`,`login`,`nom_reel`,`email`,`token`,`news`) VALUE (CURDATE(),'".$_POST['login']."','".$_POST['nom']."','".$_POST['email']."','".$token."','".$_POST['news']."')";
-					mysql_query($s_insert)
+					mysqli_query($db_pronos, $s_insert)
 						or die('Impossible de créer l\'utilisateur <br/>'.$s_insert.'<br/>'.mysql_error());
 
 					// Envoi du mail de confirmation
 					$headers ='From: "Pronos 2012" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2012" <lolo@pouilloux.org>'."\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
-
-					$message='Bonjour '.htmlentities($_POST['nom_reel']).'.<br/><br/>
+					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
 
 						Quelqu\'un (probablement vous) a utilisé votre adresse email pour s\'inscrire sur le site de pronostics de l\'association Hekla avec
 						le login : <br/>
 						'.$_POST['login'].'
 						<br/><br/>
 						Pour confirmer votre inscription, choisir votre mot de passe et soummettre vos pronostics, il vous suffit de cliquer sur le le lien suivant :<br/>
-						<a href="http://'.$_SERVER['HTTP_HOST'].'/'.$site_path.'/index.php?page=inscription&token='.$token.'">http://'.$_SERVER['HTTP_HOST'].'/'.$site_path.'/index.php?page=inscription&token='.$token.'</a>
+						<a href="http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'].'/index.php?page=inscription&token='.$token.'">http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'].'/index.php?page=inscription&token='.$token.'</a>
 						<br/><br/>
 						Cordialement
 						<br/>
@@ -125,18 +123,18 @@ if (time()<$timestamp_poules_debut) {
 			// si il y a un token fourni et qu'il vaut new
 			if ($_GET['token']=='new' or $_POST['token']=='new') {
 				$s_check_user="SELECT email FROM users WHERE login='".$_POST['login']."' AND email='".$_POST['email']."'";
-				$r_check_user=mysql_query($s_check_user);
-				if (mysql_num_rows($r_check_user)) {
+				$r_check_user=mysqli_query($db_pronos, $s_check_user);
+				if (mysqli_num_rows($r_check_user)) {
 					$token=md5(date('Y-m-d h:i:s'));
 					$s_update="UPDATE users SET token='".$token."' WHERE login='".$_POST['login']."' AND email='".$_POST['email']."'";
-					mysql_query($s_update)
+					mysqli_query($db_pronos, $s_update)
 						or die('Impossible de recréer un token <br/>'.$s_update.'<br/>'.mysql_error());
 					// Envoi du mail de confirmation
 					$headers ='From: "Pronos 2012" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2012" <lolo@pouilloux.org>'."\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
 
-					$message='Bonjour '.htmlentities($_POST['nom_reel']).'.<br/><br/>
+					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
 
 						Quelqu\'un (probablement vous) a utilisé demander à réinitialiser votre mot de passe.<br/><br/>
 						Pour choisir un nouveau mot de passe, il vous suffit de cliquer sur le le lien suivant :<br/>
@@ -173,15 +171,15 @@ if (time()<$timestamp_poules_debut) {
 									<th style="text-align:left;">email utilisé pour l\'inscription</th><td><input type="text" name="email"/></td>
 								</tr>
 							</table>
+							<p><input type="submit" value="Faire une demande pour un nouveau mot de passe"/></p>
 							</form>
-							<p><input type="submit" onclick="submitForm(\'frm_inscription\');" value="Faire une demande pour un nouveau mot de passe"/></p>
 							</div>';
 				}
 			} else {
 				$token=$_GET['token'];
 				$s_check_token="SELECT token FROM users WHERE token='".$token."'";
-				$r_check_token=mysql_query($s_check_token);
-				if (mysql_num_rows($r_check_token)) {
+				$r_check_token=mysqli_query($db_pronos, $s_check_token);
+				if (mysqli_num_rows($r_check_token)) {
 					if (empty($_POST['activation'])) {
 						$html.='
 							<div style="width:500px;margin:auto;">
@@ -201,8 +199,8 @@ if (time()<$timestamp_poules_debut) {
 										<th>Confirmez</th><td><input type="password" name="password2" id="password2"/></td>
 									</tr>
 								</table>
+							<p><input type="submit" value="Activer mon compte"/></p>
 							</form>
-							<p><input type="submit" onclick="submitForm(\'choix_mot_passe\');" value="Activer mon compte"/></p>
 							</div>';
 					} else {
 						$token=$_POST['token'];
@@ -226,11 +224,11 @@ if (time()<$timestamp_poules_debut) {
 										</tr>
 									</table>
 								</form>
-								<p style="text-align:left;"><input type="submit" onclick="submitForm(\'choix_mot_passe\');" value="Activer mon compte"/></p>
+								<p style="text-align:left;"><input type="submit" value="Activer mon compte"/></p>
 								</div>';
 						} else {
 							$s_user="SELECT id_user,login,nom_reel, email FROM users WHERE token='".$token."'";
-							$r_user=mysql_query($s_user);
+							$r_user=mysqli_query($db_pronos, $s_user);
 							$d_user=mysql_fetch_array($r_user);
 							$_SESSION['id_user']=htmlentities($d_user['id_user']);
 							$_SESSION['login']=htmlentities($d_user['login']);
@@ -239,10 +237,10 @@ if (time()<$timestamp_poules_debut) {
 							$_SESSION['is_admin']=$d_user['is_admin'];
 
 							$s_update="UPDATE users SET `password`='".md5($_POST['password'])."', token='', date_recup=CURDATE(), actif=1, classement=10000 WHERE token='".$token."'";
-							mysql_query($s_update)
+							mysqli_query($db_pronos, $s_update)
 								or die(mysql_error());
 							$html.='<p>Votre compte a été activé. Redirection vers votre
-							<a href="#" onclick="affElement(\'mon_espace\',\'\',\'\',\'\',\'page\');">espace</a> en cours ....</p>';
+							<a href="index.php?page=mon_espace">espace</a> en cours ....</p>';
 						}
 					}
 				} else {
@@ -268,8 +266,8 @@ if (time()<$timestamp_poules_debut) {
 								<th style="text-align:left;">confirmer l\'adresse email</th><td><input type="text" name="confirm_email"/></td>
 							</tr>
 						</table>
+						<p style="text-align:left;"><input type="submit" value="Effectuer une demande d\'inscription"/></p>
 						</form>
-						<p style="text-align:left;"><input type="submit" onclick="submitForm(\'frm_inscription\');" value="Effectuer une demande d\'inscription"/></p>
 						</div>';
 				}
 			}
@@ -280,5 +278,5 @@ if (time()<$timestamp_poules_debut) {
 } else {
 	$html.='Les inscriptions sont terminees.';
 }
-echo $html;*/
+echo $html;
 ?>
