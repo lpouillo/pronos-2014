@@ -27,13 +27,16 @@
 						<section id="header">
 							<div class="12u">
 								<div class="row">
-									<div class="1u">
+									<div class="2u">
 										<img height="80px" src="http://upload.wikimedia.org/wikipedia/en/thumb/e/e8/WC-2014-Brasil.svg/160px-WC-2014-Brasil.svg.png" alt="Image de la page '.$page.'"/>
 									</div>
-									<div class="8u" id="titre">
+									<div class="7u" id="titre">
 										<a class="button" href="index.php">Concours de Pronostiques World Cup 2014</a>
 									</div>
 									<div class="3u" id="login">
+									<?php
+									if (empty($_SESSION['id_user'])) {
+									?>
 										<form method="post" action="index.php" id="form_login">
 											<table cellspacing="3" cellpadding="3" border="0" >
 												<tr>
@@ -45,15 +48,76 @@
 												<tr>
 													<td colspan="4" id="oubli_inscription">
 													 <?=($login_error)?' <em style="color:red"> Mauvais identifiants</em>':'';?>
-													<a href="#">Mot de passe oublié</a> -
-													<a href="#">Inscription</a></td>
+													<a href="index.php?page=inscription">Mot de passe oublié</a> -
+													<a href="index.php?page=inscription">Inscription</a></td>
 												</tr>
 											</table>
 										</form>
+									<?php
+									} else {
+									?>
+										<div class="2u">
+											<ul>
+												<li><strong><?=$_SESSION['login']?></strong>
+													<img border="0" src="public/images/icons/arrow_right.png" height="10px" alt="evolution"/>
+													<strong><?=$_SESSION['classement']?></strong></li>
+												<li></li>
+												<li></li>
+										</div>
+										<div class="1u">
+										<table border="1" style="margin:auto;margin-bottom:5px;">
+											<tr>
+											<td colspan="2" style="text-align:right;padding:4px;">
+												<span></span>
+
+												<a href="index.php?page=deconnexion" title="Déconnexion"><img border="0"src="public/images/icons/door_out.png" alt="logout"/></a></td>
+											</td>
+
+										<td rowspan="4" style="vertical-align:top">
+											<img height="75px" src="public/images/photos/inconnu_small.jpg" alt="photo"/>
+										</td>
+										</tr>
+										<tr>
+											<td><p>
+												<img border="0" src="public/images/icons/mon_espace.png" alt="mon_espace"/> Mon compte</p>
+											</td>
+										</tr>
+										<tr>
+											<td><p>
+											<img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/> Pronostiques</p>
+											</td>
+										</table>
+
+									<?php
+									}
+//										$html_top='
+//										&nbsp;&nbsp;&nbsp;
+//										'.$_SESSION['points'].' pts &nbsp;&nbsp;&nbsp;
+//										';
+//
+//										$html_top.=($_SESSION['is_admin'])?'<td><p class="link bouton"<a href="#" onclick="affElement(\'admin\',\'\',\'\',\'\',\'page\')">
+//										<img border="0" src="public/images/icons/tux.png" alt="mon_pronos"/> Administration</a></p></td>':'';
+//										$html_top.='</tr>
+//										<tr>
+//										<td style="width="50%">
+//										<p class="link bouton" onclick="affElement(\'mon_espace\',\'mes_pronos\',\'\',\'\',\'page\')">
+//										<img border="0" src="public/images/icons/application_form.png" alt="mon_pronos"/> Pronostiques </p>
+//										</td>
+//										<td>
+//										<p class="link bouton" onclick="affElement(\'mon_espace\',\'mes_groupes\',\'\',\'\',\'page\')">
+//										<img border="0" src="public/images/icons/group.png" alt="mon_pronos"/> Mes groupes </p>
+//										<';
+//										$html_top.='</p>';
+//										echo $html_top;
+
+
+
+									?>
 									</div>
 								</div>
 								<nav id="nav">
 									<ul>
+										<li<?=($page=='accueil')?' class="current_page_item"':''?>><a href="index.php?page=accueil">Accueil</a></li>
 										<li<?=($page=='reglement')?' class="current_page_item"':''?>><a href="index.php?page=reglement">Réglement</a></li>
 										<li<?=($page=='resultats')?' class="current_page_item"':''?>><a href="index.php?page=resultats">Résultats</a></li>
 										<li<?=($page=='concours')?' class="current_page_item"':''?>>

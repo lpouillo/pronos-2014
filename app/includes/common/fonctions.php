@@ -137,28 +137,30 @@ function url_exists($url) {
 }
 
 
-function lire_rss($url,$nbr=5) {
-	$tout.='<ul style="border-radius:5px;background-color:white;border:1px solid #00774B;padding-left:20px;padding-bottom:5px;padding-top:5px;margin-top:0px;margin-bottom:0px;margin-right:20px;">';
-	if ((url_exists($url))) {
-		$xml=simplexml_load_file($url);
+function get_news($flux, $nbr=3){
+	$data = array();
+	$i=0;
+	if ((url_exists($flux['rss']))) {
+		$xml=simplexml_load_file($flux['rss']);
 		if (isset($xml)) {
 			foreach($xml->channel->item as $item) {
-				$i++;
-				if($i<=$nbr){
-					$txt=utf8_decode($item->description); $lien=utf8_decode($item->link); $titre=utf8_decode($item->title);
-					$tout.='
-					<li><a href="'.htmlentities($lien).'"><b class="news_link">'.htmlentities($titre).'</b></a></li>';
+				if (strpos($item->title, $flux['filter']) !== false) {
+					$i++;
+					if($i<=$nbr){
+						$data[] = array(
+								'date' => $item->pubDate,
+								'txt' => '['.$flux['src'].'] '.$item->title,
+								'link' => $flux['post'].$item->link);
+					} else {
+						break;
+					}
 				}
 			}
 		}
-	} else {
-		$tout.='Le flux RSS est indisponible';
 	}
-
-	$tout.='</ul>';
-
-	return $tout;
+	return $data;
 }
+
 
 /* Transforme date et heure de mysql vers date formattée */
 function dateMysqlToFormatted($date,$heure,$fmt='%A %d %B à %H:%M') {
@@ -244,55 +246,104 @@ function perdant_match($match) {
 	return $perdant;
 }
 
-function affmatch($match) {
+function aff_match($match, $layout='horizontal') {
+	global $timestamp_poules_debut;
+	global $timestamp_tableau_debut;
 
-	echo '<pre>';
-	print($match);
-	echo '</pre>';
-	if (empty($match)) {
+	$date = 'Le '.dateMysqlToFormatted($match['date_match'],$match['heure'],'%A %d %B à %H:%M');
 
+	$is_poule = ($match['type'] =='poule')?true:false;
+	$type=($is_poule)?'Match '.$match['id_match']:$match['type'];
+	if ($is_poule) {
+		$cote=(time()<$timestamp_poules_debut)?'non disponible':$match['cote_1'].'/'.$match['cote_N'].'/'.$match['cote_2'];
+	} else {
+		$cote=(time()<$timestamp_tableau_debut)?'non disponible':$match['cote_1'].'/'.$match['cote_N'].'/'.$match['cote_2'];
 	}
-	/*
+
 	if ($match['joue']) {
-		if ($match['score1']==$match['score2']) {
-			$tab1='('.$match['tab1'].')';
-			$tab2='('.$match['tab2'].')';
-		}
-		$aff1=' '.$match['score1'].' '.$tab1;
-		$aff2=' '.$match['score2'].' '.$tab2;
+		$draw=$match['score1']==$match['score2'];
+		$aff1=($draw and !$is_poule)?$match['score1'].'('.$match['tab1'].')':$match['score1'];
+		$aff2=($draw and !$is_poule)?$match['score2'].'('.$match['tab2'].')':$match['score2'];;
+		$score = $aff1.'-'.$aff2;
+		$win1=(vainqueur_match($match)==$match['id_equipe1'])?' winner':'';
+		$win2=(vainqueur_match($match)==$match['id_equipe2'])?' winner':'';
+	} else {
+		$score = '-';
+		$win1='';
+		$win2='';
 	}
-	$flag1=(empty($match['acro1']))?'drapeau_noir':$match['acro1'];
-	$flag2=(empty($match['acro2']))?'drapeau_noir':$match['acro2'];
 
-	$html='<table style="margin:auto;"><tr>
-			<td colspan="3"><span class="date">Le '.dateMysqlToFormatted($match['date_match'],$match['heure']).'</span></td>
-		</tr>
-		<tr>
-			<td><img height="12px" src="public/images/flags/'.$flag1.'.gif" alt="flag"/></td>
-			<td>'.$match['nom1'].'</td>
-			<td>'.$aff1.'</td>
-		</tr><tr>
-			<td><img height="12px" src="public/images/flags/'.$flag1.'.gif" alt="flag"/></td>
-			<td>'.$match['nom2'].'</td>
-			<td>'.$aff2.'</td>
-		</tr></table>';
-		*/
-	$html='<table style="margin:auto;"><tr>
-			<td colspan="3"><span class="date">Le vendredi 21 juin à 20h45</span></td>
-		</tr>
-		<tr>
-			<td><img height="12px" src="public/images/flags/'.$flag1.'.gif" alt="flag"/></td>
-			<td>'.$match['nom1'].'</td>
-			<td>'.$aff1.'</td>
-		</tr><tr>
-			<td><img height="12px" src="public/images/flags/'.$flag1.'.gif" alt="flag"/></td>
-			<td>'.$match['nom2'].'</td>
-			<td>'.$aff2.'</td>
-		</tr></table>';
+	$html='<table class="match">
+				<tbody>';
+	if ($layout=='horizontal') {
+		$html.=	' 	<tr>
+						<th colspan="5">'.
+						$type.', '.
+						$date.
+						'</th>
+					</tr>' .
+					'<tr>
+						<td class="flag">' .
+						'<img height="12px" alt="flag" src="public/images/flags/'.$match['ac1'].'.png">' .
+						'</td>' .
+						'<td class="eq1'.$win1.'">'.$match['eq1'].'</td>' .
+						'<td class="score">'.$score.'</td>' .
+						'<td class="eq2'.$win2.'">'.$match['eq2'].'</td>' .
+						'<td class="flag">' .
+						'<img height="12px" alt="flag" src="public/images/flags/'.$match['ac2'].'.png">' .
+						'</td>' .
+					'</tr>' .
+					'<tr>' .
+						'<td colspan="5" class="cote">Cote: '.$cote.'</td>' .
+					'</tr>';
+	} else if ($layout=='vertical') {
+		$html.='			<th colspan="2"><strong>1/4 finale 1</strong></th><th>Cote</th><th>Rés</th></tr>
+					<tr>
+						<td class="flag">' .
+						'<img src="public/images/flags/'.$match['ac1'].'.png" alt="flag" height="12px"></td>
+						<td class="eq1">'.$match['eq1'].'</td>
+						<td class="cote" rowspan="2">'.$cote.'</td>
+						<td class="score">'.$aff1.'</td></tr>
+					<tr>
+						<td class="flag">' .
+						'<img src="public/images/flags/'.$match['ac2'].'.png" alt="flag" height="12px"></td>
+						<td class="eq1">'.$match['eq2'].'</td>
+						<td class="score">'.$aff2.'</td></tr>
+					<tr>
+						<td class="date link" colspan="4" ">'.$date.'</td>
+					</tr>
+				</tbody></table>';
+	}
+	$html.='	</tbody>' .
+			'</table>';
+
 	return $html;
 }
 
+function aff_poule($i_poule, $poule) {
+	$html='<table class="poule">
+				<tr>
+					<th>Rang</th><th>Equipe</th><th>Pts</th><th>V</th><th>N</th><th>D</th><th>&#177;</th>
+				</tr>';
 
+	for ($k=0;$k<=3;$k++) {
+		$html.='<tr>
+					<td>'.($k+1).'</td>
+					<td style="text-align:left;">' .
+						'<img src="public/images/flags/'.$poule[$k]['acronym'].'.png" alt="flag"/> '.
+						$poule[$k]['nom'].'</td>
+					<td>'.$poule[$k]['pts'].'</td>
+					<td>'.$poule[$k]['V'].'</td>
+					<td>'.$poule[$k]['N'].'</td>
+					<td>'.$poule[$k]['D'].'</td>
+					<td>'.$poule[$k]['diff'].'</td>
+
+				</tr>';
+	}
+	$html.='</table>';
+
+	return $html;
+}
 
 function pronostableau($match) {
 	global $equipes;

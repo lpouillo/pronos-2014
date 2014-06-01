@@ -1,5 +1,5 @@
 <?php
-if (empty($_POST['page']) AND $page!='graphs') {
+if ($page!='graphs') {
 	// Inclusion du haut du template
 	require_once('app/includes/common/top.php');
 }
@@ -13,7 +13,7 @@ require_once('app/pages/'.$page.'.php');
 //	<div id="update_url">'.$url.'</div>';
 //}
 
-if (empty($_POST['page']) AND $page!='graphs') {
+if ($page!='graphs') {
 	// Inclusion du bas du template
 	require_once('app/includes/common/bottom.php');
 }
