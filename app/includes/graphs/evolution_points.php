@@ -1,9 +1,9 @@
 <?php
 
 // Selection des tous les pronostics des poules
-$s_pronos="SELECT P.id_user, P.id_match, P.score1 AS prono1, P.score2 AS prono2, M.score1, M.score2, M.special, M.type, 
-	EQ1.acronym AS ac1, EQ2.acronym AS ac2 FROM pronos P	
-	INNER JOIN matchs M 
+$s_pronos="SELECT P.id_user, P.id_match, P.score1 AS prono1, P.score2 AS prono2, M.score1, M.score2, M.special, M.type,
+	EQ1.acronym AS ac1, EQ2.acronym AS ac2 FROM pronos P
+	INNER JOIN matchs M
 		ON P.id_match=M.id_match
 	INNER JOIN equipes EQ1
 		ON M.id_equipe1=EQ1.id_equipe
@@ -13,24 +13,24 @@ $s_pronos="SELECT P.id_user, P.id_match, P.score1 AS prono1, P.score2 AS prono2,
 	ORDER BY M.date_match, M.heure";
 
 $users=array();
-$r_pronos=mysql_query($s_pronos);
+$r_pronos=mysqli_query($db_pronos, $s_pronos);
 $n_pronos=array();
 $points_match_user=array();
-while ($d_pronos=mysql_fetch_array($r_pronos)) {
+while ($d_pronos=mysqli_fetch_array($r_pronos)) {
 	if ($d_pronos['score1']>$d_pronos['score2']) {
 		$res_match='1';
 	} elseif ($d_pronos['score1']<$d_pronos['score2']) {
-		$res_match='2';		
+		$res_match='2';
 	} else {
 		$res_match='N';
 	}
 	if ($d_pronos['prono1']>$d_pronos['prono2']) {
 		$res_prono='1';
 	} elseif ($d_pronos['prono1']<$d_pronos['prono2']) {
-		$res_prono='2';		
+		$res_prono='2';
 	} else {
 		$res_prono='N';
-	}	
+	}
 	$delta=($res_prono==$res_match)?1:0;
 	$points=-5*$delta+abs($d_pronos['score1']-$d_pronos['prono1'])+abs($d_pronos['score2']-$d_pronos['prono2']);
 	$points=($d_pronos['special'])?(2*$points):$points;
@@ -78,6 +78,10 @@ foreach($points_match_user as $id_match => $points_user) {
 	}
 	$i++;
 }
+
+if (sizeof($points_evolution_user) == 0) {
+	die('No data');
+}
 // Création des séries de données
 $DataSet = new pData;
 
@@ -88,7 +92,7 @@ $DataSet->AddPoint(0,'user');
 foreach($points_evolution_user as $i => $points_user) {
 	if ($i%2) {
 		$DataSet->AddPoint($i,'matchs');
-	} else {	
+	} else {
 		$DataSet->AddPoint('','matchs');
 	}
 //	echo $i.' '.max($points_user).' '.array_sum($points_user)/count($points_user).' '.min($points_user).'<br/>';
@@ -104,28 +108,28 @@ $DataSet->SetSerieName('Mon score','user');
 $DataSet->AddSerie('user');
 $DataSet->AddSerie('min');
 $DataSet->AddSerie('moy');
-$DataSet->AddSerie('max'); 
+$DataSet->AddSerie('max');
 $DataSet->SetAbsciseLabelSerie('matchs');
 
-// Cache definition   
-$Cache = new pCache();  
+// Cache definition
+$Cache = new pCache();
 $Cache->CacheFolder='public/cache/';
 $Cache->GetFromCache("Graph".$_SESSION['id_user'],$DataSet->GetData());
 
 // Création du graphique
-$Test = new pChart(1000,300); 
-$Test->setFontProperties("app/classes/pChart/Fonts/tahoma.ttf",7);  
-$Test->setGraphArea(30,30,970,270);  
-$Test->drawGraphArea(255,255,255,TRUE);  
-$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,0,0,0,TRUE,0,1,TRUE);     
-$Test->drawGrid(2,TRUE,230,230,230,50);  
-$Test->drawTreshold(0,143,55,72,TRUE,TRUE);  
+$Test = new pChart(1000,300);
+$Test->setFontProperties("app/classes/pChart/Fonts/tahoma.ttf",7);
+$Test->setGraphArea(30,30,970,270);
+$Test->drawGraphArea(255,255,255,TRUE);
+$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,0,0,0,TRUE,0,1,TRUE);
+$Test->drawGrid(2,TRUE,230,230,230,50);
+$Test->drawTreshold(0,143,55,72,TRUE,TRUE);
 $Test->drawFilledLineGraph($DataSet->GetData(),$DataSet->GetDataDescription(),TRUE);
-$Test->clearShadow();  
-$Test->drawLegend(75,35,$DataSet->GetDataDescription(),255,255,255);    
+$Test->clearShadow();
+$Test->drawLegend(75,35,$DataSet->GetDataDescription(),255,255,255);
 
 // Finalisation
-$Cache->WriteToCache("Graph".$_SESSION['id_user'],$DataSet->GetData(),$Test);  
+$Cache->WriteToCache("Graph".$_SESSION['id_user'],$DataSet->GetData(),$Test);
 $Test->Stroke();
 
 ?>
