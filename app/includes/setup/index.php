@@ -115,9 +115,8 @@ if (empty($_POST['step'])) {
 
 			include('create_database.php');
 			$accueil = explode('app/', $_SERVER['REQUEST_URI']);
-			echo $accueil[0];
-			$content .= "<p>Editez le fichier app/config.php pour la connexion à la base de données" .
-					"SUPPRIMER LE REPERTOIRE app/includes/setup/ et accéder à <a href=\"".
+			$content .= "<p>Editez le fichier app/config.php pour la connexion à la base de données</p>" .
+					"<p>SUPPRIMER LE REPERTOIRE app/includes/setup/ et accéder à <a href=\"".
 			$accueil[0]."\">l'accueil</a></p>\n";
 		}
 
