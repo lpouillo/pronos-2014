@@ -56,62 +56,29 @@
 									<?php
 									} else {
 									?>
-										<div class="2u">
-											<ul>
-												<li><strong><?=$_SESSION['login']?></strong>
-													<img border="0" src="public/images/icons/arrow_right.png" height="10px" alt="evolution"/>
-													<strong><?=$_SESSION['classement']?></strong></li>
-												<li></li>
-												<li></li>
-										</div>
-										<div class="1u">
-										<table border="1" style="margin:auto;margin-bottom:5px;">
-											<tr>
-											<td colspan="2" style="text-align:right;padding:4px;">
-												<span></span>
 
-												<a href="index.php?page=deconnexion" title="Déconnexion"><img border="0"src="public/images/icons/door_out.png" alt="logout"/></a></td>
-											</td>
+										<ul id="user_menu">
+											<li>
+												<a href="index.php?page=mon_espace" title="Voir mes informations">
+													<img border="0" src="public/images/icons/mon_espace.png" alt="mon_espace"/><strong><?=$_SESSION['login']?></strong>
+												</a>
+												<img border="0" src="public/images/icons/arrow_right.png" height="10px" alt="evolution"/>
+												<strong><?=$_SESSION['classement']?></strong>
+												<a href="index.php?page=deconnexion" title="Déconnexion">
+												<img border="0"src="public/images/icons/door_out.png" alt="logout"/>
+												</a></li>
+											<li><a href="index.php?page=mon_espace&section=mes_groupes" title="Déconnexion"><img border="0" src="public/images/icons/group.png" alt="mon_pronos"/> Mes groupes</a> </li>
+											<li><a href="index.php?page=mon_espace&section=mes_pronos" title="Déconnexion"><img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/> Pronostiques</li>
 
-										<td rowspan="4" style="vertical-align:top">
-											<img height="75px" src="public/images/photos/inconnu_small.jpg" alt="photo"/>
-										</td>
-										</tr>
-										<tr>
-											<td><p>
-												<img border="0" src="public/images/icons/mon_espace.png" alt="mon_espace"/> Mon compte</p>
-											</td>
-										</tr>
-										<tr>
-											<td><p>
-											<img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/> Pronostiques</p>
-											</td>
-										</table>
+									<?php
+										if ($_SESSION['is_admin']) {
+											echo '<li><img border="0" src="public/images/icons/tux.png" alt="mon_pronos"/> Administration</li>';
+										}
+									?>
+										</ul>
 
 									<?php
 									}
-//										$html_top='
-//										&nbsp;&nbsp;&nbsp;
-//										'.$_SESSION['points'].' pts &nbsp;&nbsp;&nbsp;
-//										';
-//
-//										$html_top.=($_SESSION['is_admin'])?'<td><p class="link bouton"<a href="#" onclick="affElement(\'admin\',\'\',\'\',\'\',\'page\')">
-//										<img border="0" src="public/images/icons/tux.png" alt="mon_pronos"/> Administration</a></p></td>':'';
-//										$html_top.='</tr>
-//										<tr>
-//										<td style="width="50%">
-//										<p class="link bouton" onclick="affElement(\'mon_espace\',\'mes_pronos\',\'\',\'\',\'page\')">
-//										<img border="0" src="public/images/icons/application_form.png" alt="mon_pronos"/> Pronostiques </p>
-//										</td>
-//										<td>
-//										<p class="link bouton" onclick="affElement(\'mon_espace\',\'mes_groupes\',\'\',\'\',\'page\')">
-//										<img border="0" src="public/images/icons/group.png" alt="mon_pronos"/> Mes groupes </p>
-//										<';
-//										$html_top.='</p>';
-//										echo $html_top;
-
-
-
 									?>
 									</div>
 								</div>

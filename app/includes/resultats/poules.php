@@ -51,7 +51,6 @@ foreach($poules as $poule) {
 	if (sizeof($mat_par_poule[$i_poule])>0) {
 		$html.='<ul>';
 		foreach($mat_par_poule[$i_poule] as $match) {
-			$spec = ($match['special'])?' class="special" ':'';
 			$html .='<li>';
 			$html .= aff_match($match);
 			$html.='</li>';

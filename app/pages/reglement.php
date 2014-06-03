@@ -135,7 +135,7 @@ en demi par rapport aux autres.
 <p>
 Enfin, pour recompenser les bons pronostiqueurs :<strong>
 LE JOUEUR AYANT PRONOSTIQUE LE BON VAINQUEUR DE LA COUPE DU MONDE SE VOIT
-ATTRIBUER UN BONUS DE -30 PTS, CE QUI PROMET UNE FINALE ANIMEE.</strong>
+ATTRIBUER UN BONUS DE -30 PTS.</strong>
 </p>
 
 

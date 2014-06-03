@@ -99,7 +99,7 @@ switch(abs($timestamp_poules_debut-time())-($timestamp_poules_debut-time())){
 				$html.='<tr>
 							<td class="match" width="20px">'.$puce.'</td>
 							<td>'.htmlentities($parieurs[$i]['login'],ENT_QUOTES,'UTF-8').'</td>
-							<td  width="20px"><img  border="0" src="public/images/icons/arrow_right.png" height="10px" alt="evolution"/></td>
+							<td  width="20px"><img border="0" src="public/images/icons/arrow_right.png" height="10px" alt="evolution"/></td>
 							<td>'.$parieurs[$i]['points'].'</td>
 						</tr>';
 				/*$html.='<li title="'.$parieurs[$i]['nom_reel'].'" style="width:200px;"><table><tr>
@@ -110,7 +110,7 @@ switch(abs($timestamp_poules_debut-time())-($timestamp_poules_debut-time())){
 			}
 			$html.='</table>
 					<div class="bouton" style="text-align:center">
-						<a href="#" onclick="affElement(\'concours\',\'\',\'\',\'\',\'page\');">Accéder au classement complet</a>
+						<a href="index.php?page=concours">Accéder au classement complet</a>
 					</div>';
 		}
 		// on liste les groupes existant
@@ -137,19 +137,15 @@ switch(abs($timestamp_poules_debut-time())-($timestamp_poules_debut-time())){
 							break;
 						default:
 							$puce=$groupe['classement'];
-			/*$puce='<img height="10px" src="public/images/icons/sport_soccer.png" alt="'.$groupe['classement'].'"/>';*/
 
 					}
-				$html.='<tr style="cursor:pointer;" onclick="affElement(\'concours\',\'par_groupe\',\''.$groupe['id_groupe'].'\',\'\',\'page\');"  title="'.$groupe['description'].' - géré par '.$groupe['login'].'">
+				$html.='<tr title="'.$groupe['description'].' - géré par '.$groupe['login'].'">
 							<td width="20px" style="text-align:center">'.$puce.'</td>
 							<td width="150px">'.htmlentities($groupe['nom'],ENT_QUOTES,'UTF-8').'</td>
 							<td><img height="12px" src="public/images/icons/user_green.png" alt="user" />'.$groupe['n_user'].'</td>
 							<td style="text-align:right">'. round($groupe['moyenne'],2).'</td>
 
 						</tr>';
-			/*	$html.='<li title="'.$groupe['description'].' - géré par '.$groupe['login'].'"
-				onclick="affElement(\'concours\',\'par_groupe\',\''.$groupe['id_groupe'].'\',\'\',\'page\');"
-				style="cursor:pointer; font-weight:bold;">'.htmlentities($groupe['nom'],ENT_QUOTES,'UTF-8').' '.$groupe['moyenne'].'</li>';*/
 			}
 			$html.='</table>';
 

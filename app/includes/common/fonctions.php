@@ -256,8 +256,10 @@ function aff_match($match, $layout='horizontal') {
 	$type=($is_poule)?'Match '.$match['id_match']:$match['type'];
 	if ($is_poule) {
 		$cote=(time()<$timestamp_poules_debut)?'non disponible':$match['cote_1'].'/'.$match['cote_N'].'/'.$match['cote_2'];
+		$spec = ($match['special'])?' special':'';
 	} else {
 		$cote=(time()<$timestamp_tableau_debut)?'non disponible':$match['cote_1'].'/'.$match['cote_N'].'/'.$match['cote_2'];
+		$spec = '';
 	}
 
 	if ($match['joue']) {
@@ -273,7 +275,7 @@ function aff_match($match, $layout='horizontal') {
 		$win2='';
 	}
 
-	$html='<table class="match">
+	$html='<table class="match'.$spec.'">
 				<tbody>';
 	if ($layout=='horizontal') {
 		$html.=	' 	<tr>

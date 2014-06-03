@@ -95,7 +95,7 @@ if (time()<$timestamp_poules_debut) {
 						or die('Impossible de créer l\'utilisateur <br/>'.$s_insert.'<br/>'.mysql_error());
 
 					// Envoi du mail de confirmation
-					$headers ='From: "Pronos 2012" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2012" <lolo@pouilloux.org>'."\n";
+					$headers ='From: "Pronos 2014" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2014" <lolo@pouilloux.org>'."\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
 					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
@@ -111,7 +111,7 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2012 IPGP] Activation de votre compte sur le site de pronostiques 2012',$message,$headers)
+					mail($_POST['email'],'[Pronos 2014] Activation de votre compte sur le site de pronostiques 2012',$message,$headers)
 						or die('Impossible d\'envoyer l\'email de confirmation ...');
 
 					$html.='<p>Un compte a été créé sur le site du concours. Pour l\'activer, veuillez suivre le lien que vous allez recevoir par email d\'ici quelques minutes.

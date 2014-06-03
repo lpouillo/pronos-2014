@@ -1236,6 +1236,11 @@
 	font-style: italic;
 	font-weight: bolder;
 }
+.special {
+	background-color:#00774B;
+	border:1px solid #00774B;
+	color:white;
+}
 .winner {
 	font-size:bold;
 	text-decoration:underline;

@@ -12,7 +12,7 @@ $s_matchs="SELECT M.date_match, M.heure, " .
 			WHERE M.type<>'poule'
 			ORDER BY M.date_match, M.heure";
 
-echo $s_matchs;
+//echo $s_matchs;
 $r_matchs=mysqli_query($db_pronos,$s_matchs)
 	or die($s_matchs.'<br/>'.mysql_error());
 $mat_par_type=array();
@@ -50,12 +50,12 @@ foreach($huitiemes as &$huitieme) {
 
 }
 
-
-foreach($huitiemes as $huitieme) {
-	print $huitieme['type'].'<br/>';
-	print $huitieme['eq1'].'<br/>';
-	print $huitieme['eq2'].'<br/>';
-}
+/*
+//foreach($huitiemes as $huitieme) {
+//	print $huitieme['type'].'<br/>';
+//	print $huitieme['eq1'].'<br/>';
+//	print $huitieme['eq2'].'<br/>';
+//}
 
 $quarts=$mat_par_type['Quart'];
 $i=0;
@@ -106,8 +106,8 @@ while ($d_eq_final=mysqli_fetch_array($r_eq_final)) {
 		}
 	}
 	$finales[$i]=$d_eq_final;
-}
-?>
+}*/
+$html .= '
 <h2>Tableau final</h2>
 <div>
 	<div class="row">
@@ -131,11 +131,10 @@ while ($d_eq_final=mysqli_fetch_array($r_eq_final)) {
 		Finales
 		</div>
 	</div>
-</div>
+</div>';
 
 
-<?php
-
+/*
 
 $html .='<div id="huitiemes" class="3u">
 			<div id="huitieme1" class="match">
@@ -193,5 +192,5 @@ $html .='<div id="huitiemes" class="3u">
 </div>';
 // On regarde le nombre d'equipe pour savoir combien de tours a elimintation directe il y a
 
-
+*/
 ?>

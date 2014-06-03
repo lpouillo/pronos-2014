@@ -4,7 +4,7 @@ $html='';
 $s_matchs="SELECT M.id_match, M.date_match, M.heure, " .
 		"M.id_equipe1, EQ1.nom AS eq1, EQ1.acronym AS ac1, " .
 		"M.id_equipe2, EQ2.nom AS eq2, EQ2.acronym AS ac2,
-		M.score1, M.score2, M.type, M.joue
+		M.score1, M.score2, M.type, M.joue, M.special
 		FROM matchs M
 		INNER JOIN equipes EQ1
 		ON M.id_equipe1=EQ1.id_equipe
@@ -32,7 +32,7 @@ $html.='<h3>Prochains matchs</h3>';
 $s_matchs="SELECT M.id_match, M.date_match, M.heure, M.type,
 				M.id_equipe1, EQ1.acronym AS ac1, EQ1.nom AS eq1, " .
 				"M.id_equipe2, EQ2.acronym AS ac2, EQ2.nom AS eq2, M.score1, M.score2,
-				M.joue, M.cote_1, M.cote_N, M.cote_2
+				M.joue, M.cote_1, M.cote_N, M.cote_2, M.special
 				FROM matchs M
 				INNER JOIN equipes EQ1
 					ON M.id_equipe1=EQ1.id_equipe

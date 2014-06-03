@@ -2,7 +2,7 @@
 
 ?>
 <p>
-Ce jeu est ouvert à toutes et à tous. Son <a href="#" onclick="affElement('reglement','','','','page');" title="Connaitre le règlement complet">
+Ce jeu est ouvert à toutes et à tous. Son <a href="index.php?page=reglement" title="Connaitre le règlement complet">
 règlement</a> a été créé pour le championnat d'Europe des Nations 2004 par Geneviève Moguilny et Alexandre Fournier.
 Il se déroule cette année du <?php echo strftime('%A %d %B',$timestamp_poules_debut).' au '.strftime('%A %d %B',$timestamp_tableau_fin);?>,
 avec deux phases de paris&nbsp;:
