@@ -322,6 +322,31 @@ function aff_match($match, $layout='horizontal') {
 	return $html;
 }
 
+function aff_prono($match, $edit) {
+	$cote=($edit)?'à venir':$match['cote_1'].' / '.$match['cote_N'].' / '.$match['cote_2'];
+	$pari1=($edit)?'<input class="score" type="text" size="1" name="pronos['.$match['id_match'].'][score1]" value="'.$match['score1'].'"/>':
+		'<span class="score">'.$match['score1'].'</span>';
+	$pari2=($edit)?'<input class="score" type="text" size="1" name="pronos['.$match['id_match'].'][score2]" value="'.$match['score2'].'" />':
+		'<span class="score">'.$match['score2'].'</span>';
+	$resultat=($match['joue'])?'<td class="score">'.$match['res1'].'</td><td class="score">'.$match['res2'].'</td><td style="color:red;">'.$match['points'].' points</td>':
+		'<td colspan="3" style="text-align:center;">à venir</td>';
+	$spec=($match['special'])?'special ':'';
+	// On constuire le bloc de ligne correspondant au match
+	return '<table>' .
+			'<tr>
+				<td colspan="4"><span class="date">Le '.dateMysqlToFormatted($match['date_match'],$match['heure']).'</span></td>
+			</tr>
+				<tr>
+					<td class="'.$spec.' equipe"><img src="public/images/flags/'.$match['ac1'].'.png" alt="flag"/></br>'.$match['eq1'].'</td>
+					<td>'.$pari1.'</td>
+					<td>'.$pari2.'</td>
+					<td class="'.$spec.' equipe" style="text-align:right;"><img src="public/images/flags/'.$match['ac2'].'.png" alt="flag"/></br>'.$match['eq2'].'</td>
+			</tr>
+			<tr><td>Résultat</td>'.$resultat.'</tr>
+			<tr><td style="border-bottom:1px dotted #00774B;">Cote</td>
+			<td colspan="3" style=" border-bottom:1px dotted #00774B;text-align:center">'.$cote.'</td></tr>';
+}
+
 function aff_poule($i_poule, $poule) {
 	$html='<table class="poule">
 				<tr>

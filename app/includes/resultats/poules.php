@@ -47,7 +47,7 @@ foreach($poules as $poule) {
 			'<header>Poule '.$i_poule.'</header>';
 	// Classement de la poule
 	$html.=aff_poule($i_poule, $poule);
-		// Matchs de la poule
+	// Matchs de la poule
 	if (sizeof($mat_par_poule[$i_poule])>0) {
 		$html.='<ul>';
 		foreach($mat_par_poule[$i_poule] as $match) {
@@ -62,7 +62,6 @@ foreach($poules as $poule) {
 	$html .= '</div>';
 	if ($i_poule == 4) {
 		$html.='</div><div class="row">';
-
 	}
 	$i_poule += 1;
 }
