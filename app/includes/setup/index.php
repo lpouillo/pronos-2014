@@ -118,14 +118,14 @@ if (empty($_POST['step'])) {
 			
 			$file = 'config.php';
 			
-			$f_content = "// Administrateur du site \n".
+			$f_content = "<?php \n// Administrateur du site \n".
 					'$admin_name="'.$_POST['admin_name']."\";\n".
 					'$admin_email='.$_POST['admin_email'].";\n".
 					"// Connexion à la base de données\n".
 					'$db_host='.$_POST['db_host'].";\n".
 					'$db_user='.$_POST['db_user'].";\n".
 					'$db_passwd='.$_POST['db_passwd'].";\n".
-					'$db_name='.$_POST['db_name'].";\n";
+					'$db_name='.$_POST['db_name'].";\n?>";
 			file_put_contents($file, $f_content);
 
 			$content .= "<p>Pour finaliser l'installation :

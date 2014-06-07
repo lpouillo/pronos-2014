@@ -1,7 +1,7 @@
 <?php
 /*
  * Created on 19 mai 2014
- *
+ * 
  */
 $db_pronos=mysqli_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_passwd'])
 	or die('Echec de connexion au serveur de base de données ('.$_POST['db_host'].') ' .
@@ -12,7 +12,7 @@ mysqli_query($db_pronos, "SET NAMES utf8")
 	or die('Impssible de sélectionner le charset utf8.');
 
 $content .= "<p>Création des tables :</p>\n";
-$creation_tables = ['connexions' => "CREATE TABLE IF NOT EXISTS `connexions` (
+$creation_tables = array('connexions' => "CREATE TABLE IF NOT EXISTS `connexions` (
 			`id_connexion` int(11) NOT NULL AUTO_INCREMENT,
 			`date_connexion` date NOT NULL,
 			`heure_connexion` time NOT NULL,
@@ -120,7 +120,7 @@ $creation_tables = ['connexions' => "CREATE TABLE IF NOT EXISTS `connexions` (
 			`news` tinyint(1) NOT NULL,
 			PRIMARY KEY (`id_user`)
 			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;"
-];
+);
 $content .= "<ul>\n";
 foreach ($creation_tables as $table => $sql) {
 	mysqli_query($db_pronos, $sql);
