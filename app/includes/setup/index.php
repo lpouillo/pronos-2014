@@ -115,9 +115,24 @@ if (empty($_POST['step'])) {
 
 			include('create_database.php');
 			$accueil = explode('app/', $_SERVER['REQUEST_URI']);
-			$content .= "<p>Editez le fichier app/config.php pour la connexion à la base de données</p>" .
-					"<p>SUPPRIMER LE REPERTOIRE app/includes/setup/ et accéder à <a href=\"".
-			$accueil[0]."\">l'accueil</a></p>\n";
+			
+			$file = 'config.php';
+			
+			$f_content = "// Administrateur du site \n".
+					'$admin_name="'.$_POST['admin_name']."\";\n".
+					'$admin_email='.$_POST['admin_email'].";\n".
+					"// Connexion à la base de données\n".
+					'$db_host='.$_POST['db_host'].";\n".
+					'$db_user='.$_POST['db_user'].";\n".
+					'$db_passwd='.$_POST['db_passwd'].";\n".
+					'$db_name='.$_POST['db_name'].";\n";
+			file_put_contents($file, $f_content);
+
+			$content .= "<p>Pour finaliser l'installation :
+			<ul>
+				<li>Déplacez le fichier app/include/setup/config.php</li>
+				<li>SUPPRIMER LE REPERTOIRE app/includes/setup/</li></ul>
+				Accéder à <a href=\"".$accueil[0]."\">l'accueil</a></p>\n";
 		}
 
 
