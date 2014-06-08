@@ -48,7 +48,7 @@
 												<tr>
 													<td colspan="4" id="oubli_inscription">
 													 <?=($login_error)?' <em style="color:red"> Mauvais identifiants</em>':'';?>
-													<a href="index.php?page=inscription">Mot de passe oublié</a> -
+													<a href="index.php?page=inscription&token=new">Mot de passe oublié</a> -
 													<a href="index.php?page=inscription">Inscription</a></td>
 												</tr>
 											</table>
