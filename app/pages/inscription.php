@@ -1,5 +1,6 @@
 <?php
 $html='';
+$from=$admin_email;
 // Les inscriptions sont ouvertes tant que le tournoi n'a pas démarré.
 if (time()<$timestamp_poules_debut) {
 	// Si aucun utilisateur n'est connecté, on regarde ce qui est passé comme variable dans l'url :
@@ -95,7 +96,8 @@ if (time()<$timestamp_poules_debut) {
 						or die('Impossible de créer l\'utilisateur <br/>'.$s_insert.'<br/>'.mysql_error());
 
 					// Envoi du mail de confirmation
-					$headers ='From: "Pronos 2014" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2014" <lolo@pouilloux.org>'."\n";
+					$headers ='From: "Pronos 2014" '.$admin_email."\n".
+						'Bcc: "Pronos 2014" '.$admin_email."\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
 					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
@@ -111,7 +113,7 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2014] Activation de votre compte sur le site de pronostiques 2012',$message,$headers)
+					mail($_POST['email'],'[Pronos 2014] Activation de votre compte',$message,$headers,'-f'.$from);
 						or die('Impossible d\'envoyer l\'email de confirmation ...');
 
 					$html.='<p>Un compte a été créé sur le site du concours. Pour l\'activer, veuillez suivre le lien que vous allez recevoir par email d\'ici quelques minutes.
@@ -130,7 +132,8 @@ if (time()<$timestamp_poules_debut) {
 					mysqli_query($db_pronos, $s_update)
 						or die('Impossible de recréer un token <br/>'.$s_update.'<br/>'.mysql_error());
 					// Envoi du mail de confirmation
-					$headers ='From: "Pronos 2012" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2012" <lolo@pouilloux.org>'."\n";
+					$headers ='From: "Pronos 2014" '.$admin_email."\n".
+						'Bcc: "Pronos 2014" '.$admin_email."\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
 
@@ -145,8 +148,8 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2012 IPGP] Nouveau mot de passe sur le site de pronostiques IPGP 2012',$message,$headers)
-						or die('Impossible d\'envoyer l\'email de confirmation ...');
+					mail($_POST['email'],'[Pronos 2014] Nouveau mot de passe sur le site de pronostiques 2014',$message,$headers,'-f'.$from);
+						or die('Impossible d\'envoyer l\'email...');
 
 					$html.='<p>Un lien pour réinitialiser votre mot de passe vous a été envoyé.</p>';
 				} else {
