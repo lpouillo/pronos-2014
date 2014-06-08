@@ -385,7 +385,7 @@ $html_tableau.='<p>La date limite est le samedi 26 juin à 16:00. Précision tec
 /* Création de la structure totale */
 
 // message
-$html.='<div class="12u">
+$html.='<div class="12u" id="mes_pronos">
 	<h2>Mes pronostics</h2>
 	<div>'.$message.'</div>';
 // début du formulaire

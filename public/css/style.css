@@ -1326,3 +1326,7 @@
 			border-radius: 5px;
 			margin: 0;
 		}
+
+		#copyright .links img {
+			height:40px;
+		}

@@ -1,6 +1,6 @@
 <?php
 
-$html .= '<div class="12u">
+$html .= '<div class="12u" id="mes_groupes">
 <h2>Mes groupes</h2>
 <p>La fonctionnalité est en cours de réimplémentation</p>
 </div>';
