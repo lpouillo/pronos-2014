@@ -107,14 +107,14 @@ if (time()<$timestamp_poules_debut) {
 						'.$_POST['login'].'
 						<br/><br/>
 						Pour confirmer votre inscription, choisir votre mot de passe et soummettre vos pronostics, il vous suffit de cliquer sur le le lien suivant :<br/>
-						<a href="http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'].'/index.php?page=inscription&token='.$token.'">http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'].'/index.php?page=inscription&token='.$token.'</a>
+						<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'&token='.$token.'">
+						http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'].'&token='.$token.'</a>
 						<br/><br/>
 						Cordialement
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2014] Activation de votre compte',$message,$headers,'-f'.$from)
-						or die('Impossible d\'envoyer l\'email de confirmation ...');
+					mail($_POST['email'],'[Pronos 2014] Activation de votre compte',$message,$headers,'-f'.$from);
 
 					$html.='<p>Un compte a été créé sur le site du concours. Pour l\'activer, veuillez suivre le lien que vous allez recevoir par email d\'ici quelques minutes.
 						ATTENTION, il est fort possible qu\'il finisse en SPAM .. <br/>
@@ -141,15 +141,14 @@ if (time()<$timestamp_poules_debut) {
 
 						Quelqu\'un (probablement vous) a utilisé demander à réinitialiser votre mot de passe.<br/><br/>
 						Pour choisir un nouveau mot de passe, il vous suffit de cliquer sur le le lien suivant :<br/>
-						<a href="http://'.$_SERVER['HTTP_HOST'].'/'.$site_path.'/index.php?page=inscription&token='.$token.'">
-						http://'.$_SERVER['HTTP_HOST'].'/'.$site_path.'/index.php?page=inscription&token='.$token.'</a>
+						<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'&token='.$token.'">
+						http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'].'&token='.$token.'</a>
 						<br/><br/>
 						Cordialement
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2014] Nouveau mot de passe sur le site de pronostiques 2014',$message,$headers,'-f'.$from)
-						or die('Impossible d\'envoyer l\'email...');
+					mail($_POST['email'],'[Pronos 2014] Nouveau mot de passe sur le site de pronostiques 2014',$message,$headers,'-f'.$from);
 
 					$html.='<p>Un lien pour réinitialiser votre mot de passe vous a été envoyé.</p>';
 				} else {
