@@ -66,33 +66,46 @@ while ($d_matchs=mysqli_fetch_array($r_matchs)) {
 	$mat_par_poule[$d_matchs['poule']][]=$d_matchs;
 }
 
-
 // Création des poules
 $poules=array();
+// Initialisation des poules
+for ($i=1;$i<=8;$i++) {
+	foreach (array($mat_par_poule[$i][0], $mat_par_poule[$i][1]) as $match) {	
+		$poules[$i][$match['id_equipe1']]['pts']=0;
+		$poules[$i][$match['id_equipe1']]['diff']=0;
+		$poules[$i][$match['id_equipe1']]['but_p']=0;
+		$poules[$i][$match['id_equipe1']]['but_c']=0;
+		$poules[$i][$match['id_equipe1']]['nom']=$match['eq1'];
+		$poules[$i][$match['id_equipe1']]['acronym']=$match['ac1'];
+		$poules[$i][$match['id_equipe1']]['V']=0;
+		$poules[$i][$match['id_equipe1']]['N']=0;
+		$poules[$i][$match['id_equipe1']]['D']=0;
+		$poules[$i][$match['id_equipe2']]['pts']=0;
+		$poules[$i][$match['id_equipe2']]['diff']=0;
+		$poules[$i][$match['id_equipe2']]['but_p']=0;
+		$poules[$i][$match['id_equipe2']]['but_c']=0;
+		$poules[$i][$match['id_equipe2']]['nom']=$match['eq2'];
+		$poules[$i][$match['id_equipe2']]['acronym']=$match['ac2'];
+		$poules[$i][$match['id_equipe2']]['V']=0;
+		$poules[$i][$match['id_equipe2']]['N']=0;
+		$poules[$i][$match['id_equipe2']]['D']=0;
+	}
+}
 for ($i=1;$i<=8;$i++) {
 // Pour toutes les poules, on calcule les V, N, D de chaque équipe
 	foreach($mat_par_poule[$i] as $match) {
-		$poules[$i][$match['id_equipe1']]['pts']=0;
-		$poules[$i][$match['id_equipe1']]['diff']=0;
 		$poules[$i][$match['id_equipe1']]['but_p']+=$match['score1'];
 		$poules[$i][$match['id_equipe1']]['but_c']+=$match['score2'];
-		$poules[$i][$match['id_equipe1']]['nom']=$match['eq1'];
-		$poules[$i][$match['id_equipe1']]['acronym']=$match['ac1'];
 		$poules[$i][$match['id_equipe1']]['V']+=($match['score1']>$match['score2'])?1:0;
 		$poules[$i][$match['id_equipe1']]['N']+=($match['score1']==$match['score2'])?1:0;
 		$poules[$i][$match['id_equipe1']]['D']+=($match['score1']<$match['score2'])?1:0;
-
-		$poules[$i][$match['id_equipe2']]['pts']=0;
-		$poules[$i][$match['id_equipe2']]['diff']=0;
 		$poules[$i][$match['id_equipe2']]['but_p']+=$match['score2'];
 		$poules[$i][$match['id_equipe2']]['but_c']+=$match['score1'];
-		$poules[$i][$match['id_equipe2']]['nom']=$match['eq2'];
-		$poules[$i][$match['id_equipe2']]['acronym']=$match['ac2'];
 		$poules[$i][$match['id_equipe2']]['V']+=($match['score1']<$match['score2'])?1:0;
 		$poules[$i][$match['id_equipe2']]['N']+=($match['score1']==$match['score2'])?1:0;
 		$poules[$i][$match['id_equipe2']]['D']+=($match['score1']>$match['score2'])?1:0;
 	}
-// on calcule ensuite ses points
+// on calcule ensuite ses points et la différence
 	foreach($poules[$i] as $nom => &$equipe) {
 		$equipe['pts']=(3*$equipe['V']+$equipe['N']);
 		$equipe['diff']=$equipe['but_p']-$equipe['but_c'];
@@ -104,7 +117,7 @@ for ($i=1;$i<=8;$i++) {
 // Création du html des poules
 $html_poules.='<section id="poules">' .
 		'<div class="row">
-	<header><h2>Poules</h2></header></div>' .
+	<header><h3>Poules</h3></header></div>' .
 	'<div class="row">';
 
 $i_poule=1;
@@ -372,12 +385,14 @@ $html_tableau.='<p>La date limite est le samedi 26 juin à 16:00. Précision tec
 /* Création de la structure totale */
 
 // message
-$html.='<div style="text-align:center;margin-bottom:15px;">'.$message.'</div>';
+$html.='<div class="12u">
+	<h2>Mes pronostics</h2>
+	<div>'.$message.'</div>';
 // début du formulaire
 if ($poule_edit or $tableau_edit) {
 	$html.='<form method="post" id="frm_pronos">' .
 			'<div style="text-align:center">
-		<input type="submit" onclick="submitForm(\'frm_pronos\')" value="Sauvez mes pronos"/>
+		<input type="submit" value="Sauvez mes pronos"/>
 		</div>
 
 	<input type="hidden" name="requete" value="update_pronos"/>
@@ -386,9 +401,11 @@ if ($poule_edit or $tableau_edit) {
 }
 // début de la table qui contient tout
 $html.=$en_premier.$en_second;
-if ($poule_edit or $tableau_edit) {
+/*if ($poule_edit or $tableau_edit) {
 	$html.='<div style="text-align:center">
 		<input type="submit" value="Sauvez mes pronos"/>
 		</div></form>';
-}
+		* 
+}*/
+$html.='</div>';
 ?>

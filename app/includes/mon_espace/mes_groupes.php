@@ -1,5 +1,10 @@
 <?php
 
+$html .= '<div class="12u">
+<h2>Mes groupes</h2>
+<p>La fonctionnalité est en cours de réimplémentation</p>
+</div>';
+/*
 if (empty($_POST['action'])) {
 	$s_groups="SELECT G.id_groupe, G.nom, G.description, G.id_owner,  IF(G.actif,'actif','en attente') AS actif, UG.id_user, U.login
 				FROM groupes G
@@ -31,6 +36,7 @@ if (empty($_POST['action'])) {
 		}
 	}
 	$html.='
+	<div class="row">
 	<table id="tbl_groupe">
 		<tr>
 			<th colspan="4">Les groupes que je gère</th>
@@ -80,7 +86,7 @@ if (empty($_POST['action'])) {
 			}
 		}
 	}
-	$html.='</table>';
+	$html.='</table></div>';
 } else {
 	switch($_POST['action']) {
 		case 'activer':
@@ -211,5 +217,6 @@ if (empty($_POST['action'])) {
 		break;
 	}
 }
+* */
 ?>
 
