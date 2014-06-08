@@ -96,8 +96,8 @@ if (time()<$timestamp_poules_debut) {
 						or die('Impossible de créer l\'utilisateur <br/>'.$s_insert.'<br/>'.mysql_error());
 
 					// Envoi du mail de confirmation
-					$headers ='From: "Pronos 2014" '.$admin_email."\n".
-						'Bcc: "Pronos 2014" '.$admin_email."\n";
+					$headers ='From: "Pronos 2014" <'.$admin_email.">\n".
+						'Bcc: "Pronos 2014" <'.$admin_email.">\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
 					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
@@ -132,8 +132,8 @@ if (time()<$timestamp_poules_debut) {
 					mysqli_query($db_pronos, $s_update)
 						or die('Impossible de recréer un token <br/>'.$s_update.'<br/>'.mysql_error());
 					// Envoi du mail de confirmation
-					$headers ='From: "Pronos 2014" '.$admin_email."\n".
-						'Bcc: "Pronos 2014" '.$admin_email."\n";
+					$headers ='From: "Pronos 2014" <'.$admin_email.">\n".
+						'Bcc: "Pronos 2014" <'.$admin_email.">\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
 
