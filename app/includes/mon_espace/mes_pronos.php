@@ -401,11 +401,10 @@ if ($poule_edit or $tableau_edit) {
 }
 // début de la table qui contient tout
 $html.=$en_premier.$en_second;
-/*if ($poule_edit or $tableau_edit) {
+if ($poule_edit or $tableau_edit) {
 	$html.='<div style="text-align:center">
 		<input type="submit" value="Sauvez mes pronos"/>
-		</div></form>';
-		* 
-}*/
+		</div></form>';		
+}
 $html.='</div>';
 ?>
