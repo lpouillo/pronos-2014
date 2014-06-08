@@ -113,7 +113,7 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2014] Activation de votre compte',$message,$headers,'-f'.$from);
+					mail($_POST['email'],'[Pronos 2014] Activation de votre compte',$message,$headers,'-f'.$from)
 						or die('Impossible d\'envoyer l\'email de confirmation ...');
 
 					$html.='<p>Un compte a été créé sur le site du concours. Pour l\'activer, veuillez suivre le lien que vous allez recevoir par email d\'ici quelques minutes.
@@ -148,7 +148,7 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2014] Nouveau mot de passe sur le site de pronostiques 2014',$message,$headers,'-f'.$from);
+					mail($_POST['email'],'[Pronos 2014] Nouveau mot de passe sur le site de pronostiques 2014',$message,$headers,'-f'.$from)
 						or die('Impossible d\'envoyer l\'email...');
 
 					$html.='<p>Un lien pour réinitialiser votre mot de passe vous a été envoyé.</p>';
