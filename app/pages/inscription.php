@@ -136,13 +136,14 @@ if (time()<$timestamp_poules_debut) {
 						'Bcc: "Pronos 2014" <'.$admin_email.">\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
-
+					
+					$uri=explode('&',$_SERVER['REQUEST_URI']);
 					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
-
+			
 						Quelqu\'un (probablement vous) a utilisé demander à réinitialiser votre mot de passe.<br/><br/>
 						Pour choisir un nouveau mot de passe, il vous suffit de cliquer sur le le lien suivant :<br/>
-						<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'&token='.$token.'">
-						http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'].'&token='.$token.'</a>
+						<a href="http://'.$_SERVER['HTTP_HOST'].$uri[0].'&token='.$token.'">
+						http://'.$_SERVER['HTTP_HOST'].'/'.$uri[0].'&token='.$token.'</a>
 						<br/><br/>
 						Cordialement
 						<br/>
