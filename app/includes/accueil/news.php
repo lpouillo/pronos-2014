@@ -5,11 +5,11 @@ $flux = array(
 	 	'src' => "FIFA",
 		'rss' => "http://fr.fifa.com/worldcup/news/rss.xml",
 		'filter' => " ",
-		'post' => "http://fr.fifa.com/"),
+		'post' => ""),
 	array(
 		'src' => "CDF",
 		'rss' => "http://www.cahiersdufootball.net/rss/rss_article.php",
-		'filter' => " ",
+		'filter' => "",
 		'post' => ""),
 	array(
 		'src' => "EQUIP",
@@ -19,8 +19,8 @@ $flux = array(
 	array(
 		'src' => "F365",
 		'rss' => "http://www.football365.fr/coupe-du-monde-2014/rss.xml",
-		'filter' => " ",
-		'post' => "CM 2014")
+		'filter' => "CM 2014",
+		'post' => "")
 );
 $news=array();
 foreach ($flux as $data) {

@@ -1221,7 +1221,7 @@
 }
 
 .match {
-	width:200px;	
+	width:250px;	
 	margin:auto;	
 	color:black;
 	font-weight:bolder;
@@ -1251,7 +1251,10 @@
 .match .flag {
 	width:15px;
 }
-.match .eq1 {
+.eq1, .eq2 {
+	width:100px;
+}
+.eq1 {
 	font-variant:small-caps;
 	text-align:left;
 }
@@ -1259,7 +1262,7 @@
 	width:20px;
 	text-align:center;
 }
-.match .eq2 {
+.eq2 {
 	font-variant:small-caps;
 	text-align:right;
 }
@@ -1299,6 +1302,13 @@
 	padding-left:5px;
 }
 
+.prono {
+	margin:auto;
+	width: 250px;
+ }
+.prono .score {
+	width:20px;
+}
 /*********************************************************************************/
 /* Copyright                                                                     */
 /*********************************************************************************/

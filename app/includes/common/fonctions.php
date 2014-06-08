@@ -288,9 +288,9 @@ function aff_match($match, $layout='horizontal') {
 						<td class="flag">' .
 						'<img height="12px" alt="flag" src="public/images/flags/'.$match['ac1'].'.png">' .
 						'</td>' .
-						'<td class="eq1'.$win1.'">'.$match['eq1'].'</td>' .
+						'<td class="eq1'.$win1.'">&nbsp;'.$match['eq1'].'</td>' .
 						'<td class="score">'.$score.'</td>' .
-						'<td class="eq2'.$win2.'">'.$match['eq2'].'</td>' .
+						'<td class="eq2'.$win2.'">'.$match['eq2'].'&nbsp;</td>' .
 						'<td class="flag">' .
 						'<img height="12px" alt="flag" src="public/images/flags/'.$match['ac2'].'.png">' .
 						'</td>' .
@@ -332,19 +332,28 @@ function aff_prono($match, $edit) {
 		'<td colspan="3" style="text-align:center;">à venir</td>';
 	$spec=($match['special'])?'special ':'';
 	// On constuire le bloc de ligne correspondant au match
-	return '<table>' .
+	return '<table class="prono">' .
 			'<tr>
 				<td colspan="4"><span class="date">Le '.dateMysqlToFormatted($match['date_match'],$match['heure']).'</span></td>
 			</tr>
 				<tr>
-					<td class="'.$spec.' equipe"><img src="public/images/flags/'.$match['ac1'].'.png" alt="flag"/></br>'.$match['eq1'].'</td>
+					<td class="'.$spec.' eq1">
+					<img src="public/images/flags/'.$match['ac1'].'.png" alt="flag"/>&nbsp;'
+					.$match['eq1'].'</td>
 					<td>'.$pari1.'</td>
 					<td>'.$pari2.'</td>
-					<td class="'.$spec.' equipe" style="text-align:right;"><img src="public/images/flags/'.$match['ac2'].'.png" alt="flag"/></br>'.$match['eq2'].'</td>
+					<td class="'.$spec.' eq2" style="text-align:right;">
+					'.$match['eq2'].'&nbsp;
+					<img src="public/images/flags/'.$match['ac2'].'.png" alt="flag"/>
+					</td>
 			</tr>
 			<tr><td>Résultat</td>'.$resultat.'</tr>
 			<tr><td style="border-bottom:1px dotted #00774B;">Cote</td>
-			<td colspan="3" style=" border-bottom:1px dotted #00774B;text-align:center">'.$cote.'</td></tr>';
+			<td colspan="3" style=" border-bottom:1px dotted #00774B;text-align:center">'.$cote.'</td></tr>
+			</table>
+			<input class="score" type="hidden" size="1" name="pronos['.$match['id_match'].'][tab1]" value="'.$match['tab1'].'"/>
+			<input class="score" type="hidden" size="1" name="pronos['.$match['id_match'].'][tab2]" value="'.$match['tab2'].'"/>';
+		'<span class="score">'.$match['score1'].'</span>';;
 }
 
 function aff_poule($i_poule, $poule) {
