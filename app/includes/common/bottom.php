@@ -47,10 +47,11 @@
 										<h2>Liens</h2>
 									</header>
 									<ul class="divided">
-										<li><a href="http://hekla.ipgp.fr">Association Hekla</a></li>
+
 										<li><a href="https://hekla.ipgp.fr/pronos2012">Championnat d'Europe 2012</a></li>
 										<li><a href="https://hekla.ipgp.fr/pronos2010/index.php">Coupe du monde 2010</a></li>
 										<li><a href="http://mondial2006.ipgp.fr">Coupe du monde 2006</a></li>
+										<li><a href="http://hekla.ipgp.fr">Association Hekla</a></li>
 										<li><a href="http://www.ipgp.fr">L'Institut de Physique du Globe de Paris</a></li>
 									</ul>
 								</section>
