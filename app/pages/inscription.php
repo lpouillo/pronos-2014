@@ -1,6 +1,8 @@
 <?php
 $html='';
 $from=$admin_email;
+
+
 // Les inscriptions sont ouvertes tant que le tournoi n'a pas démarré.
 if (time()<$timestamp_poules_debut) {
 	// Si aucun utilisateur n'est connecté, on regarde ce qui est passé comme variable dans l'url :
@@ -96,10 +98,6 @@ if (time()<$timestamp_poules_debut) {
 						or die('Impossible de créer l\'utilisateur <br/>'.$s_insert.'<br/>'.mysql_error());
 
 					// Envoi du mail de confirmation
-					$headers ='From: "Pronos 2014" <'.$admin_email.">\n".
-						'Bcc: "Pronos 2014" <'.$admin_email.">\n";
-					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
-					$headers .='Content-Transfer-Encoding: 8bit';
 					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
 
 						Quelqu\'un (probablement vous) a utilisé votre adresse email pour s\'inscrire sur le site de pronostics de l\'association Hekla avec
@@ -114,7 +112,10 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2014] Activation de votre compte',$message,$headers,'-f'.$from);
+
+
+					sendmail($_POST['email'],'Activation de votre compte',$message);
+
 
 					$html.='<p>Un compte a été créé sur le site du concours. Pour l\'activer, veuillez suivre le lien que vous allez recevoir par email d\'ici quelques minutes.
 						ATTENTION, il est fort possible qu\'il finisse en SPAM .. <br/>
@@ -136,10 +137,10 @@ if (time()<$timestamp_poules_debut) {
 						'Bcc: "Pronos 2014" <'.$admin_email.">\n";
 					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
 					$headers .='Content-Transfer-Encoding: 8bit';
-					
+
 					$uri=explode('&',$_SERVER['REQUEST_URI']);
 					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
-			
+
 						Quelqu\'un (probablement vous) a utilisé demander à réinitialiser votre mot de passe.<br/><br/>
 						Pour choisir un nouveau mot de passe, il vous suffit de cliquer sur le le lien suivant :<br/>
 						<a href="http://'.$_SERVER['HTTP_HOST'].$uri[0].'&token='.$token.'">
@@ -242,8 +243,24 @@ if (time()<$timestamp_poules_debut) {
 							$s_update="UPDATE users SET `password`='".md5($_POST['password'])."', token='', date_recup=CURDATE(), actif=1, classement=10000 WHERE token='".$token."'";
 							mysqli_query($db_pronos, $s_update)
 								or die(mysql_error());
-							$html.='<p>Votre compte a été activé. Redirection vers votre
-							<a href="index.php?page=mon_espace">espace</a> en cours ....</p>';
+
+							$html.='<p>Votre compte a été activé.</p>' .
+									'<form method="post" action="index.php" id="form_login">
+											<table cellspacing="3" cellpadding="3" border="0" >
+												<tr>
+													<td>Login</td>
+													<td><input type="text" id="login" name="login"/></td>
+													<td>Password</td><td><input type="password" name="password"/></td>
+													<td><input type="submit" value="OK" class="OK"/>
+												</tr>
+												<tr>
+													<td colspan="4" id="oubli_inscription">
+													 <?=($login_error)?' <em style="color:red"> Mauvais identifiants</em>':'';?>
+													<a href="index.php?page=inscription&token=new">Mot de passe oublié</a> -
+													<a href="index.php?page=inscription">Inscription</a></td>
+												</tr>
+											</table>
+										</form>';
 						}
 					}
 				} else {

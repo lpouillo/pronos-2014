@@ -410,3 +410,14 @@ function pronostableau($match) {
 	$html.='</table>';
 	return $html;
 }
+
+
+function sendmail($email, $titre, $message) {
+	global $admin_email;
+	$headers ='From: "Pronos 2014" <'.$admin_email.">\n".
+		'Bcc: "Pronos 2014" <'.$admin_email.">\n";
+	$headers .='Content-Type: text/html; charset="utf-8"'."\n";
+	$headers .='Content-Transfer-Encoding: 8bit';
+
+	mail($email,'[Pronos 2014] '.$titre,$message,$headers,'-f'.$admin_email);
+}
