@@ -70,14 +70,18 @@
 											<li>
 												<a href="index.php?page=mon_espace&#mes_groupes" title="Déconnexion">
 													<img border="0" src="public/images/icons/group.png" alt="mon_pronos"/> Mes groupes
-												</a> 
+												</a>
 											</li>
-											<li><a href="index.php?page=mon_espace&#mes_pronos" title="Déconnexion"><img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/> Pronostiques</a></li>
+											<li>
+												<a href="index.php?page=mon_espace&#mes_pronos" title="Déconnexion">
+													<img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/> Pronostiques
+												</a>
+											</li>
 
 									<?php
 										if ($_SESSION['is_admin']) {
 											echo '<li><a href="index.php?page=admin">
-												<img border="0" src="public/images/icons/tux.png" alt="admin"/> 
+												<img border="0" src="public/images/icons/tux.png" alt="admin"/>
 												Administration</a></li>';
 										}
 									?>
@@ -90,24 +94,40 @@
 								</div>
 								<nav id="nav">
 									<ul>
-										<li<?=($page=='accueil')?' class="current_page_item"':''?>><a href="index.php?page=accueil">Accueil</a></li>
-										<li<?=($page=='reglement')?' class="current_page_item"':''?>><a href="index.php?page=reglement">Réglement</a></li>
+										<li<?=($page=='accueil')?' class="current_page_item"':''?>>
+											<a href="index.php?page=accueil">
+												<img height="14px" alt="icon" src="public/images/icons/accueil.png">
+												Accueil</a>
+										</li>
+										<li<?=($page=='reglement')?' class="current_page_item"':''?>>
+											<a href="index.php?page=reglement">
+												<img height="14px" src="public/images/icons/reglement.png" alt="icon"/>
+												Réglement</a>
+										</li>
 										<li<?=($page=='resultats')?' class="current_page_item"':''?>>
-											<a href="index.php?page=resultats">Résultats</a>
+											<a href="index.php?page=resultats">
+												<img height="14px" src="public/images/icons/resultats.png" alt="icon"/>
+												Résultats</a>
 											<ul>
 												<li><a href="index.php?page=resultats#poules">Poules</a></li>
 												<li><a href="index.php?page=concours#tableau_final">Tableau final</a></li>
 											</ul>
 										</li>
 										<li<?=($page=='concours')?' class="current_page_item"':''?>>
-											<a href="index.php?page=concours">Concours</a>
+											<a href="index.php?page=concours">
+												<img height="14px" src="public/images/icons/concours.png" alt="icon"/>
+												Concours</a>
 											<ul>
 												<li><a href="index.php?page=concours#general">Classement général</a></li>
 												<li><a href="index.php?page=concours#relief">Classement en relief</a></li>
 												<li><a href="index.php?page=concours#groupes">Classement par groupe</a></li>
 											</ul>
 										</li>
-										<li<?=($page=='mon_espace')?' class="current_page_item"':''?>><a href="index.php?page=mon_espace">Mon espace</a></li>
+										<li<?=($page=='mon_espace')?' class="current_page_item"':''?>>
+											<a href="index.php?page=mon_espace">
+												<img height="14px" src="public/images/icons/mon_espace.png" alt="icon"/>
+												Mon espace</a>
+										</li>
 
 									</ul>
 								</nav>

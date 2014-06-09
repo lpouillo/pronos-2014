@@ -1,12 +1,29 @@
 
 <div class="row">
-	<div class="12u">
+<?php
+if (isset($_SESSION['id_user'])) {
+	echo '<div class="6u">';
+} else {
+	echo '<div class="12u">';
+}
+?>
 		<section class="box" id="acc_message">
-			<?php
-			include('app/includes/accueil/message.php');
-			?>
+	<?php
+		include('app/includes/accueil/message.php');
+	?>
+
 		</section>
 	</div>
+<?php
+if (isset($_SESSION['id_user'])) {
+	echo '<div class="6u box" id="acces_mes_pronos">
+			<a class="button" href="index.php?page=mon_espace#mes_pronos">' .
+				'<img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/>' .
+				' Accéder à mes pronostiques</a>
+		</div>';
+}
+?>
+
 </div>
 
 <div>
