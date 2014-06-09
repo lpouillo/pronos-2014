@@ -8,11 +8,16 @@ Il se déroule cette année du <?php echo strftime('%A %d %B',$timestamp_poules_
 avec deux phases de paris&nbsp;:
 </p>
 <ul class="foot">
-	<li>pour les matchs de poules : le <?php echo strftime('%d %B &agrave; %H:%M',$timestamp_poules_debut);?>,</li>
-	<li>pour le tableau final : le <?php echo strftime('%d %B &agrave; %H:%M',$timestamp_tableau_debut);?>
+	<li>pour les matchs de poules : le
 	<img height="10px" src="public/images/icons/danger.png" alt="Attention :">
-	<strong>vous n'aurez que deux jours pour parier
-	</strong><img height="10px" src="public/images/icons/danger.png" alt="Attention :"></li>
+	<?php echo strftime('%d %B &agrave; %H:%M',$timestamp_poules_debut);?>
+	<img height="10px" src="public/images/icons/danger.png" alt="Attention :">,
+	</li>
+	<li>pour le tableau final : le
+	<img height="10px" src="public/images/icons/danger.png" alt="Attention :">
+	<?php echo strftime('%d %B &agrave; %H:%M',$timestamp_tableau_debut);?>
+	<img height="10px" src="public/images/icons/danger.png" alt="Attention :">
+	<strong>vous n'aurez que deux jours pour parier</strong></li>
 </ul>
 <p>
 N'hésitez pas à vous <strong><a href="index.php?page=inscription" title="S'inscrire pour pouvoir participer au concours">inscrire sur le site</a></strong>

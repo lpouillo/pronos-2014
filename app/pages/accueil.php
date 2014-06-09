@@ -16,11 +16,22 @@ if (isset($_SESSION['id_user'])) {
 	</div>
 <?php
 if (isset($_SESSION['id_user'])) {
-	echo '<div class="6u box" id="acces_mes_pronos">
-			<a class="button" href="index.php?page=mon_espace#mes_pronos">' .
-				'<img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/>' .
-				' Accéder à mes pronostiques</a>
-		</div>';
+?>
+	<div class="6u box" id="acces_mes_pronos">
+		<ul>
+			<li>
+				<a class="button" href="index.php?page=mon_espace" title="Voir mes informations">
+					<img border="0" src="public/images/icons/mon_espace.png" alt="mon_espace"/>
+					Mon compte</a>
+			</li>
+			<li>
+			<a class="button" href="index.php?page=mon_espace">
+				<img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/>
+				Mes pronostiques</a>
+			</li>
+
+	</div>
+<?php
 }
 ?>
 
