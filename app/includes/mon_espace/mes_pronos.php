@@ -70,7 +70,7 @@ while ($d_matchs=mysqli_fetch_array($r_matchs)) {
 $poules=array();
 // Initialisation des poules
 for ($i=1;$i<=8;$i++) {
-	foreach (array($mat_par_poule[$i][0], $mat_par_poule[$i][1]) as $match) {	
+	foreach (array($mat_par_poule[$i][0], $mat_par_poule[$i][1]) as $match) {
 		$poules[$i][$match['id_equipe1']]['pts']=0;
 		$poules[$i][$match['id_equipe1']]['diff']=0;
 		$poules[$i][$match['id_equipe1']]['but_p']=0;
@@ -138,58 +138,16 @@ foreach($poules as $poule) {
 	$html_poules.=aff_poule($i_poule, $poule);
 	$html_poules .= '</div>';
 	if ($i_poule == 4) {
-		$html_poules.='</div><div class="row">';
+		$html_poules.='</div>' .
+				'<div style="text-align:center">
+					<input type="submit" value="Sauvez mes pronos"/>
+				</div>' .
+				'<div class="row">';
 
 	}
 	$i_poule += 1;
 }
 $html_poules.='</div></div></section>';
-//
-//	foreach($mat_par_poule[$i] as $match) {
-//		// on définit les différents éléments
-//		$cote=($poule_edit)?'à venir':$match['cote_1'].' / '.$match['cote_N'].' / '.$match['cote_2'];
-//		$pari1=($poule_edit)?'<input class="score" type="text" size="1" name="pronos['.$match['id_match'].'][score1]" value="'.$match['score1'].'"/>':
-//			'<span class="score">'.$match['score1'].'</span>';
-//		$pari2=($poule_edit)?'<input class="score" type="text" size="1" name="pronos['.$match['id_match'].'][score2]" value="'.$match['score2'].'" />':
-//			'<span class="score">'.$match['score2'].'</span>';
-//		$resultat=($match['joue'])?'<td class="score">'.$match['res1'].'</td><td class="score">'.$match['res2'].'</td><td style="color:red;">'.$match['points'].' points</td>':
-//			'<td colspan="3" style="text-align:center;">à venir</td>';
-//		$spec=($match['special'])?'special ':'';
-//		// On constuire le bloc de ligne correspondant au match
-//		$html_poules.='<tr>
-//				<td colspan="4"><span class="date">Le '.dateMysqlToFormatted($match['date_match'],$match['heure']).'</span></td>
-//				</tr>
-//				<tr>
-//					<td class="'.$spec.' equipe"><img src="public/images/flags/'.$match['ac1'].'.png" alt="flag"/></br>'.$match['eq1'].'</td>
-//					<td>'.$pari1.'</td>
-//					<td>'.$pari2.'</td>
-//					<td class="'.$spec.' equipe" style="text-align:right;"><img src="public/images/flags/'.$match['ac2'].'.png" alt="flag"/></br>'.$match['eq2'].'</td>
-//			</tr>
-//			<tr><td>Résultat</td>'.$resultat.'</tr>
-//			<tr><td style="border-bottom:1px dotted #00774B;">Cote</td>
-//				<td colspan="3" style=" border-bottom:1px dotted #00774B;text-align:center">'.$cote.'</td></tr>';
-//	}
-//	$html_poules.='</table>' .
-//			'<table class="poule">
-//				<tr>
-//					<th>Rang</th><th>Equipe</th><th>Pts</th><th>V</th><th>N</th><th>D</th><th>Diff</th>
-//				</tr>';
-//	for ($k=0;$k<=3;$k++) {
-//		$html_poules.='<tr>
-//					<td>'.($k+1).'</td>
-//					<td style="text-align:left;"><img src="public/images/flags/'.$poules[$i][$k]['acronym'].'.png" alt="flag"/> '.$poules[$i][$k]['nom'].'</td>
-//					<td>'.$poules[$i][$k]['pts'].'</td>
-//					<td>'.$poules[$i][$k]['V'].'</td>
-//					<td>'.$poules[$i][$k]['N'].'</td>
-//					<td>'.$poules[$i][$k]['D'].'</td>
-//					<td>'.$poules[$i][$k]['diff'].'</td>
-//
-//				</tr>';
-//	}
-//	$html_poules.='</table>';
-//}
-//$html_poules.='</td></tr>';
-
 
 // On récupère toutes les données des matchs
 
@@ -404,7 +362,7 @@ $html.=$en_premier.$en_second;
 if ($poule_edit or $tableau_edit) {
 	$html.='<div style="text-align:center">
 		<input type="submit" value="Sauvez mes pronos"/>
-		</div></form>';		
+		</div></form>';
 }
 $html.='</div>';
 ?>
