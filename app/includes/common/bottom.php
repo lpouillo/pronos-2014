@@ -23,7 +23,7 @@
 											<p>Vous pouvez vous inscrite et commencer à remplir vos pronostics.</p>
 										</li>
 										<li>
-											<span class="date"><strong>12 Juin</strong>17:00</span>
+											<span class="date"><strong>12 Juin</strong>22:00</span>
 											<h3><a href="#">Phase de poules</a></h3>
 											<p>Vous pouvez parier sur les matchs de poules jusqu'au coup d'envoi du premier match</p>
 										</li>
