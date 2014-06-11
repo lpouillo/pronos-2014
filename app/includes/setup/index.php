@@ -4,6 +4,14 @@
  *
  */
 
+if (!file_exists('../config.php')) {
+	$mode = substr(decoct( fileperms('.') ), 2);
+	if ($mode != '777') {
+		die('<div class="box">Donnez les permissions au serveur web d\'&eacute;crire dans le r&eacute;pertoire app/includes/setup/, qui ' .
+			'sera d&eacute;truit apr&egrave;s l\'installation ...</div>');
+	}
+}
+
 //print_r($_POST);
 $html_top = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -115,9 +123,9 @@ if (empty($_POST['step'])) {
 
 			include('create_database.php');
 			$accueil = explode('app/', $_SERVER['REQUEST_URI']);
-			
+
 			$file = 'config.php';
-			
+
 			$f_content = "<?php \n// Administrateur du site \n".
 					'$admin_name=\''.$_POST['admin_name']."';\n".
 					'$admin_email=\''.$_POST['admin_email']."';\n".
