@@ -1,5 +1,5 @@
 <?php
-if (empty($_POST['section'])) {
+if (empty($_GET['section'])) {
 	// Par défaut on affiche le classement des parieurs et des groupes
 	// récupération des parieurs
 	$s_parieurs="SELECT id_user, login, nom_reel, classement, points, date_in FROM users WHERE actif=1 ORDER BY classement, date_in DESC, login";
@@ -9,28 +9,35 @@ if (empty($_POST['section'])) {
 	$count_parieurs=0;
 	$count_date=0;
 	$old_date_in='';
+
 	if (mysqli_num_rows($r_parieurs)) {
-		$html_parieurs='<ul class="reglement" style="margin:0px; padding:0px;">';
+		$html_parieurs='<div class="4u"><ul>';
 		while ($d_parieurs=mysqli_fetch_array($r_parieurs)) {
 			$count_parieurs++;
 
 			if ($d_parieurs['date_in']!=$old_date_in and $d_parieurs['date_in']!='' and time()<$timestamp_poules_debut) {
-				$html_parieurs.='<li style="background-image:none;padding-left:0px;list-style-type:none;padding:px;font-variant: small-caps;font-weight:bold;color:#00774B;";>
+				$html_parieurs.='<li class="date">
 					'.dateMysqlToFormatted($d_parieurs['date_in'], '00:00:00', '%A %d %B').'</li>';
 				$count_parieurs++;
 				$count_date++;
 			}
 			// On met en rouge le login du joueur connecté
 			$cestmoi=(isset($_SESSION['id_user']) and $_SESSION['id_user']==$d_parieurs['id_user'])?'<strong>'.$d_parieurs['login'].'</strong>':$d_parieurs['login'];
-			$html_parieurs.='<li title="'.$d_parieurs['nom_reel'].'" style="margin-left:40px;">'.$d_parieurs['classement'].'
-				'.htmlentities($d_parieurs['login'],ENT_QUOTES,'UTF-8').' ('.$d_parieurs['points'].')</li>';
+			$html_parieurs.='<li title="'.$d_parieurs['nom_reel'].'" style="margin-left:40px;">';
+			if (time()>$timestamp_poules_debut) {
+				$html_parieurs .= $d_parieurs['classement'].' '.htmlentities($d_parieurs['login'],ENT_QUOTES,'UTF-8').' ('.$d_parieurs['points'].')</li>';
+			} else {
+				$html_parieurs .= htmlentities($d_parieurs['login'],ENT_QUOTES,'UTF-8').'</li>';
+			}
+
+
 			if ($count_parieurs==round((mysqli_num_rows($r_parieurs)+$count_date)/3) or $count_parieurs==2*round((mysqli_num_rows($r_parieurs)+$count_date)/3)) {
-				$html_parieurs.='</ul></td><td <td style="vertical-align:center;" width="20%"><ul class="reglement">';
+				$html_parieurs.='</ul></div><div class="4u"><ul class="reglement">';
 				$cols_parieurs++;
 			}
 			$old_date_in=$d_parieurs['date_in'];
 		}
-		$html_parieurs.='</ul>';
+		$html_parieurs.='</ul></div>';
 	} else {
 		$html_parieurs='<p>Il n\'y a aucun utilisateur actif.</p>';
 	}
@@ -56,22 +63,26 @@ if (empty($_POST['section'])) {
 		$html_groupe.='<p style="text-align:center;">Aucun groupe actif.</p>';
 	}
 
-	$html='<table id="tbl_concours">
-			   <tr>
-				   <td colspan="'.$cols_parieurs.'"><h2>Classement général du concours</h2></td>
-				   <td><h2>Classement par groupes</h2></td>
-			   </tr>
-			   <tr>
-			   <td colspan="'.$cols_parieurs.'">La coupe du monde n\'a pas encore commencé mais il y a déjà '.mysqli_num_rows($r_parieurs).' participants
-				au concours.
-		 	</td>
-			   <td>Il y a '.$n_groupes.' groupe(s) d\'utilisateurs. N\'hésitez pas à créer le votre pour faire un mini-concours avec vos amis.</td>
-			  </tr><tr>
-			   <td style="vertical-align:center;">'.$html_parieurs.'</td>
-			   <td>'.$html_groupe.'</td>
-	</tr></table>';
+	$html='<div class="row">
+			  	<div class="8u box">
+				    <header>' .
+				   		'<h2>Classement général du concours</h2>'.
+					'</header>' .
+					'La coupe du monde n\'a pas encore commencé mais il y a déjà '.mysqli_num_rows($r_parieurs).' participants' .
+					'<div class="row">' .
+					$html_parieurs.
+					'</div>'.
+				'</div>' .
+				'<div class="4u box">' .
+				'	<header>' .
+				'		<h2>Classement par groupes</h2>' .
+				'   </header>' .
+				'   Il y a '.$n_groupes.' groupe(s) d\'utilisateurs. N\'hésitez pas à créer le votre pour faire un mini-concours avec vos amis.'.
+					$html_groupe.
+				'</div>';
+
 } else {
-	switch($_POST['section']) {
+	switch($_GET['section']) {
 		case 'par_groupe':
 			$s_user="SELECT G.nom, U.login, U.points, U.classement FROM users U
 				INNER JOIN l_users_groupes UG

@@ -20,8 +20,14 @@ if (empty($_SESSION['id_user'])) {
 										</form>';
 } else {
 	$sections = array('mon_compte', 'mes_groupes', 'mes_pronos');
-	foreach ($sections as $section) {
-		require_once('app/includes/mon_espace/'.$section.'.php');
+	if (empty($_GET['section'])) {
+		foreach ($sections as $section) {
+			require_once('app/includes/mon_espace/'.$section.'.php');
+		}
+	} else {
+		if (in_array($_GET['section'], $sections)) {
+			require_once('app/includes/mon_espace/'.$_GET['section'].'.php');
+		}
 	}
 }
 

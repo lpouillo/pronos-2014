@@ -9,24 +9,26 @@ function secure_mysql($string) {
 
 // récupération des données
 function recuperation_donnees ($sql) {
-	$result=mysql_query($sql)
+	global $db_pronos;
+	$result=mysqli_query($db_pronos, $sql)
 		or die($sql.'<br/><strong>'.mysql_error().'</strong>');
 	$return_array=array();
 	$i=0;
-	while ($data=mysql_fetch_array($result,MYSQL_ASSOC)) {
+	while ($data=mysqli_fetch_array($result,MYSQL_ASSOC)) {
 		foreach ($data as $champ => $valeur) {
 			$return_array[$i][$champ]=$valeur;
 		}
 		$i++;
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	return $return_array;
 }
 
 // création d'un tableau filtrant
-function creation_table($sql,$champs,$post_sql,$mode) {
+function creation_table($sql,$champs,$post_sql) {
 	global $params;
+
 	$section=$_POST['section'];
 
 	// Application des filtres
@@ -64,12 +66,11 @@ function creation_table($sql,$champs,$post_sql,$mode) {
 	$tableau=recuperation_donnees($sql);
 
 	// Création du formulaire de filtrage
-	$html.='<form id="form_filtrage"  method="POST">
+	$html='<form id="form_filtrage"  method="POST">
 			<input type="hidden" name="page" value="'.$_POST['page'].'"/>
-			<input type="hidden" name="section" value="'.$_POST['section'].'"/>
-			<input type="hidden" name="filtrage_soumis" value="oui"/>'.
-		$input_table.'
-		<table class="table_sel" id="table_liste" cellpadding="0" cellspacing="0" style="display:block;" width="'.$_POST['table_width'].'">
+			<input type="hidden" name="section" value="'.$section.'"/>
+			<input type="hidden" name="filtrage_soumis" value="oui"/>
+		<table class="table_sel" id="table_liste" cellpadding="0" cellspacing="0" style="display:block;">
 		<thead id="liste_header">
 			<tr>';
 	$html.='<td colspan="3" class="liste_container_bt">
@@ -78,9 +79,6 @@ function creation_table($sql,$champs,$post_sql,$mode) {
 				</td>
 				<td>';
 	$html.='<span id="n_record">'.sizeof($tableau).' entrées</span> <input type="checkbox" name="conserver_filtres" value="oui" checked="checked"> Conserver les filtres</td>';
-
-
-
 
 	$colspan='2';
 	$html.='</td>
@@ -111,12 +109,12 @@ function creation_table($sql,$champs,$post_sql,$mode) {
   			$i_champ=0;
   			foreach($champs as $k_champ => $champ) {
   				if($i_champ<1)  {
-  					$html.='<td class="td_selection">
-		 						<img src="public/images/icons/modifier.png"
-		  						onclick="affElement(\''.$_POST['page'].'\',\''.$_POST['section'].'\',\''.$ligne[$k_champ].'\',\'modifier\',\'content\')"/>
-		  					</td><td class="td_selection">
-		  						<img src="public/images/icons/supprimer.png"
-		  						onclick="affElement(\''.$_POST['page'].'\',\''.$_POST['section'].'\',\''.$ligne[$k_champ].'\',\'supprimer\',\'content\')"/>
+  					$html.='<td class="td_selection">' .
+  								'<a href="index.php?page=admin&section='.$section.'&action=modifier&id='.$ligne[$k_champ].'">' .
+  										'<img src="public/images/icons/modifier.png" /></a>' .
+  							'</td><td class="td_selection">'.
+		  					  	'<a href="index.php?page=admin&section='.$section.'&action=supprimer&id='.$ligne[$k_champ].'">' .
+		  						'<img src="public/images/icons/supprimer.png"/></a>
 		  					</td>';
   				} else {
 					$html.='<td>'.$ligne[$k_champ].'</td>';

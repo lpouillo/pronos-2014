@@ -88,7 +88,7 @@ if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 				$headers ='From: "'.$admin_name.'" <'.$admin_email.'>'."\n".'Bcc:"'.$admin_name.'" <'.$admin_email.'>'."\n";
 				$headers .='Content-Type: text/html; charset="utf8"'."\n";
 				$headers .='Content-Transfer-Encoding: 8bit';
-				mail ($d_email['email'],'[Pronos 2012 IPGP] Le groupe '.$_POST['nom'].' a été activé','Son classement est effectif sur le site.',$headers)
+				sendmail ($d_email['email'],'Le groupe '.$_POST['nom'].' a été activé','Son classement est effectif sur le site.')
 					or die('mail activation groupe non envoyé');
 			}
 		break;

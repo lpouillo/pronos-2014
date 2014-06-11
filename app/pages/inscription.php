@@ -150,7 +150,7 @@ if (time()<$timestamp_poules_debut) {
 						<br/>
 						Le webmaster du site de pronostiques ..
 							';
-					mail($_POST['email'],'[Pronos 2014] Nouveau mot de passe sur le site de pronostiques 2014',$message,$headers,'-f'.$from);
+					sendmail($_POST['email'],'Nouveau mot de passe sur le site de pronostiques 2014',$message);
 
 					$html.='<p>Un lien pour réinitialiser votre mot de passe vous a été envoyé.</p>';
 				} else {
@@ -231,22 +231,20 @@ if (time()<$timestamp_poules_debut) {
 								<p style="text-align:left;"><input type="submit" value="Activer mon compte"/></p>
 								</div>';
 						} else {
-							$s_user="SELECT id_user,login,nom_reel, email FROM users WHERE token='".$token."'";
+							$s_user="SELECT id_user,login,nom_reel, email, classement FROM users WHERE token='".$token."'";
 							$r_user=mysqli_query($db_pronos, $s_user);
-							$d_user=mysql_fetch_array($r_user);
+							$d_user=mysqli_fetch_array($r_user);
 							$_SESSION['id_user']=htmlentities($d_user['id_user']);
 							$_SESSION['login']=htmlentities($d_user['login']);
 							$_SESSION['nom_reel']=htmlentities($d_user['nom_reel']);
 							$_SESSION['email']=htmlentities($d_user['email']);
 							$_SESSION['is_admin']=$d_user['is_admin'];
-
+							$_SESSION['classement']=$d_user['classement'];
+							$_SESSION['points']=$d_user['points'];
 							$s_update="UPDATE users SET `password`='".md5($_POST['password'])."', token='', date_recup=CURDATE(), actif=1, classement=10000 WHERE token='".$token."'";
 							mysqli_query($db_pronos, $s_update)
 								or die(mysql_error());
-
-
-							$html.='<p>Votre compte a été activé. <a href="index.php?page=mon_espace">Accéder à mes pronostiques</a></p>';
-
+							$html.='<div>Votre compte a été activé. <a href="index.php?page=mon_espace#mes_pronos">Accéder à mes pronostiques</a></div>';
 
 						}
 					}

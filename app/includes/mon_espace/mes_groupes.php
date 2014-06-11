@@ -1,11 +1,5 @@
 <?php
-
-$html .= '<div class="12u" id="mes_groupes">
-<h2>Mes groupes</h2>
-<p>La fonctionnalité est en cours de réimplémentation</p>
-</div>';
-/*
-if (empty($_POST['action'])) {
+if (empty($_GET['action'])) {
 	$s_groups="SELECT G.id_groupe, G.nom, G.description, G.id_owner,  IF(G.actif,'actif','en attente') AS actif, UG.id_user, U.login
 				FROM groupes G
 				LEFT JOIN l_users_groupes UG
@@ -17,7 +11,9 @@ if (empty($_POST['action'])) {
 	$r_groups=mysqli_query($db_pronos, $s_groups)
 		or die(mysql_error());
 
-	$groupes=array();
+	$groupes=array(	'proprio' => array(),
+					'membre' => array(),
+					'other' => array());
 	while ($d_groups=mysqli_fetch_array($r_groups)) {
 		if ($_SESSION['id_user']==$d_groups['id_owner']) {
 			$groupes['proprio'][$d_groups['actif']][$d_groups['id_groupe']]=array(
@@ -35,60 +31,85 @@ if (empty($_POST['action'])) {
 					'membre' => $membre);
 		}
 	}
-	$html.='
-	<div class="row">
-	<table id="tbl_groupe">
-		<tr>
-			<th colspan="4">Les groupes que je gère</th>
-		</tr>';
+	$html_proprio='<div class="4u box">' .
+			      		'<header>' .
+			      '			<h3>Les groupes que je gère</h3>' .
+			      		'</header>';
 
 	if (sizeof($groupes['proprio'])>0) {
+		$html_proprio .='<ul>';
 		foreach($groupes['proprio'] as $actif => $groupe) {
 			foreach($groupe as $id_groupe => $data) {
-				$html.='<tr><td style="text-align:center;"><img style="cursor:pointer;" src="public/images/icons/modifier.png" alt="détail" onclick="affElement(\'mon_espace\',\'mes_groupes\',\''.$id_groupe.'\',\'modifier\',\'page\')"/></td>
-				<td>'.$data['nom'].'</td><td>'.$data['description'].'</td><td>'.$actif.'</td></tr>';
+				$html_proprio.='<li>' .
+						'<a href="index.php?page=mon_espace&section=mes_groupes&action=modifier&id='.$id_groupe.'">' .
+								'<img src="public/images/icons/modifier.png" alt="modifier"/>'.
+								$data['nom'].' : '.$data['description'].'</li>';
 			}
 		}
+		$html_proprio .='</ul>';
+	} else {
+		$html_proprio .='Vous ne gérez aucun groupe';
 	}
-	$html.='
-		<tr>
-			<td colspan="4" style="text-align:center">
-				<input type="submit" value="Créer un nouveau groupe" onclick="affElement(\'mon_espace\',\'mes_groupes\',\'\',\'ajouter\',\'page\')";/>
-			</td>
-		</tr>
-		<tr>
-			<th colspan="4">Les groupes auquel j\'appartient</th>
-		</tr>';
+	$html_proprio.='</div>';
+
+	$html_member='<div class="4u box">' .
+			      		'<header>' .
+			      '			<h3>Les groupes auquel j\'appartiens</h3>' .
+			      		'</header>';
+
 	if (sizeof($groupes['membre'])>0) {
+		$html_member .='<ul>';
 		foreach($groupes['membre'] as $login => $groupe) {
 			foreach($groupe as $id_groupe => $data) {
-				$html.='<tr>
-					<td style="text-align:center"><img src="public/images/icons/voir.png" alt="détail" onclick="affElement(\'mon_espace\',\'mes_groupes\',\''.$id_groupe.'\',\'voir\',\'page\')"/></td>
-					<td>'.$data['nom'].'</td><td>'.$data['description'].'</td><td>'.$actif.'</td>
-				</tr>';
-
-
+				$html_member.='<li>' .
+						'<a href="index.php?page=mon_espace&section=mes_groupes&action=voir&id='.$id_groupe.'">' .
+								'<img src="public/images/icons/voir.png" alt="voir"/>'.
+								$data['nom'].' : '.$data['description'].'</li>';
 			}
 		}
+		$html_member .='<ul>';
+	} else {
+		$html_member .='Vous n\'appartenez à aucun groupe';
 	}
-	$html.='<tr>
-			<th colspan="4">Les autres groupes</th>
-		</tr>';
+	$html_member .= '</div>';
+
+	$html_other='<div class="4u box">' .
+			      		'<header>' .
+			      '			<h3>Rejoindre un groupe</h3>' .
+			      		'</header>';
+
 	if (sizeof($groupes['other'])>0) {
+		$html_other .= '<ul>';
 		foreach($groupes['other'] as $login => $groupe) {
 			foreach($groupe as $id_groupe => $data) {
-				$html.='<tr>
-					<td style="text-align:center"><input type="submit" value="Rejoindre"onclick="affElement(\'mon_espace\',\'mes_groupes\',\''.$id_groupe.'\',\'rejoindre\',\'page\')"/></td>
-					<td>'.$data['nom'].'</td><td>'.$data['description'].'</td><td>'.$actif.'</td>
-				</tr>';
+				$html_other.='<li>' .
+							'<a href="index.php?page=mon_espace&section=mes_groupes&action=rejoindre&id='.$id_groupe.'">' .
+								'<img src="public/images/icons/voir.png" alt="voir"/>'.
+								$data['nom'].' : '.$data['description'].'</li>';;
 
 
 			}
 		}
+		$html_other .= '</ul>';
+	} else {
+		$html_other .= 'Aucun groupe actif';
 	}
-	$html.='</table></div>';
+	$html_other.='</div>';
+
+	$html .= '<div class="12u" id="mes_groupes">' .
+			'<header>
+	<h2>Mes groupes</h2>' .
+	'</header><div class="row">' .
+			$html_proprio .
+			$html_member .
+			$html_other .
+	'</div>' .
+	'<div style="text-align:center">
+				<a class="button" href="index.php?page=mon_espace&section=mes_groupes&action=ajouter">' .
+						'Créer un nouveau groupe</a>' .
+				'</div></div>';
 } else {
-	switch($_POST['action']) {
+	switch($_GET['action']) {
 		case 'activer':
 			$tmp_id=explode('%',$_POST['id']);
 			$s_groupe="SELECT id_owner FROM groupes WHERE id_groupe='".$tmp_id[0]."'";
@@ -112,17 +133,19 @@ if (empty($_POST['action'])) {
 					$s_groupes="SELECT id_groupe FROM groupes WHERE nom='".$_POST['nom']."'";
 					$r_groupes=mysqli_query($db_pronos, $s_groupes)
 						or die(mysql_error());
-					if (mysql_num_rows($r_groupes)) {
+					if (mysqli_num_rows($r_groupes)) {
 						$error='<span class="special">CE NOM EXISTE DÉJA</span>';
 					}
 				}
+
 			} else {
-				$error='lesieur';
+				$error='';
 			}
 			if ($error!='') {
 				$html.='<h2>Ajouter un groupe</h2>
-				<input type="submit" value="Valider" onclick="submitForm(\'ajouter_groupe\');"/>
-				<form id="ajouter_groupe" method="post" action="#">
+
+				<form id="ajouter_groupe" method="post" action="#">' .
+						'<input type="submit" value="Valider" onclick="submitForm(\'ajouter_groupe\');"/>
 				<input type="hidden" name="page" value="mon_espace"/>
 				<input type="hidden" name="section" value="mes_groupes"/>
 				<input type="hidden" name="action" value="ajouter"/>
@@ -139,19 +162,17 @@ if (empty($_POST['action'])) {
 				$s_insert="INSERT INTO groupes (`date_in`,`date_modif`,`id_owner`,`nom`,`description`)
 					VALUES (CURDATE(),CURDATE(),'".$_SESSION['id_user']."','".$_POST['nom']."','".$_POST['description']."')";
 				$r_insert=mysqli_query($db_pronos, $s_insert);
-				$id_groupe_last=mysql_insert_id();
+				$id_groupe_last=mysqli_insert_id($db_pronos);
 				$s_user_group="INSERT INTO l_users_groupes (`date_in`,`date_modif`,`id_user`,`id_groupe`,`actif`)
 					VALUES (CURDATE(),CURDATE(),'".$_SESSION['id_user']."','".$id_groupe_last."',1)";
 
 
 				$r_user_group=mysqli_query($db_pronos, $s_user_group)
-					or die('impossible d\'ajouter le proprio au groupe' ) or die(mysql_error());
+					or die('impossible d\'ajouter le proprio au groupe'.mysqli_error());
 
-				$headers ='From: "Pronos 2012 IPGP" <lolo@pouilloux.org>'."\n".'Bcc: "Pronos 2012 IPGP" <lolo@pouilloux.org>'."\n";
-				$headers .='Content-Type: text/html; charset="utf8"'."\n";
-				$headers .='Content-Transfer-Encoding: 8bit';
 				$html.='<p>Votre groupe a été créé. Veuillez attendre la validation par le webmaster du site</p>';
-				mail($email_admin,'[Pronos 2012 IPGP] Nouveau groupe créé par '.$_SESSION['login'],'Un nouveau groupe a été créé sous le nom de '.htmlentities($_POST['nom']),$headers);
+				sendmail($admin_email,'Nouveau groupe créé par '.$_SESSION['login'],
+						'Un nouveau groupe a été créé sous le nom de '.htmlentities($_POST['nom']));
 			}
 		break;
 		case 'rejoindre':
@@ -161,16 +182,12 @@ if (empty($_POST['action'])) {
 				WHERE G.id_groupe='".$_POST['id']."'";
 			$r_groupe=mysqli_query($db_pronos, $s_groupe);
 			$d_groupe=mysqli_fetch_array($r_groupe);
-			$headers ='From: "Pronos 2012 IPGP" <lolo@pouilloux.org>'."\n".'Bcc:"Pronos 2012 IPGP" <lolo@pouilloux.org>'."\n";
-			$headers .='Content-Type: text/html; charset="utf8"'."\n";
-			$headers .='Content-Transfer-Encoding: 8bit';
 			$message=$_SESSION['login'].' ('.$_SESSION['nom_reel'].')a demandé à rejoindre le groupe '.$d_groupe['nom'].'. Connectez vous sur votre espace pour
 			valider ou refuser son inscription<br/><br/>
 			<a href="https://hekla.ipgp.fr/pronos2012">https://hekla.ipgp.fr/pronos2012</a>
 			<br/><br/>
 			Le webmaster du site de pronostiques';
-			mail($d_groupe['email'],'[Pronos 2012 IPGP] Demande d\'adhésion au groupe '.$d_groupe['nom'].' par '.$_SESSION['login'],
-			$message,$headers)
+			sendmail($d_groupe['email'],'Demande d\'adhésion au groupe '.$d_groupe['nom'].' par '.$_SESSION['login'],$message)
 				or die ('Impossible de demander une adhésion');
 			$html.='<p>Une demande d\'adhésion au groupe '.$d_groupe['nom'].' a été effectuée auprès de '.$d_groupe['login'].'</p>';
 			$s_insert="REPLACE INTO l_users_groupes (`id_user`,`id_groupe`,`date_in`,`date_modif`)
@@ -185,20 +202,21 @@ if (empty($_POST['action'])) {
 					ON G.id_groupe=UG.id_groupe
 				INNER JOIN users U
 					ON U.id_user=UG.id_user
-				WHERE G.id_groupe='".$_POST['id']."'";
+				WHERE G.id_groupe='".$_GET['id']."'";
 			$r_groupe=mysqli_query($db_pronos, $s_groupe);
 			$html.='<table id="tbl_groupe">';
-
+			$html_ligne = '';
 			while ($d_groupe=mysqli_fetch_array($r_groupe)) {
-
-
 				$nom_groupe=$d_groupe['nom'];
-				$activer=($d_groupe['actif'])?'':'<img src="public/images/icons/user_add.png" alt="activer" title="ajouter l\'utilisateur à ce groupe"
-					onclick="affElement(\'mon_espace\',\'mes_groupes\',\''.$_POST['id'].'%'.$d_groupe['id_user'].'\',\'activer\',\'page\');"/>';
+				$activer=($d_groupe['actif'])?'':'<a href="index.php?page=mon_espace&section=mes_groupes' .
+						'&action=activer&id='.$_GET['id'].'%'.$d_groupe['id_user'].'">' .
+								'<img src="public/images/icons/user_add.png" alt="activer" title="ajouter l\'utilisateur à ce groupe"/>' .
+								'</a>';
 				$html_ligne.='<tr>';
 				if ($d_groupe['id_owner']==$_SESSION['id_user']) {
-					$html_ligne.=($_POST['action']=='modifier')?'<td>'.$activer.' <img src="public/images/icons/user_delete.png" alt="supprimer"
-								onclick="affElement(\'mon_espace\',\'mes_groupes\',\''.$_POST['id'].'%'.$d_groupe['id_user'].'\',\'supprimer\',\'page\');"/></td>':'';
+					$html_ligne.=($_GET['action']=='modifier')?'<td>'.$activer.'<a href="index.php?page=mon_espace&section=mes_groupes' .
+						'&action=supprimer&id='.$_GET['id'].'%'.$d_groupe['id_user'].'"> <img src="public/images/icons/user_delete.png" alt="supprimer"/>' .
+								'<a/></td>':'';
 				} else {
 					$html_ligne.='<td></td>';
 				}
@@ -213,10 +231,10 @@ if (empty($_POST['action'])) {
 		break;
 
 		case 'supprimer':
-			echo $_POST['action'];
+			echo $_GET['action'];
 		break;
 	}
 }
-* */
+
 ?>
 

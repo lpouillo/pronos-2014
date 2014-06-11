@@ -1,4 +1,4 @@
-<?php 
+<?php
 $html.='<div style="width:300px;margin:auto;">
 	Veuillez choisir une section :
 	<form id="choix_admin" method="post" action="index.php">
@@ -8,8 +8,10 @@ $html.='<div style="width:300px;margin:auto;">
 		<input type="radio" name="section" value="equipes"/> Équipes<br/>
 		<input type="radio" name="section" value="matchs"/> Matchs<br/>
 		<input type="radio" name="section" value="classement"/> Calcul du classement<br/>
-		<input type="radio" name="section" value="email"/> Calcul du classement<br/>
+		<input type="radio" name="section" value="email"/> Liste des emails<br/>
+		<input type="radio" name="section" value="groupes"/> Groupes<br/>
+		<input type="submit" value="OK"/>
 	</form>
-	<input type="submit" value="OK" onClick="submitForm(\'choix_admin\');"/>
+
 	</div>';
 ?>
