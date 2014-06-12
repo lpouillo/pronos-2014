@@ -83,13 +83,9 @@ if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 			if ($_POST['actif']) {
 				$s_email="SELECT login, email FROM users WHERE id_user='".$_POST['id_owner']."'";
 				$r_email=mysqli_query($db_pronos, $s_email);
-				$d_email=mysql_fetch_array($r_email);
+				$d_email=mysqli_fetch_array($r_email);
 
-				$headers ='From: "'.$admin_name.'" <'.$admin_email.'>'."\n".'Bcc:"'.$admin_name.'" <'.$admin_email.'>'."\n";
-				$headers .='Content-Type: text/html; charset="utf8"'."\n";
-				$headers .='Content-Transfer-Encoding: 8bit';
-				sendmail ($d_email['email'],'Le groupe '.$_POST['nom'].' a été activé','Son classement est effectif sur le site.')
-					or die('mail activation groupe non envoyé');
+				sendmail($d_email['email'],'Le groupe '.$_POST['nom'].' a été activé', 'Son classement est effectif sur le site.');
 			}
 		break;
 	}

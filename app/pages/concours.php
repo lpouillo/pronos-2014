@@ -16,7 +16,7 @@ if (empty($_GET['section'])) {
 			$count_parieurs++;
 
 			if ($d_parieurs['date_in']!=$old_date_in and $d_parieurs['date_in']!='' and time()<$timestamp_poules_debut) {
-				$html_parieurs.='<li class="date">
+				$html_parieurs.='<li class="date" style="color:#00774B;">
 					'.dateMysqlToFormatted($d_parieurs['date_in'], '00:00:00', '%A %d %B').'</li>';
 				$count_parieurs++;
 				$count_date++;

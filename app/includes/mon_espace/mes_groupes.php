@@ -41,9 +41,10 @@ if (empty($_GET['action'])) {
 		foreach($groupes['proprio'] as $actif => $groupe) {
 			foreach($groupe as $id_groupe => $data) {
 				$html_proprio.='<li>' .
-						'<a href="index.php?page=mon_espace&section=mes_groupes&action=modifier&id='.$id_groupe.'">' .
+						'<a href="index.php?page=mon_espace&section=mes_groupes&action=modifier&id='.$id_groupe.'"' .
+									'title="'.$data['description'].'">' .
 								'<img src="public/images/icons/modifier.png" alt="modifier"/>'.
-								$data['nom'].' : '.$data['description'].'</li>';
+								$data['nom'].'</li>';
 			}
 		}
 		$html_proprio .='</ul>';
@@ -62,9 +63,10 @@ if (empty($_GET['action'])) {
 		foreach($groupes['membre'] as $login => $groupe) {
 			foreach($groupe as $id_groupe => $data) {
 				$html_member.='<li>' .
-						'<a href="index.php?page=mon_espace&section=mes_groupes&action=voir&id='.$id_groupe.'">' .
+						'<a href="index.php?page=mon_espace&section=mes_groupes&action=voir&id='.$id_groupe.'"'.
+									'title="'.$data['description'].'">' .
 								'<img src="public/images/icons/voir.png" alt="voir"/>'.
-								$data['nom'].' : '.$data['description'].'</li>';
+								$data['nom'].'</li>';
 			}
 		}
 		$html_member .='<ul>';
@@ -83,9 +85,10 @@ if (empty($_GET['action'])) {
 		foreach($groupes['other'] as $login => $groupe) {
 			foreach($groupe as $id_groupe => $data) {
 				$html_other.='<li>' .
-							'<a href="index.php?page=mon_espace&section=mes_groupes&action=rejoindre&id='.$id_groupe.'">' .
+							'<a href="index.php?page=mon_espace&section=mes_groupes&action=rejoindre&id='.$id_groupe.'"' .
+									'title="'.$data['description'].'">' .
 								'<img src="public/images/icons/voir.png" alt="voir"/>'.
-								$data['nom'].' : '.$data['description'].'</li>';;
+								$data['nom'].'</li>';
 
 
 			}
@@ -111,7 +114,7 @@ if (empty($_GET['action'])) {
 } else {
 	switch($_GET['action']) {
 		case 'activer':
-			$tmp_id=explode('%',$_POST['id']);
+			$tmp_id=explode('%',$_GET['id']);
 			$s_groupe="SELECT id_owner FROM groupes WHERE id_groupe='".$tmp_id[0]."'";
 			$r_groupe=mysqli_query($db_pronos, $s_groupe);
 			$d_groupe=mysqli_fetch_array($r_groupe);
@@ -139,7 +142,7 @@ if (empty($_GET['action'])) {
 				}
 
 			} else {
-				$error='';
+				$error='lesieur';
 			}
 			if ($error!='') {
 				$html.='<h2>Ajouter un groupe</h2>
@@ -179,19 +182,19 @@ if (empty($_GET['action'])) {
 			$s_groupe="SELECT G.nom, U.login, U.email FROM groupes G
 				INNER JOIN users U
 					ON U.id_user=G.id_owner
-				WHERE G.id_groupe='".$_POST['id']."'";
+				WHERE G.id_groupe='".$_GET['id']."'";
+
 			$r_groupe=mysqli_query($db_pronos, $s_groupe);
 			$d_groupe=mysqli_fetch_array($r_groupe);
+
 			$message=$_SESSION['login'].' ('.$_SESSION['nom_reel'].')a demandé à rejoindre le groupe '.$d_groupe['nom'].'. Connectez vous sur votre espace pour
-			valider ou refuser son inscription<br/><br/>
-			<a href="https://hekla.ipgp.fr/pronos2012">https://hekla.ipgp.fr/pronos2012</a>
+			valider ou refuser son inscription.<br/><br/>
 			<br/><br/>
 			Le webmaster du site de pronostiques';
-			sendmail($d_groupe['email'],'Demande d\'adhésion au groupe '.$d_groupe['nom'].' par '.$_SESSION['login'],$message)
-				or die ('Impossible de demander une adhésion');
+			sendmail($d_groupe['email'],'Demande d\'adhésion au groupe '.$d_groupe['nom'].' par '.$_SESSION['login'],$message);
 			$html.='<p>Une demande d\'adhésion au groupe '.$d_groupe['nom'].' a été effectuée auprès de '.$d_groupe['login'].'</p>';
 			$s_insert="REPLACE INTO l_users_groupes (`id_user`,`id_groupe`,`date_in`,`date_modif`)
-				VALUES ('".$_SESSION['id_user']."','".$_POST['id']."',CURDATE(),CURDATE())";
+				VALUES ('".$_SESSION['id_user']."','".$_GET['id']."',CURDATE(),CURDATE())";
 			$r_insert=mysqli_query($db_pronos, $s_insert)
 				or die(mysql_error());
 		break;
