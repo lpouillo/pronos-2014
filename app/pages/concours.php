@@ -94,7 +94,7 @@ if (empty($_GET['section'])) {
 				ORDER BY U.classement, U.login";
 			$r_user=mysqli_query($db_pronos, $s_user)
 				or die(mysqli_error());
-			$html='<h2>Classement par groupe</h2><ul>';
+			$html='<h2>Classement du groupe </h2><ul>';
 			while ($d_user=mysqli_fetch_array($r_user)) {
 				$html.='<li>'.$d_user['classement'].' - '.$d_user['login'].' '.$d_user['points'].' points</li>';
 			}

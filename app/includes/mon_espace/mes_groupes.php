@@ -114,7 +114,7 @@ if (empty($_GET['action'])) {
 } else {
 	switch($_GET['action']) {
 		case 'activer':
-			$tmp_id=explode('%',$_GET['id']);
+			$tmp_id=explode('_',$_GET['id']);
 			$s_groupe="SELECT id_owner FROM groupes WHERE id_groupe='".$tmp_id[0]."'";
 			$r_groupe=mysqli_query($db_pronos, $s_groupe);
 			$d_groupe=mysqli_fetch_array($r_groupe);
@@ -213,13 +213,13 @@ if (empty($_GET['action'])) {
 			while ($d_groupe=mysqli_fetch_array($r_groupe)) {
 				$nom_groupe=$d_groupe['nom'];
 				$activer=($d_groupe['actif'])?'':'<a href="index.php?page=mon_espace&section=mes_groupes' .
-						'&action=activer&id='.$_GET['id'].'%'.$d_groupe['id_user'].'">' .
+						'&action=activer&id='.$_GET['id'].'_'.$d_groupe['id_user'].'">' .
 								'<img src="public/images/icons/user_add.png" alt="activer" title="ajouter l\'utilisateur à ce groupe"/>' .
 								'</a>';
 				$html_ligne.='<tr>';
 				if ($d_groupe['id_owner']==$_SESSION['id_user']) {
 					$html_ligne.=($_GET['action']=='modifier')?'<td>'.$activer.'<a href="index.php?page=mon_espace&section=mes_groupes' .
-						'&action=supprimer&id='.$_GET['id'].'%'.$d_groupe['id_user'].'"> <img src="public/images/icons/user_delete.png" alt="supprimer"/>' .
+						'&action=supprimer&id='.$_GET['id'].'_'.$d_groupe['id_user'].'"> <img src="public/images/icons/user_delete.png" alt="supprimer"/>' .
 								'<a/></td>':'';
 				} else {
 					$html_ligne.='<td></td>';
@@ -235,7 +235,10 @@ if (empty($_GET['action'])) {
 		break;
 
 		case 'supprimer':
-			echo $_GET['action'];
+			$tmp_id=explode('_',$_GET['id']);
+			$s_del_user="DELETE FROM l_users_pronos WHERE id_user=".$tmp_id[1]." and id_group=".$tmp_id[0];
+			$r_del_user=mysqli_query($db_pronos, $s_del_user);
+			$html.='<p>L\'utilisateur a été supprimé de votre groupe</p>';
 		break;
 	}
 }
