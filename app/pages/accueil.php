@@ -25,9 +25,14 @@ if (isset($_SESSION['id_user'])) {
 					Mon compte</a>
 			</li>
 			<li>
-			<a class="button" href="index.php?page=mon_espace">
+			<a class="button" href="index.php?page=mon_espace#mes_pronos">
 				<img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/>
 				Mes pronostiques</a>
+			</li>
+					<li>
+			<a class="button" href="index.php?page=mon_espace#mes_groupes">
+				<img border="0" src="public/images/icons/group.png" alt="mes_pronos"/>
+				Mes groupes</a>
 			</li>
 
 	</div>

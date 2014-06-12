@@ -1180,16 +1180,12 @@
 	text-decoration:none;
 }
 
-.acces_mes_pronos {
-	background-color:black;
-	text-align:center;
+#acces_mes_pronos .button {
 	width:200px;
 	margin:auto;
+	margin-top:5px;
 }
-.acces_mes_pronos li .button {
-	padding:3px;
 
-}
 /* Style de la page résulats */
 
 
