@@ -56,7 +56,7 @@ if (empty($_GET['section'])) {
 		$html_groupe.='<ul class="reglement">';
 		while ($d_groupes=mysqli_fetch_array($r_groupes)) {
 			$html_groupe.='<li title="'.$d_groupes['description'].' - géré par '.htmlentities($d_groupes['login'],ENT_QUOTES,'UTF-8').'">
-			 <a href="index.php?page=concours&section=par_groupe&id='.$d_groupes['id_groupe'].'">'.htmlentities($d_groupes['nom'],ENT_QUOTES,'UTF-8').'</li>';
+			 <a href="index.php?page=concours&section=par_groupe&id='.$d_groupes['id_groupe'].'">'.htmlentities($d_groupes['nom'],ENT_QUOTES,'UTF-8').'</a></li>';
 		}
 		$html_groupe.='</ul>';
 	} else {
