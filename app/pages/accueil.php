@@ -2,7 +2,7 @@
 <div class="row">
 <?php
 if (isset($_SESSION['id_user'])) {
-	echo '<div class="6u">';
+	echo '<div class="9u">';
 } else {
 	echo '<div class="12u">';
 }
@@ -17,7 +17,7 @@ if (isset($_SESSION['id_user'])) {
 <?php
 if (isset($_SESSION['id_user'])) {
 ?>
-	<div class="6u box" id="acces_mes_pronos">
+	<div class="3u box" id="acces_mes_pronos">
 		<ul>
 			<li>
 				<a class="button" href="index.php?page=mon_espace" title="Voir mes informations">
