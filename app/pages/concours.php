@@ -55,8 +55,8 @@ if (empty($_GET['section'])) {
 	if (mysqli_num_rows($r_groupes)) {
 		$html_groupe.='<ul class="reglement">';
 		while ($d_groupes=mysqli_fetch_array($r_groupes)) {
-			$html_groupe.='<li title="'.$d_groupes['description'].' - géré par '.htmlentities($d_groupes['login'],ENT_QUOTES,'UTF-8').'"
-			 >'.htmlentities($d_groupes['nom'],ENT_QUOTES,'UTF-8').'</li>';
+			$html_groupe.='<li title="'.$d_groupes['description'].' - géré par '.htmlentities($d_groupes['login'],ENT_QUOTES,'UTF-8').'">
+			 <a href="index.php?page=concours&section=par_groupe&id='.$d_groupes['id_groupe'].'">'.htmlentities($d_groupes['nom'],ENT_QUOTES,'UTF-8').'</li>';
 		}
 		$html_groupe.='</ul>';
 	} else {
@@ -77,7 +77,7 @@ if (empty($_GET['section'])) {
 				'	<header>' .
 				'		<h2>Classement par groupes</h2>' .
 				'   </header>' .
-				'   Il y a '.$n_groupes.' groupe(s) d\'utilisateurs. N\'hésitez pas à créer le votre pour faire un mini-concours avec vos amis.'.
+				'   Il y a '.$n_groupes.' groupe(s) d\'utilisateurs. Rendez vous dans votre espace pour créér le votre.'.
 					$html_groupe.
 				'</div>';
 
@@ -89,12 +89,12 @@ if (empty($_GET['section'])) {
 					ON U.id_user=UG.id_user
 				INNER JOIN groupes G
 					ON UG.id_groupe=G.id_groupe
-				WHERE G.id_groupe='".$_POST['id']."'
+				WHERE G.id_groupe='".$_GET['id']."'
 					AND UG.actif=1
 				ORDER BY U.classement, U.login";
 			$r_user=mysqli_query($db_pronos, $s_user)
-				or die(mysql_error());
-			$html.='<h2>Classement du groupe </h2><ul>';
+				or die(mysqli_error());
+			$html='<h2>Classement par groupe</h2><ul>';
 			while ($d_user=mysqli_fetch_array($r_user)) {
 				$html.='<li>'.$d_user['classement'].' - '.$d_user['login'].' '.$d_user['points'].' points</li>';
 			}
