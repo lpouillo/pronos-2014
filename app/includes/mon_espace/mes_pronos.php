@@ -12,7 +12,7 @@ if (time()<$timestamp_poules_debut) {
 	$message='Il vous reste encore '.transforme($timestamp_poules_debut-time()).' secondes pour
 	parier sur la phase de poules. La seconde phase concernant le tableau final débutera le '
 	.strftime('%A %d %B à %H:%M',$timestamp_poules_fin).'.<br/> Les matchs sur
-	<span class="special">&nbsp;fond vert&nbsp;</span> compte double.';
+	<span class="special">&nbsp;fond vert&nbsp;</span> comptent double.';
 } elseif (time()<$timestamp_poules_fin) {
 	// On affiche tout en grisé avec la date de la seconde phase de paris
 	$en_premier=&$html_poules;
