@@ -68,7 +68,7 @@ if (empty($_GET['section'])) {
 				    <header>' .
 				   		'<h2>Classement général du concours</h2>'.
 					'</header>' .
-					'La coupe du monde n\'a pas encore commencé mais il y a déjà '.mysqli_num_rows($r_parieurs).' participants' .
+					'Il y a déjà '.mysqli_num_rows($r_parieurs).' participants' .
 					'<div class="row">' .
 					$html_parieurs.
 					'</div>'.

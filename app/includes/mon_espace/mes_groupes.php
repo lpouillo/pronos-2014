@@ -236,6 +236,7 @@ if (empty($_GET['action'])) {
 
 		case 'supprimer':
 			$tmp_id=explode('_',$_GET['id']);
+
 			$s_del_user="DELETE FROM l_users_groupes WHERE id_user=".$tmp_id[1]." and id_groupe=".$tmp_id[0];
 			$r_del_user=mysqli_query($db_pronos, $s_del_user)
 				or die(mysqli_error($db_pronos));

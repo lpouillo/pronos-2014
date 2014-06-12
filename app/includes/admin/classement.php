@@ -1,10 +1,13 @@
 <?php
 // Mise à jour du tournoi
-require_once ('app/includes/admin/calcul_poules.php');
-//require_once ('app/includes/admin/calcul_tableau.php');
+require_once ('app/includes/admin/classement/calcul_poules.php');
+//require_once ('app/includes/admin/classement/calcul_tableau.php');
 
-// Mise à jour des pronos et des points des joueurs
-require_once ('app/includes/admin/calcul_pronos.php');
+// On calcul les points de chaque pronos
+require_once ('app/includes/admin/classement/calcul_pronos.php');
+
+// Calcul des points des parieurs
+require_once ('app/includes/admin/classement/calcul_points.php');
 
 
 

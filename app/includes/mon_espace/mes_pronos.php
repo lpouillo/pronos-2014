@@ -22,7 +22,7 @@ if (time()<$timestamp_poules_debut) {
 	$message='Voici vos pronostics pour les poules et les points qu\'ils vous ont rapportés. Vous pourrez
 	parier pour le tableau final à compter du '.strftime('%A %d %B à %H:%M',$timestamp_poules_fin).' et
 	jusqu\'au '.strftime('%A %d %B à %H:%M',$timestamp_tableau_debut).'.<br/> Les matchs encadrés en
-	<span style="color:red">ROUGE</span> compte double.';
+	<span class="special">&nbsp;fond vert&nbsp;</span> comptent double.';
 
 } elseif (time()<$timestamp_tableau_debut) {
 	// On affiche les poules en grisé et en second ainsi que le tableau éditable

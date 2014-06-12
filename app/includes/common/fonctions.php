@@ -244,6 +244,25 @@ function perdant_match($match) {
 	return $perdant;
 }
 
+function delta_1N2($score1,$score2,$prono1,$prono2) {
+	if ($score1>$score2) {
+		$res_match='1';
+	} elseif ($score1<$score2) {
+		$res_match='2';
+	} else {
+		$res_match='N';
+	}
+	if ($prono1>$prono2) {
+		$res_prono='1';
+	} elseif ($prono1<$prono2) {
+		$res_prono='2';
+	} else {
+		$res_prono='N';
+	}
+	return ($res_prono==$res_match)?1:0;
+}
+
+
 function aff_match($match, $layout='horizontal') {
 	global $timestamp_poules_debut;
 	global $timestamp_tableau_debut;
