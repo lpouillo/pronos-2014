@@ -157,13 +157,14 @@ if (empty($_GET['action'])) {
 						<td>Nom du groupe</td><td><input type="text" name="nom" /></td><td >'.$error.'</td>
 					</tr>
 					<tr>
-						<td>Description</td><td colspan="2"><textarea name="decription"></textarea></td>
+						<td>Description</td><td colspan="2"><textarea name="description"></textarea></td>
 					</tr>
 				</table>
 				</form>';
 			} else {
 				$s_insert="INSERT INTO groupes (`date_in`,`date_modif`,`id_owner`,`nom`,`description`)
 					VALUES (CURDATE(),CURDATE(),'".$_SESSION['id_user']."','".$_POST['nom']."','".$_POST['description']."')";
+
 				$r_insert=mysqli_query($db_pronos, $s_insert);
 				$id_groupe_last=mysqli_insert_id($db_pronos);
 				$s_user_group="INSERT INTO l_users_groupes (`date_in`,`date_modif`,`id_user`,`id_groupe`,`actif`)
