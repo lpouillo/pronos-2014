@@ -4,12 +4,14 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
+		<link rel="shortcut icon" type="image/png" href="public/images/icons/equipe.png" />
 		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,900,300italic" rel="stylesheet" />
 		<script src="public/js/jquery.min.js"></script>
 		<script src="public/js/jquery.dropotron.min.js"></script>
 		<script src="public/js/config.js"></script>
 		<script src="public/js/skel.min.js"></script>
 		<script src="public/js/skel-panels.min.js"></script>
+		<script type="text/javascript" language="javascript" src="public/js/parser.js"></script>
 		<noscript>
 			<link rel="stylesheet" href="public/css/skel-noscript.css" />
 			<link rel="stylesheet" href="public/css/style.css" />

@@ -135,29 +135,74 @@ function url_exists($url) {
 }
 
 
-function get_news($flux, $nbr=3){
-	$data = array();
-	$i=0;
-	if ((url_exists($flux['rss']))) {
-		$xml=simplexml_load_file($flux['rss']);
-		if (isset($xml)) {
-			foreach($xml->channel->item as $item) {
-				if (strpos($item->title, $flux['filter']) !== false) {
-					$i++;
-					if($i<=$nbr){
-						$data[] = array(
-								'date' => $item->pubDate,
-								'txt' => '['.$flux['src'].'] '.$item->title,
-								'link' => $flux['post'].$item->link);
-					} else {
-						break;
-					}
-				}
+function lit_rss($fichier,$objets) {
+
+	// on lit tout le fichier
+	if($chaine = @implode("",@file($fichier))) {
+
+		// on découpe la chaine obtenue en items
+		$tmp = preg_split("/<\/?"."item".">/",$chaine);
+
+		// pour chaque item
+		for($i=1;$i<sizeof($tmp)-1;$i+=2)
+
+			// on lit chaque objet de l'item
+			foreach($objets as $objet) {
+
+				// on découpe la chaine pour obtenir le contenu de l'objet
+				$tmp2 = preg_split("/<\/?".$objet.">/",$tmp[$i]);
+
+				// on ajoute le contenu de l'objet au tableau resultat
+				$resultat[$i-1][] = @$tmp2[1];
 			}
-		}
+
+		// on retourne le tableau resultat
+		return $resultat;
 	}
-	return $data;
 }
+
+
+//require_once('app/includes/accueil/lastRSS.php');
+//
+//
+//
+//function get_news($flux, $nbr=1){
+//
+//
+//
+//	$data = array();
+//	$rss = new lastRSS;
+//
+//	// Set cache dir and cache time limit (5 seconds)
+//	// (don't forget to chmod cache dir to 777 to allow writing)
+//	$rss->cache_dir = 'public/cache';
+//	$rss->cache_time = 1200;
+//
+//	$i=0;
+//	if ($rs = $rss->get($flux['url'])) {
+//		foreach ($rs['items'] as $item) {
+//
+//			echo '<pre>';
+//			print_r($item);
+//			echo '</pre>';
+//
+//			$i++;
+//			if($i<=$nbr){
+//				$link = (isset($item['link'])?$item['link']:$item['guid']);
+//				$data[] = array(
+//						'date' => $item['pubDate'],
+//						'txt' => '['.$flux['src'].'] '.$item['title'],
+//						'link' => $flux['post'].$link);
+//			} else {
+//				break;
+//			}
+//		}
+//
+//	}
+//
+//
+//	return $data;
+//}
 
 
 /* Transforme date et heure de mysql vers date formattée */
@@ -374,6 +419,7 @@ function aff_prono($match, $edit) {
 }
 
 function aff_poule($i_poule, $poule) {
+
 	$html='<table class="poule">
 				<tr>
 					<th>Rang</th><th>Equipe</th><th>Pts</th><th>V</th><th>N</th><th>D</th><th>&#177;</th>

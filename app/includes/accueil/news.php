@@ -1,31 +1,69 @@
 <?php
+$html = '<div id="w">
+  <div id="content">' .
+  	'<div id="cdf" class="feedcontainer"></div>' .
+    '<hr>
+    <div id="horsjeu" class="feedcontainer"></div>
+    <hr>
+    <div id="lequipe" class="feedcontainer"></div>
+    <hr>
+    <div id="fifa" class="feedcontainer"></div>
 
+  </div><!-- @end #content -->
+</div><!-- @end #w -->';
+$html .= "<script type=\"text/javascript\">
+$(function(){
+  // running custom RSS functions
+  parseRSS('http://horsjeu.net/feed/', '#horsjeu');
+  parseRSS('http://www.cahiersdufootball.net/rss/rss_article.php', '#cdf');
+  parseRSS('http://www.lequipe.fr/rss/actu_rss_Football.xml', '#lequipe');
+  parseRSS('http://fr.fifa.com/worldcup/news/rss.xml', '#fifa');
+});
+</script>";
+
+
+/*
 $flux = array(
-	 array(
+	array(
+		'src' => "HorsJeu.net",
+		'url' => "http://horsjeu.net/feed/"),
+	array(
+		'src' => "Cahiers du football",
+		'url' => "http://www.cahiersdufootball.net/rss/rss_article.php"),
+	array(
+		'src' => "L'\équipe",
+		'url' => "http://www.lequipe.fr/rss/actu_rss_Football.xml"),
+	array(
 	 	'src' => "FIFA",
-		'rss' => "http://fr.fifa.com/worldcup/news/rss.xml",
-		'filter' => " ",
-		'post' => ""),
+		'url' => "http://fr.fifa.com/worldcup/news/rss.xml"),
 	array(
-		'src' => "CDF",
-		'rss' => "http://www.cahiersdufootball.net/rss/rss_article.php",
-		'filter' => "",
-		'post' => ""),
-	array(
-		'src' => "EQUIP",
-		'rss' => "http://www.lequipe.fr/rss/actu_rss_Football.xml",
-		'filter' => "Foot - CM",
-		'post' => " "),
-	array(
-		'src' => "F365",
-		'rss' => "http://www.football365.fr/coupe-du-monde-2014/rss.xml",
-		'filter' => "CM 2014",
-		'post' => "")
+		'src' => "Football 365",
+		'url' => "http://www.football365.fr/coupe-du-monde-2014/rss.xml")
+
 );
-$news=array();
+
+$html = '';
 foreach ($flux as $data) {
-	$news = array_merge($news, get_news($data));
+	$html.='<h3>'.$data['src'].'</h3>';
+	$html.='<script language="JavaScript" ' .
+		'src="http://itde.vccs.edu/rss2js/feed2js.php?src='.urlencode($data['src']).'&chan=n&num=3&desc=0&date=n&targ=y" type="text/javascript"></script>
+
+		<noscript>
+		<a href="http://itde.vccs.edu/rss2js/feed2js.php?src='.urlencode($data['src']).'&chan=n&num=3&desc=0&date=y&targ=y&html=y">View RSS feed</a>
+		</noscript>';
 }
+
+/*
+
+$news=array();
+
+	print_r( lit_rss($data['url'], array("title","link","description","pubDate")));
+	//$news = array_merge($news, lit_rss($data, array("title","link","description","pubDate")));
+}
+
+echo '<pre>';
+print_r($news);
+echo '</pre>';
 
 $dates = array();
 foreach ($news as $key => $row)
@@ -42,7 +80,7 @@ foreach ($news as $info) {
 			'</li>';
 }
 
-$html.='</ul>';
+$html.='</ul>';*/
 
 echo $html;
 ?>

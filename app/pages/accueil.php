@@ -1,12 +1,13 @@
 
 <div class="row">
 <?php
-if (isset($_SESSION['id_user'])) {
+/*if (isset($_SESSION['id_user'])) {
 	echo '<div class="9u">';
 } else {
 	echo '<div class="12u">';
-}
+}*/
 ?>
+	<div class="12u">
 		<section class="box" id="acc_message">
 	<?php
 		include('app/includes/accueil/message.php');
@@ -16,6 +17,7 @@ if (isset($_SESSION['id_user'])) {
 	</div>
 <?php
 if (isset($_SESSION['id_user'])) {
+/*
 ?>
 	<div class="3u box" id="acces_mes_pronos">
 		<ul>
@@ -37,6 +39,7 @@ if (isset($_SESSION['id_user'])) {
 
 	</div>
 <?php
+*/
 }
 ?>
 
@@ -44,6 +47,17 @@ if (isset($_SESSION['id_user'])) {
 
 <div>
 	<div class="row">
+		<div class="4u">
+			<section class="box">
+				<span class="pennant"><span class="fa fa-star"></span></span>
+				<?php
+				include('app/includes/accueil/classement.php');
+				?>
+				<footer>
+					<a href="index.php?page=concours" class="button">Le classement complet</a>
+				</footer>
+			</section>
+		</div>
 		<div class="4u">
 			<section class="box">
 				<span class="pennant pennant-alt2"><span class="fa fa-tasks"></span></span>
@@ -58,20 +72,6 @@ if (isset($_SESSION['id_user'])) {
 				</footer>
 			</section>
 
-		</div>
-		<div class="4u">
-			<section class="box">
-				<span class="pennant"><span class="fa fa-star"></span></span>
-				<header>
-					<h2>Classement du concours</h2>
-				</header>
-				<?php
-				include('app/includes/accueil/classement.php');
-				?>
-				<footer>
-					<a href="index.php?page=concours" class="button">Le classement complet</a>
-				</footer>
-			</section>
 		</div>
 		<div class="4u">
 			<section class="box">
