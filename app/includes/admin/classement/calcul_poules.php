@@ -4,7 +4,7 @@ mysqli_query($db_pronos,"UPDATE equipes SET classement=10");
 
 $html.='<h3>Calcul du classement des poules</h3>
 	<ul>';
-for ($i=1;$i<=$cup_groups;$i++) {
+for ($i=1;$i<=8;$i++) {
 	$html.='<li><strong>Poule '.$i.'</strong><br/>';
 	$points=0;
 	$s_equipes="SELECT id_equipe, nom FROM equipes WHERE poule='".$i."'";
@@ -64,6 +64,7 @@ for ($i=1;$i<=$cup_groups;$i++) {
 	arsort($points_equipes);
 	$class=1;
 	$classement=array();
+	$id_last_equipe=0;
 	foreach($points_equipes as $id_equipe => $point) {
 		// on test si une équipe a le même nombre de points
 		$id_eq_egalite=array_keys($points_equipes,$point);

@@ -19,7 +19,7 @@ while ($d_eq_poules=mysqli_fetch_array($r_eq_poules)) {
 $s_matchs="SELECT M.id_match, M.date_match, M.heure, " .
 			"M.id_equipe1, EQ1.acronym AS ac1, EQ1.nom AS eq1, EQ1.poule AS poule, " .
 			"M.id_equipe2, EQ2.acronym AS ac2, EQ2.nom AS eq2,
-			M.score1, M.score2, M.cote_1, M.cote_N, M.cote_2, M.joue, M.special, M.type
+			M.score1, M.score2, M.tab1, M.tab2, M.cote_1, M.cote_N, M.cote_2, M.joue, M.special, M.type
 			FROM matchs M
 			INNER JOIN equipes EQ1
 				ON EQ1.id_equipe=M.id_equipe1
