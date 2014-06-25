@@ -43,8 +43,8 @@ $html.='<section id="poules">' .
 
 $i_poule = 1;
 foreach($poules as $poule) {
-	$html.='<div class="3u box">' .
-			'<header>Poule '.$i_poule.'</header>';
+	$html.='<div class="3u">' .
+			'<header><h3>Poule '.$i_poule.'</h3></header>';
 	// Classement de la poule
 	$html.=aff_poule($i_poule, $poule);
 	// Matchs de la poule
