@@ -77,25 +77,7 @@ switch(abs($timestamp_poules_debut-time())-($timestamp_poules_debut-time())){
 			$html.='<table width="250px;">';
 			$i_max=min(15,count($parieurs));
 			for ($i=0;$i<$i_max;$i++)  {
-				switch($parieurs[$i]['classement']) {
-					case 1:
-						$puce='<img height="20px" src="public/images/icons/concours.png" alt="'.$parieurs[$i]['classement'].'"/>';
-
-						break;
-					case 2:
-						$puce='<img height="17px" src="public/images/icons/medal_silver_2.png" alt="'.$parieurs[$i]['classement'].'"/>';
-						break;
-					case 3:
-						$puce='<img height="14px" src="public/images/icons/medal_bronze_3.png" alt="'.$parieurs[$i]['classement'].'"/>';
-						break;
-					case 10000:
-						$puce=' - ';
-						break;
-					default:
-						$puce=$parieurs[$i]['classement'];
-		/*$puce='<img height="10px" src="public/images/icons/sport_soccer.png" alt="'.$parieurs[$i]['classement'].'"/>';*/
-
-				}
+				$puce=get_puce($parieurs[$i]['classement']);
 				$html.='<tr>
 							<td class="match" width="20px">'.$puce.'</td>
 							<td>'.htmlentities($parieurs[$i]['login'],ENT_QUOTES,'UTF-8').'</td>
@@ -121,24 +103,7 @@ switch(abs($timestamp_poules_debut-time())-($timestamp_poules_debut-time())){
 		} else {
 			$html.='<table width="250px;">';
 			foreach ($groupes as $groupe) {
-				switch($groupe['classement']) {
-						case 1:
-							$puce='<img height="20px" src="public/images/icons/concours.png" alt="'.$groupe['classement'].'"/>';
-
-							break;
-						case 2:
-							$puce='<img height="17px" src="public/images/icons/medal_silver_2.png" alt="'.$groupe['classement'].'"/>';
-							break;
-						case 3:
-							$puce='<img height="14px" src="public/images/icons/medal_bronze_3.png" alt="'.$groupe['classement'].'"/>';
-							break;
-						case 10000:
-							$puce=' - ';
-							break;
-						default:
-							$puce=$groupe['classement'];
-
-					}
+				$puce=get_puce($groupe['classement']);
 				$html.='<tr title="'.$groupe['description'].' - géré par '.$groupe['login'].'">
 							<td width="20px" style="text-align:center">'.$puce.'</td>
 							<td width="150px">'.htmlentities($groupe['nom'],ENT_QUOTES,'UTF-8').'</td>
