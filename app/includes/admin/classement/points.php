@@ -1,6 +1,6 @@
 <?php
 // Total des points gagnés par chaque user.
-echo '<h3>Calcul du total de points pour chaque utilisateur</h3>';
+$html.=($page == 'admin')?'<h3>Calcul du total de points pour chaque utilisateur</h3>':'';
 // récupération de la somme des points pour chaque utilisateur
 $s_pronos="SELECT id_user, SUM(points) as points FROM pronos GROUP BY id_user";
 $r_pronos=mysqli_query($db_pronos,$s_pronos);
@@ -15,7 +15,10 @@ mysqli_query($db_pronos, $s_points)
 	or die(mysqli_error($db_pronos));
 
 // Calcul du nouveau classement
-$s_points="SELECT id_user, login, points FROM users ORDER BY points";
+$s_points="SELECT id_user, login, points " .
+		"FROM users " .
+		"WHERE actif=1 ".
+		"ORDER BY points";
 $r_points=mysqli_query($db_pronos, $s_points);
 
 $s_classement="INSERT INTO users (`id_user`, `classement`) VALUES ";
@@ -35,6 +38,34 @@ $s_classement=rtrim($s_classement, ",")." ON DUPLICATE KEY " .
 		"UPDATE classement=VALUES(classement)";
 mysqli_query($db_pronos, $s_classement)
 	or die(mysqli_error($db_pronos));
+
+
+//echo '<pre>';
+//print_r($users);
+//echo '</pre>';
+
+
+//$html.='<h3>Mise a jour des points des parieurs</h3><p>';
+//foreach($users as $id_user => $data) {
+//
+//	// Ajout du malus selon le nombre de pronos
+//	switch ($data['n_pronos']) {
+//		case 7:
+//			$malus=30;
+//		break;
+//		case 24:
+//			$malus=50;
+//		break;
+//		default:
+//			$malus=0;
+//	}
+//	// Ajout de la bonification pour le bon vainqueur
+//	$bonus=($vainqueur_finale==$vainqueur_user[$id_user]['Finale'] and $vainqueur_finale!=0)?-30:0;
+//	$s_update="UPDATE users SET points='".($data['points']+$bonus+$malus)."' WHERE id_user='".$id_user."'";
+//	$html.=$id_user.' => '. ($data['points']+$bonus+$malus).' - ';
+//	$r_update=mysqli_query($db_pronos,$s_update)
+//		or die(mysql_error());
+//}
 
 
 // Calcul de la moyenne et du nombre d'utilisateur pour les groupes des groupes
@@ -60,7 +91,10 @@ mysqli_query($db_pronos, $s_points_groupe)
 	or die(mysqli_error($db_pronos));
 
 // Calcul du classement des groupes
-$s_groupes="SELECT id_groupe, nom, moyenne FROM groupes ORDER BY moyenne, n_user";
+$s_groupes="SELECT id_groupe, nom, moyenne " .
+		"FROM groupes " .
+		"WHERE actif=1 ".
+		"ORDER BY moyenne, n_user";
 $r_groupes=mysqli_query($db_pronos, $s_groupes);
 
 $s_classement="INSERT INTO groupes (`id_groupe`, `classement`) VALUES ";
@@ -78,7 +112,7 @@ while($groupe=mysqli_fetch_array($r_groupes)) {
 }
 $s_classement=rtrim($s_classement, ",")." ON DUPLICATE KEY " .
 		"UPDATE classement=VALUES(classement)";
-echo $s_classement;
+$html.=($page == 'admin')?$s_classement.'<br/>':'';
 mysqli_query($db_pronos, $s_classement)
 	or die(mysqli_error($db_pronos));
 
