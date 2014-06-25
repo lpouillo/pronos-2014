@@ -38,7 +38,7 @@ if (time()<$timestamp_poules_debut) {
 	$en_second=&$html_poules;
 	$poule_edit=0;
 	$tableau_edit=0;
-	$message='Suivez les points que chacun des matchs vous ajoute ou vous retranche';
+	$message='Suivez les points que chacun des matchs vous ajouté ou retranché';
 
 }
 
@@ -122,13 +122,13 @@ $html_poules.='<section id="poules">' .
 
 $i_poule=1;
 foreach($poules as $poule) {
-	$html_poules.='<div class="3u box">' .
-			'<header>Poule '.$i_poule.'</header>';
+	$html_poules.='<div class="3u">' .
+			'<header><h3>Poule '.$i_poule.'</h3></header>';
 	$html_poules.='<ul>';
 	if (sizeof($mat_par_poule[$i_poule])>0) {
 		foreach($mat_par_poule[$i_poule] as $match) {
 			$html_poules .='<li>';
-			$html_poules .= aff_prono($match, $poule_edit);
+			$html_poules .= aff_prono($match, $poule_edit, 'horizontal');
 			$html_poules.='</li>';
 		}
 		$html_poules .='</ul>';
@@ -137,19 +137,131 @@ foreach($poules as $poule) {
 	}
 	$html_poules.=aff_poule($i_poule, $poule);
 	$html_poules .= '</div>';
-	if ($i_poule == 4) {
-		$html_poules.='</div>' .
-				'<div style="text-align:center">
+	if ($i_poule == 4 ) {
+		$html_poules.='</div>';
+		if ($poule_edit) {
+			$html_poules.='<div style="text-align:center">
 					<input type="submit" value="Sauvez mes pronos"/>
-				</div>' .
-				'<div class="row">';
-
+				</div>';
+		}
+		$html_poules.='<div class="row">';
 	}
 	$i_poule += 1;
 }
 $html_poules.='</div></div></section>';
 
+
+// génération du tableau
+
 // On récupère toutes les données des matchs
+$s_pronos="SELECT M.id_match, M.date_match, M.heure, M.cote_1, M.cote_N, M.cote_2,
+				M.score1 AS m_score1, M.score2 AS m_score2, M.tab1 AS m_tab1, M.tab2 AS m_tab2, M.type,
+				M.id_equipe1 AS m_id1, M.id_equipe2 AS m_id2, M.joue,
+				P.score1, P.score2, 
+				P.tab1, P.tab2, P.points,
+				
+				E1.nom AS m_eq1, E2.nom AS m_eq2,
+				E1.acronym AS m_ac1, E2.acronym AS m_ac2
+				FROM matchs M
+				LEFT JOIN pronos P
+					ON P.id_user='".$_SESSION['id_user']."'
+					AND P.id_match=M.id_match
+				LEFT JOIN equipes E1 
+					ON E1.id_equipe=M.id_equipe1
+				LEFT JOIN equipes E2
+					ON E2.id_equipe=M.id_equipe2
+				WHERE M.type<>'poule'";
+				
+$r_pronos=mysqli_query($db_pronos,$s_pronos)
+	or die($s_pronos.'<br/>'.mysqli_error($db_pronos));
+
+$mat_par_type=array();
+while ($prono=mysqli_fetch_array($r_pronos)) {
+	$mat_par_type[substr($prono['type'], 0, -1)][]=$prono;
+}
+
+// Récupération des équipes
+$s_equipes="SELECT id_equipe, nom, acronym FROM equipes";
+$r_equipes=mysqli_query($db_pronos, $s_equipes);
+$equipes=array();
+while ($d_equipes=mysqli_fetch_array($r_equipes)) {
+	$equipes[$d_equipes['id_equipe']]=array(
+		'nom' => $d_equipes['nom'], 'acronym' => $d_equipes['acronym']);
+}
+$equipes[0] = array('nom' => 'à venir', 'acronym' => '');
+
+
+$sections = array(
+	'Huitieme' => 'Huitièmes de finales',
+	'Quart' => 'Quarts de finales', 
+	'Demi' => 'Demi-finales',
+	'p_final' => 'Petite finale',
+	'Final' => 'Finale'
+	);
+	
+function find_match_by_type($type, $matchs) {
+	foreach($matchs as $key=>$data) {
+        if($data['type']==$type) {
+            return $data;
+        }
+    }
+    return false;
+}
+
+$tableau_edit=true;
+
+$html_tableau = '<header><h2>Tableau final</h2></header><div>';
+foreach($sections as $nom => $text) {
+	$html_tableau .= '<section id="'.$nom.'">' .
+		'<div class="12u">' .
+			'<div class="row">' .
+				'<div class="12u" ><h3>'.$text.'</h3></div>';
+	$n_u = (sizeof($mat_par_type[$nom])>4)?'3':12/sizeof($mat_par_type[$nom]);
+	foreach($mat_par_type[$nom] as $match) {
+		if ($nom == 'Huitieme') {
+			$match['id_equipe1'] = $match['m_id1'];
+			$match['id_equipe2'] = $match['m_id2'];
+		} else {
+			switch ($nom) {
+				case 'Quart':
+					$prev = 'Huitieme';
+				break;		
+				case 'Demi':
+					$prev = 'Quart';
+				break;
+				case 'p_final':
+					$prev = 'Demi';
+					$match['type'] .= 1;
+				break;
+				case 'Final':
+					$prev = 'Demi';
+					$match['type'] .= 1;
+				break;
+				
+			} 
+			
+			$match['id_equipe1'] = vainqueur_match(find_match_by_type(
+				$prev.$regles[$nom][substr($match['type'],-1)][0],
+				$mat_par_type[$prev]));
+			$match['id_equipe2'] = vainqueur_match(find_match_by_type(
+				$prev.$regles[$nom][substr($match['type'],-1)][1],
+				$mat_par_type[$prev]));
+			print $match['id_equipe1'];
+			print $match['id_equipe2'];
+		}
+		$match['eq1'] = $equipes[$match['id_equipe1']]['nom'];
+		$match['ac1'] = $equipes[$match['id_equipe1']]['acronym'];
+		$match['eq2'] = $equipes[$match['id_equipe2']]['nom'];
+		$match['ac2'] = $equipes[$match['id_equipe2']]['acronym']; 
+		$html_tableau.='<div class="'.$n_u.'u" style="text-align:center;">'.
+			pronostableau($match, $tableau_edit).'</div>';	
+	}
+	
+	
+	$html_tableau .= '</div>' .
+		'</div>' .
+	'</section>';
+}
 
 
 // Création du html pour le tableau final
@@ -171,13 +283,7 @@ for ($i=1;$i<=4;$i++) {
 	$eq_huitieme[$i+4]=array('id_equipe1' => $poules[$i+$j][1]['nom'], 'id_equipe2' => $poules[$i+$j+1][0]['nom']);
 	$j++;
 }
-// Récupération des équipes
-$s_equipes="SELECT id_equipe, nom, acronym FROM equipes";
-$r_equipes=mysql_query($s_equipes);
-$equipes=array();
-while ($d_equipes=mysql_fetch_array($r_equipes)) {
-	$equipes[$d_equipes['id_equipe']]=array('nom' => $d_equipes['nom'], 'acronym' => $d_equipes['acronym']);
-}
+
 
 // Récupération de tous les matchs du tableau et des paris du joueur
 $s_tableau="SELECT M.id_match, M.date_match, M.heure, M.cote_1, M.cote_N, M.cote_2,
@@ -195,33 +301,6 @@ while ($d_tableau=mysql_fetch_array($r_tableau)) {
 	$matchs_tableau[$d_tableau['type']]=$d_tableau;
 }
 
-// Traitement des huitiemes
-$huitiemes=array();
-for ($i=1;$i<=8;$i++) {
-	$huitiemes[$i]=array(
-		'match' => array(
-			'id_match' => $matchs_tableau['Huitieme'.$i]['id_match'],
-			'date_match' => $matchs_tableau['Huitieme'.$i]['date_match'],
-			'heure' => $matchs_tableau['Huitieme'.$i]['heure'],
-			'cote_1' => $matchs_tableau['Huitieme'.$i]['cote_1'],
-			'cote_N' => $matchs_tableau['Huitieme'.$i]['cote_N'],
-			'cote_2' => $matchs_tableau['Huitieme'.$i]['cote_2'],
-			'id_equipe1' => $matchs_tableau['Huitieme'.$i]['id_equipe1'],
-			'id_equipe2' => $matchs_tableau['Huitieme'.$i]['id_equipe2'],
-			'score1' => $matchs_tableau['Huitieme'.$i]['score1'],
-			'score2' => $matchs_tableau['Huitieme'.$i]['score2'],
-			'tab1' => $matchs_tableau['Huitieme'.$i]['tab1'],
-			'tab2' => $matchs_tableau['Huitieme'.$i]['tab2']),
-		'pronos' => array(
-			'id_equipe1' => $matchs_tableau['Huitieme'.$i]['id_equipe1'],
-			'id_equipe2' => $matchs_tableau['Huitieme'.$i]['id_equipe2'],
-			'score1' => $matchs_tableau['Huitieme'.$i]['p_score1'],
-			'score2' => $matchs_tableau['Huitieme'.$i]['p_score2'],
-			'tab1' => $matchs_tableau['Huitieme'.$i]['p_tab1'],
-			'tab2' => $matchs_tableau['Huitieme'.$i]['p_tab2'],
-			'points' => $matchs_tableau['Huitieme'.$i]['points'])
-	);
-}
 
 // Traitement des quarts
 $quarts=array();

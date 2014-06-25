@@ -1,116 +1,94 @@
 <?php
+
 if (empty($_GET['action'])) {
-	$s_groups="SELECT G.id_groupe, G.nom, G.description, G.id_owner,  IF(G.actif,'actif','en attente') AS actif, UG.id_user, U.login
-				FROM groupes G
-				LEFT JOIN l_users_groupes UG
-					ON UG.id_groupe=G.id_groupe
-				LEFT JOIN users U
-					ON U.id_user=G.id_owner
-				WHERE (G.actif=1 AND UG.actif=1) OR G.id_owner='".$_SESSION['id_user']."'";
+	$s_groups="SELECT G.id_groupe, G.nom, G.description, G.id_owner,
+			IF(G.actif,'actif','en attente') AS actif, UG.id_user, U.login
+			FROM groupes G
+			LEFT JOIN l_users_groupes UG
+				ON UG.id_groupe=G.id_groupe
+			LEFT JOIN users U
+				ON U.id_user=G.id_owner
+			WHERE (G.actif=1 AND UG.actif=1)
+				OR G.id_owner='".$_SESSION['id_user']."'
+			ORDER BY G.nom";
+
 
 	$r_groups=mysqli_query($db_pronos, $s_groups)
-		or die(mysql_error());
+		or die(mysqli_error($db_pronos));
 
-	$groupes=array(	'proprio' => array(),
+	$groupes=array('proprio' => array(),
 					'membre' => array(),
 					'other' => array());
 	while ($d_groups=mysqli_fetch_array($r_groups)) {
 		if ($_SESSION['id_user']==$d_groups['id_owner']) {
-			$groupes['proprio'][$d_groups['actif']][$d_groups['id_groupe']]=array(
-					'nom'=> $d_groups['nom'],
-					'description' => $d_groups['description']);
+			$groupes['proprio'][$d_groups['id_groupe']]=array(
+					'nom' => $d_groups['nom'],
+					'description' => $d_groups['description'],
+					'actif' => $d_groups['actif']);
 		} elseif ($_SESSION['id_user']==$d_groups['id_user']) {
-			$groupes['membre'][$d_groups['login']][$d_groups['id_groupe']]=array(
-					'nom'=> $d_groups['nom'],
-					'description' => $d_groups['description'],
-					'membre' => $membre);
+			$groupes['membre'][$d_groups['id_groupe']]=array(
+					'nom' => $d_groups['nom'],
+					'manager' => $d_groups['login'],
+					'description' => $d_groups['description']);
 		} else {
-			$groupes['other'][$d_groups['login']][$d_groups['id_groupe']]=array(
+			$groupes['other'][$d_groups['id_groupe']]=array(
 					'nom'=> $d_groups['nom'],
-					'description' => $d_groups['description'],
-					'membre' => $membre);
+					'manager' => $d_groups['login'],
+					'description' => $d_groups['description']);
 		}
 	}
-	$html_proprio='<div class="4u box">' .
-			      		'<header>' .
-			      '			<h3>Les groupes que je gère</h3>' .
-			      		'</header>';
 
-	if (sizeof($groupes['proprio'])>0) {
-		$html_proprio .='<ul>';
-		foreach($groupes['proprio'] as $actif => $groupe) {
-			foreach($groupe as $id_groupe => $data) {
-				$html_proprio.='<li>' .
-						'<a href="index.php?page=mon_espace&section=mes_groupes&action=modifier&id='.$id_groupe.'"' .
-									'title="'.$data['description'].'">' .
-								'<img src="public/images/icons/modifier.png" alt="modifier"/>'.
-								$data['nom'].'</li>';
+	$html_mine='<div class="4u box">' .
+			'<header>' .
+			'Les groupes auxquels j\'appartiens' .
+			'</header>'.
+			'<ul>';
+	$html_other='<div class="8u box">' .
+			'<header>' .
+			'Autres groupes du concours' .
+			'</header>'.
+			'<ul>';
+
+	foreach($groupes as $role => $groupe) {
+
+		foreach($groupe as $id_groupe => $infos) {
+			if ($role == 'proprio') {
+				$html_mine.='<li>' .
+					'<a href="index.php?page=concours&section=groupe&id='.
+						$id_groupe.'"' .'title="'.$infos['description'].'">' .
+						'<img src="public/images/icons/modifier.png" alt="modifier"/> '.
+						$infos['nom'].'</a></li>';
+			} else if ($role == 'membre') {
+				$html_mine .= '<li>' .
+					'<a href="index.php?page=concours&section=groupe&id='.
+						$id_groupe.'" title="'.$infos['description'].'">' .
+						'<img src="public/images/icons/voir.png" alt="voir"/> '.
+						$infos['nom'].'</a></li>';
+			} else {
+				$html_other .= '<li style="display: inline; padding-left:5px;">' .
+					'<a href="index.php?page=concours&section=groupe&id='
+						.$id_groupe.'" title="'.$infos['description'].'">' .
+						'<img src="public/images/icons/voir.png" alt="voir"/> '.
+						$infos['nom'].' ('.$infos['manager'].')</a></li>';
 			}
+
 		}
-		$html_proprio .='</ul>';
-	} else {
-		$html_proprio .='Vous ne gérez aucun groupe';
 	}
-	$html_proprio.='</div>';
 
-	$html_member='<div class="4u box">' .
-			      		'<header>' .
-			      '			<h3>Les groupes auquel j\'appartiens</h3>' .
-			      		'</header>';
-
-	if (sizeof($groupes['membre'])>0) {
-		$html_member .='<ul>';
-		foreach($groupes['membre'] as $login => $groupe) {
-			foreach($groupe as $id_groupe => $data) {
-				$html_member.='<li>' .
-						'<a href="index.php?page=mon_espace&section=mes_groupes&action=voir&id='.$id_groupe.'"'.
-									'title="'.$data['description'].'">' .
-								'<img src="public/images/icons/voir.png" alt="voir"/>'.
-								$data['nom'].'</li>';
-			}
-		}
-		$html_member .='<ul>';
-	} else {
-		$html_member .='Vous n\'appartenez à aucun groupe';
-	}
-	$html_member .= '</div>';
-
-	$html_other='<div class="4u box">' .
-			      		'<header>' .
-			      '			<h3>Rejoindre un groupe</h3>' .
-			      		'</header>';
-
-	if (sizeof($groupes['other'])>0) {
-		$html_other .= '<ul>';
-		foreach($groupes['other'] as $login => $groupe) {
-			foreach($groupe as $id_groupe => $data) {
-				$html_other.='<li>' .
-							'<a href="index.php?page=mon_espace&section=mes_groupes&action=rejoindre&id='.$id_groupe.'"' .
-									'title="'.$data['description'].'">' .
-								'<img src="public/images/icons/voir.png" alt="voir"/>'.
-								$data['nom'].'</li>';
-
-
-			}
-		}
-		$html_other .= '</ul>';
-	} else {
-		$html_other .= 'Aucun groupe actif';
-	}
-	$html_other.='</div>';
+	$html_mine .= '</ul><div style="text-align:center">
+		<a class="button" href="index.php?page=mon_espace&section=mes_groupes&action=ajouter">' .
+				'Créer un nouveau groupe</a>' .
+			'</div></div>';
+	$html_other .= '</ul></div>';
 
 	$html .= '<div class="12u" id="mes_groupes">' .
 			'<header>
 	<h2>Mes groupes</h2>' .
 	'</header><div class="row">' .
-			$html_proprio .
-			$html_member .
-			$html_other .
-	'</div>' .
-	'<div style="text-align:center">
-				<a class="button" href="index.php?page=mon_espace&section=mes_groupes&action=ajouter">' .
-						'Créer un nouveau groupe</a>' .
-				'</div></div>';
+			$html_mine .
+			$html_other.
+
+	'</div></div>';
 } else {
 	switch($_GET['action']) {
 		case 'activer':
