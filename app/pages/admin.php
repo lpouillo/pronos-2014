@@ -22,7 +22,7 @@ if(isset($_SESSION['id_user']) AND $_SESSION['is_admin']) {
 		require_once('app/includes/admin/default.php');
 	}
 } else {
-	$html.='<p>Vous n\'avez pas le droit d\'accéder à cette partie du site. Ou alors connectez-vous !!</p>';
+	$html='<p>Vous n\'avez pas le droit d\'accéder à cette partie du site. Ou alors connectez-vous !!</p>';
 }
 
 echo $html;

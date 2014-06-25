@@ -15,11 +15,17 @@ $params=array(
 				'acronym' => array('Acronym','E.acronym'), 
 				'poule' => array('Poule','E.poule')))
 	);
+
+
+$section='equipes';
+
 if (isset($_POST['action'])) {
-	$action=$_POST['action'];
+	        $action=$_POST['action'];
+} else if (isset($_GET['action'])) {
+	        $action=$_GET['action'];
+} else {
+	        $action='liste';
 }
-
-
 
 $texte_bouton=ucfirst($action);
 
