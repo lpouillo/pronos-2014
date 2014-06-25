@@ -6,9 +6,7 @@
 setlocale (LC_TIME, 'fr_FR.utf8', 'fra');
 date_default_timezone_set('Europe/Paris');
 
-function array_date_match_to_ts($array) {
-	return strtotime($array[0].' '.$array[1]);
-}
+
 $s_matchs = "(SELECT `date_match`, `heure`, `type` FROM matchs WHERE `type`='poule' ORDER BY `date_match` ASC LIMIT 1) " .
 		"UNION " .
 		"(SELECT `date_match`, `heure`, `type` FROM matchs WHERE `type`='poule' ORDER BY `date_match` DESC LIMIT 1) " .

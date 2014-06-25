@@ -135,75 +135,50 @@ function url_exists($url) {
 }
 
 
-function lit_rss($fichier,$objets) {
+function flux_match($rss) {
 
-	// on lit tout le fichier
-	if($chaine = @implode("",@file($fichier))) {
-
-		// on découpe la chaine obtenue en items
-		$tmp = preg_split("/<\/?"."item".">/",$chaine);
-
-		// pour chaque item
-		for($i=1;$i<sizeof($tmp)-1;$i+=2)
-
-			// on lit chaque objet de l'item
-			foreach($objets as $objet) {
-
-				// on découpe la chaine pour obtenir le contenu de l'objet
-				$tmp2 = preg_split("/<\/?".$objet.">/",$tmp[$i]);
-
-				// on ajoute le contenu de l'objet au tableau resultat
-				$resultat[$i-1][] = @$tmp2[1];
+	$matchs = array();
+	if (url_exists($rss)) {
+		$xml=simplexml_load_file($rss);
+		if (isset($xml)) {
+			foreach($xml->channel->item as $item) {
+				if (strpos($item->title, 'score final') !== false) {
+					$matchs[] = $item->title;
+				}
 			}
-
-		// on retourne le tableau resultat
-		return $resultat;
+		}
 	}
+	return $matchs;
 }
 
+function get_puce($classement) {
+	switch($classement) {
+		case 1:
+			$puce='<img height="20px" src="public/images/icons/concours.png" alt="'.
+				$classement.'"/>';
 
-//require_once('app/includes/accueil/lastRSS.php');
-//
-//
-//
-//function get_news($flux, $nbr=1){
-//
-//
-//
-//	$data = array();
-//	$rss = new lastRSS;
-//
-//	// Set cache dir and cache time limit (5 seconds)
-//	// (don't forget to chmod cache dir to 777 to allow writing)
-//	$rss->cache_dir = 'public/cache';
-//	$rss->cache_time = 1200;
-//
-//	$i=0;
-//	if ($rs = $rss->get($flux['url'])) {
-//		foreach ($rs['items'] as $item) {
-//
-//			echo '<pre>';
-//			print_r($item);
-//			echo '</pre>';
-//
-//			$i++;
-//			if($i<=$nbr){
-//				$link = (isset($item['link'])?$item['link']:$item['guid']);
-//				$data[] = array(
-//						'date' => $item['pubDate'],
-//						'txt' => '['.$flux['src'].'] '.$item['title'],
-//						'link' => $flux['post'].$link);
-//			} else {
-//				break;
-//			}
-//		}
-//
-//	}
-//
-//
-//	return $data;
-//}
+			break;
+		case 2:
+			$puce='<img height="17px" src="public/images/icons/medal_silver_2.png" alt="'.
+				$classement.'"/>';
+			break;
+		case 3:
+			$puce='<img height="14px" src="public/images/icons/medal_bronze_3.png" alt="'.
+				$classement.'"/>';
+			break;
+		case 10000:
+			$puce=' - ';
+			break;
+		default:
+			$puce=$classement;
+	}
+	return $puce;
+}
 
+function array_date_match_to_ts($array) {
+
+	return strtotime($array[0].' '.$array[1]);
+}
 
 /* Transforme date et heure de mysql vers date formattée */
 function dateMysqlToFormatted($date,$heure,$fmt='%A %d %B à %H:%M') {
@@ -320,24 +295,30 @@ function aff_match($match, $layout='horizontal') {
 		$cote=(time()<$timestamp_poules_debut)?'non disponible':$match['cote_1'].'/'.$match['cote_N'].'/'.$match['cote_2'];
 		$spec = ($match['special'])?' special':'';
 	} else {
-		$cote=(time()<$timestamp_tableau_debut)?'non disponible':$match['cote_1'].'/'.$match['cote_N'].'/'.$match['cote_2'];
+		$cote=(time()<$timestamp_tableau_debut)?'à venir':$match['cote_1'].'<br/>'.
+			$match['cote_N'].'<br/>'.$match['cote_2'];
 		$spec = '';
 	}
 
 	if ($match['joue']) {
 		$draw=$match['score1']==$match['score2'];
 		$aff1=($draw and !$is_poule)?$match['score1'].'('.$match['tab1'].')':$match['score1'];
-		$aff2=($draw and !$is_poule)?$match['score2'].'('.$match['tab2'].')':$match['score2'];;
-		$score = $aff1.'-'.$aff2;
+		$aff2=($draw and !$is_poule)?$match['score2'].'('.$match['tab2'].')':$match['score2'];
 		$win1=(vainqueur_match($match)==$match['id_equipe1'])?' winner':'';
 		$win2=(vainqueur_match($match)==$match['id_equipe2'])?' winner':'';
 	} else {
-		$score = '-';
+		$aff1='';
+		$aff2='';
 		$win1='';
 		$win2='';
 	}
-
-	$html='<table class="match'.$spec.'">
+	$eq1 = ($match['eq1']== '')?'en attente':$match['eq1'];
+	$eq2 = ($match['eq2']== '')?'en attente':$match['eq2'];
+	$flag1=($match['ac1'] == '')?'50px-Drapeau_noir.svg':$match['ac1'];
+	$flag2=($match['ac2'] == '')?'50px-Drapeau_noir.svg':$match['ac2'];
+	
+	$score = $aff1.'-'.$aff2;
+	$html='<table class="box match'.$spec.'">
 				<tbody>';
 	if ($layout=='horizontal') {
 		$html.=	' 	<tr>
@@ -348,30 +329,30 @@ function aff_match($match, $layout='horizontal') {
 					</tr>' .
 					'<tr>
 						<td class="flag">' .
-						'<img height="12px" alt="flag" src="public/images/flags/'.$match['ac1'].'.png">' .
+						'<img height="12px" alt="flag" src="public/images/flags/'.$flag1.'.png">' .
 						'</td>' .
-						'<td class="eq1'.$win1.'">&nbsp;'.$match['eq1'].'</td>' .
+						'<td class="eq1'.$win1.'">&nbsp;'.$eq1.'</td>' .
 						'<td class="score">'.$score.'</td>' .
-						'<td class="eq2'.$win2.'">'.$match['eq2'].'&nbsp;</td>' .
+						'<td class="eq2'.$win2.'">'.$eq2.'&nbsp;</td>' .
 						'<td class="flag">' .
-						'<img height="12px" alt="flag" src="public/images/flags/'.$match['ac2'].'.png">' .
+						'<img height="12px" alt="flag" src="public/images/flags/'.$flag2.'.png">' .
 						'</td>' .
 					'</tr>' .
 					'<tr>' .
 						'<td colspan="5" class="cote">Cote: '.$cote.'</td>' .
 					'</tr>';
 	} else if ($layout=='vertical') {
-		$html.='			<th colspan="2"><strong>1/4 finale 1</strong></th><th>Cote</th><th>Rés</th></tr>
+		$html.='			<th colspan="2"><strong>'.$type.'</strong></th><th>Cote</th><th>Rés</th></tr>
 					<tr>
 						<td class="flag">' .
-						'<img src="public/images/flags/'.$match['ac1'].'.png" alt="flag" height="12px"></td>
-						<td class="eq1">'.$match['eq1'].'</td>
+						'<img src="public/images/flags/'.$flag1.'.png" alt="flag" height="12px"></td>
+						<td class="eq1">'.$eq1.'</td>
 						<td class="cote" rowspan="2">'.$cote.'</td>
 						<td class="score">'.$aff1.'</td></tr>
 					<tr>
 						<td class="flag">' .
-						'<img src="public/images/flags/'.$match['ac2'].'.png" alt="flag" height="12px"></td>
-						<td class="eq1">'.$match['eq2'].'</td>
+						'<img src="public/images/flags/'.$flag2.'.png" alt="flag" height="12px"></td>
+						<td class="eq1">'.$eq2.'</td>
 						<td class="score">'.$aff2.'</td></tr>
 					<tr>
 						<td class="date link" colspan="4" ">'.$date.'</td>
@@ -385,6 +366,7 @@ function aff_match($match, $layout='horizontal') {
 }
 
 function aff_prono($match, $edit) {
+	
 	$cote=($edit)?'à venir':$match['cote_1'].' / '.$match['cote_N'].' / '.$match['cote_2'];
 	$pari1=($edit)?'<input class="score" type="text" size="1" name="pronos['.$match['id_match'].'][score1]" value="'.$match['score1'].'"/>':
 		'<span class="score">'.$match['score1'].'</span>';
@@ -392,11 +374,15 @@ function aff_prono($match, $edit) {
 		'<span class="score">'.$match['score2'].'</span>';
 	$resultat=($match['joue'])?'<td class="score">'.$match['res1'].'</td><td class="score">'.$match['res2'].'</td><td style="color:red;">'.$match['points'].' points</td>':
 		'<td colspan="3" style="text-align:center;">à venir</td>';
-	$spec=($match['special'])?'special ':'';
+	$spec=(array_key_exists('special', $match) and $match['special'])?'special ':'';
+	
 	// On constuire le bloc de ligne correspondant au match
-	return '<table class="prono">' .
-			'<tr>
-				<td colspan="4"><span class="date">Le '.dateMysqlToFormatted($match['date_match'],$match['heure']).'</span></td>
+	$html= '<table class="prono box">' .
+				'<tbody>' .
+				'<tr>
+				<td colspan="4">
+					<span class="date">Le '.dateMysqlToFormatted($match['date_match'],$match['heure']).'</span>
+				</td>
 			</tr>
 				<tr>
 					<td class="'.$spec.' eq1">
@@ -412,10 +398,12 @@ function aff_prono($match, $edit) {
 			<tr><td>Résultat</td>'.$resultat.'</tr>
 			<tr><td style="border-bottom:1px dotted #00774B;">Cote</td>
 			<td colspan="3" style=" border-bottom:1px dotted #00774B;text-align:center">'.$cote.'</td></tr>
-			</table>
-			<input class="score" type="hidden" size="1" name="pronos['.$match['id_match'].'][tab1]" value="'.$match['tab1'].'"/>
-			<input class="score" type="hidden" size="1" name="pronos['.$match['id_match'].'][tab2]" value="'.$match['tab2'].'"/>';
-		'<span class="score">'.$match['score1'].'</span>';;
+		</tbody></table>
+		<input class="score" type="hidden" size="1" name="pronos['.$match['id_match'].'][tab1]" ' .
+				'value="'.$match['tab1'].'"/>
+		<input class="score" type="hidden" size="1" name="pronos['.$match['id_match'].'][tab2]" ' .
+				'value="'.$match['tab2'].'"/>';
+	return $html;
 }
 
 function aff_poule($i_poule, $poule) {
@@ -444,33 +432,65 @@ function aff_poule($i_poule, $poule) {
 	return $html;
 }
 
-function pronostableau($match) {
-	global $equipes;
-	$html.='<table width="100%">';
+function pronostableau($match, $edit) {
+	$res1 = ($match['m_score1']==$match['m_score2'])?$match['m_score1'].
+		'('.$match['m_tab1'].')':$match['m_score1'];
+	$res2 = ($match['m_score1']==$match['m_score2'])?$match['m_score2'].
+		'('.$match['m_tab2'].')':$match['m_score2'];
+	$resultat = ($match['joue'])?$match['m_eq1'].' '.$res1.
+				'-'.$res2.' '.$match['m_eq2']:'à venir';
+	$flag1=($match['ac1'] == '')?'50px-Drapeau_noir.svg':$match['ac1'];
+	$flag2=($match['ac2'] == '')?'50px-Drapeau_noir.svg':$match['ac2'];
+	$cote= ($edit)?'<div style="height:15px;">'.$match['cote_1'].
+			'</div><div style="height:15px;">'.$match['cote_N'].
+			'</div><div style="height:15px;">'.$match['cote_2']:
+		'à venir';
+	$html='<table class="prono box">
+		<tr>
+			<th>'.$match['type'].'</th>
+			<th>Buts</th>
+			<th>TAB</th>
+			<th>Cote</th>
+			<th>Points</th>
+		</tr>';
 	$html.='
 		<tr>
-			<td><span class="date">'.$match['match']['date_match'].' '.substr($match['match']['heure'],0,5).'</span>
-			 <td>BUTS</td><td>TAB</td>
-			</tr>
-		<tr>';
-
-	$html.='<td class="equipe"><img src="public/images/'.$equipes[$match['pronos']['id_equipe1']]['acronym'].'.gif"/> '
-		.$equipes[$match['pronos']['id_equipe1']]['nom'].'</td> ';
-	$html.='<td><input type="text" size="1" name="pronos['.$match['match']['id_match'].'][score1]" value="'.$match['pronos']['score1'].'" '.$dis_tableau.'/></td>
-			<td><input type="text" size="1" name="pronos['.$match['id_match'].'][tab1]" value="'.$match['pronos']['tab1'].'" '.$dis_tableau.'/></td><td>
-			</tr><tr>';
-	$html.='<td class="equipe"><img src="public/images/'.$equipes[$match['pronos']['id_equipe2']]['acronym'].'.gif"/> '
-		.$equipes[$match['pronos']['id_equipe2']]['nom'].'</td> ';
-	$html.='<td><input type="text" size="1" name="pronos['.$match['match']['id_match'].'][score2]" value="'.$match['pronos']['score2'].'" '.$dis_tableau.'/></td>
-			<td><input type="text" size="1" name="pronos['.$match['match']['id_match'].'][tab2]" value="'.$match['pronos']['tab2'].'" '.$dis_tableau.'/></td>
+			<td class="eq1"><img src="public/images/flags/'.$flag1.'.png" height="12px"/> '
+				.$match['eq1'].'
+			</td> 
+			<td>
+				<input type="text" class="score" name="pronos['.$match['id_match'].'][score1]"
+			 	value="'.$match['score1'].'" />
+			</td>
+			<td>
+				<input type="text" class="score" name="pronos['.$match['id_match'].'][tab1]"
+				value="'.$match['tab1'].'"/>
+			</td>
+			<td rowspan="2" style="text-align:center">'.$cote.'</td>
+			<td rowspan="2" style="vertical-align:middle;color:red;padding-left:20px;">'.$match['points'].'</strong></td>
 		</tr>
 		<tr>
-			<td colspan="3"><strong>Résultat :</strong> '.$equipes[$match['match']['id_equipe1']]['nom'].' '.$match['match']['score1'].'-'.$match['match']['score2'].' '.$equipes[$match['match']['id_equipe2']]['nom'].'</td>
-		</tr>';
-	$html.='<tr>
-		<td>'.$match['match']['cote_1'].' / '.$match['match']['cote_N'].' / '.$match['match']['cote_2'].'</td><td colspan="3" style="color:red;padding-left:20px;">'.$match['pronos']['points'].' points</strong></td>
-	</tr>';
-	$html.='</table>';
+			<td class="eq1"><img src="public/images/flags/'.$flag2.'.png" height="12px"/> '
+			.$match['eq2'].'</td> 
+			<td>
+				<input type="text" class="score" name="pronos['.$match['id_match'].'][score2]"' .
+				' value="'.$match['score2'].'"/>
+			</td>
+			<td>
+				<input type="text" class="score" name="pronos['.$match['id_match'].'][tab2]"' .
+				' value="'.$match['tab2'].'"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="5">
+				<strong>Résultat :</strong> '.$resultat.'</td>
+		</tr>
+		<tr>
+			<td colspan="5">
+				<span class="date">Le '.dateMysqlToFormatted($match['date_match'],$match['heure']).'</span>
+			</td>
+		</tr>
+	</table>';
 	return $html;
 }
 

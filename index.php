@@ -17,6 +17,9 @@ if (file_exists($setup)) {
 	// Fuseau horaire, françisation et date
 	require_once('app/includes/common/set_time.php');
 
+	// Vérification matchs joués
+	require_once('app/includes/common/update_tournament.php');
+
 	// Test de connexion d'un utilisateur
 	require_once('app/includes/common/user_connect.php');
 

@@ -470,10 +470,11 @@
 			position: relative;
 			display: inline-block;
 			background-color: #00774B;
-			width: 9em;
+			width: 5em;
 			padding: 1.5em 0 0.5em 0;
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
+			text-align:center;
 		}
 		
 			.pennant:after
@@ -483,8 +484,8 @@
 				bottom: -1.98em;
 				left: 0;
 				border-top: solid 2em #00774B;
-				border-left: solid 4.5em transparent;
-				border-right: solid 4.5em transparent;
+				border-left: solid 2.5em transparent;
+				border-right: solid 2.5em transparent;
 			}
 		
 			.pennant span
@@ -495,7 +496,7 @@
 			
 				.pennant span:before
 				{
-					font-size: 4.5em;
+					font-size: 3em;
 					color: #fff;
 				}
 
@@ -1312,9 +1313,19 @@
 	margin:auto;
 	width: 250px;
  }
+
+.prono th {
+	color:white;
+	font-weight: bold;
+	background-color:#00774B;
+	padding-left:1px;
+	padding-right:1px;
+}
 .prono .score {
 	width:20px;
+	text-align:center;
 }
+
 /*********************************************************************************/
 /* Copyright                                                                     */
 /*********************************************************************************/
