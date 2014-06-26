@@ -1,10 +1,10 @@
 <?php
 /* Récupération des données des matchs */
-$s_matchs="SELECT M.date_match, M.heure, 
-			M.id_equipe1, EQ1.acronym AS ac1, EQ1.nom AS eq1, EQ1.poule AS poule, 
+$s_matchs="SELECT M.id_match, M.date_match, M.heure,
+			M.id_equipe1, EQ1.acronym AS ac1, EQ1.nom AS eq1, EQ1.poule AS poule,
 			M.id_equipe2, EQ2.acronym AS ac2, EQ2.nom AS eq2,
-			M.score1, M.score2, M.tab1, M.tab2, 
-			M.cote_1, M.cote_N, M.cote_2, 
+			M.score1, M.score2, M.tab1, M.tab2,
+			M.cote_1, M.cote_N, M.cote_2,
 			M.joue, M.special, M.type
 			FROM matchs M
 			LEFT JOIN equipes EQ1
@@ -24,7 +24,7 @@ while ($match=mysqli_fetch_array($r_matchs)) {
 
 $sections = array(
 	'Huitieme' => 'Huitièmes de finales',
-	'Quart' => 'Quarts de finales', 
+	'Quart' => 'Quarts de finales',
 	'Demi' => 'Demi-finales',
 	'p_final' => 'Petite finale',
 	'Final' => 'Finale'
