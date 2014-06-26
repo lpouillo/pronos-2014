@@ -153,8 +153,6 @@ $html_poules.='</div></div></section>';
 
 // génération du tableau
 
-$tableau_edit=1;
-
 // On récupère toutes les données des matchs
 $s_pronos="SELECT M.id_match, M.date_match, M.heure, M.cote_1, M.cote_N, M.cote_2,
 				M.score1 AS m_score1, M.score2 AS m_score2, M.tab1 AS m_tab1, M.tab2 AS m_tab2, M.type,
