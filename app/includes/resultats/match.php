@@ -20,7 +20,6 @@ $s_matchs="SELECT M.id_match, M.date_match, M.heure, " .
 
 $r_match=mysqli_query($db_pronos, $s_matchs);
 
-
 if (mysqli_num_rows($r_match)>0) {
 	$d =mysqli_fetch_array($r_match);
 
@@ -35,8 +34,44 @@ if (mysqli_num_rows($r_match)>0) {
 					($_GET['id']+1).'">Match suivant </a>':'';
 	$html.='	</div>
 			</div>';
-	$s_parieurs ="SELECT U.login, U.id_user, P.points
-			FROM ";
+
+	$evol_parieurs=array(
+		'+' => array(),
+		'=' => array(),
+		'-' => array());
+	$signs = array('+'=> 'fa-stop', '=' => 'fa-pause', '-' => 'fa-check');
+	$s_pronos = "SELECT P.points, U.login, U.nom_reel
+			FROM pronos P
+			INNER JOIN users U
+				ON U.id_user=P.id_user
+			WHERE P.id_match=".$_GET['id']."
+			ORDER BY P.points";
+	$r_pronos=mysqli_query($db_pronos, $s_pronos);
+
+	while ($d=mysqli_fetch_array($r_pronos)) {
+		if ($d['points']<0) {
+			$evol_parieur['-'][]=$d;
+		} else if ($d['points']>0) {
+			$evol_parieur['+'][]=$d;
+		} else {
+			$evol_parieur['='][]=$d;
+		}
+	}
+	$html.='<div class="row">';
+
+	foreach($evol_parieur as $evol => $parieurs) {
+		$html.='<div class="4u">
+				<span style="text-align:center" class="pennant"><span class="fa '.$signs[$evol].
+				'"></span></span>
+				<ul>';
+		foreach($parieurs as $parieur) {
+			$color=(isset($_SESSION['id_user']) and $parieur['id_user']==$_SESSION['id_user'])?'style="color:red"':'';
+			$html.='<li title="'.$parieur['nom_reel'].'" '.$color.'>'.
+				htmlentities($parieur['login'],ENT_QUOTES,'UTF-8').'('.$parieur['points'].')</li>';
+		}
+		$html.='</ul></div>';
+	}
+
 } else {
 	$html.= '<p>Match non trouvé</p>';
 }
