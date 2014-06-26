@@ -53,9 +53,6 @@ if (isset($_SESSION['id_user'])) {
 				<?php
 				include('app/includes/accueil/classement.php');
 				?>
-				<footer>
-					<a href="index.php?page=concours" class="button">Le classement complet</a>
-				</footer>
 			</section>
 		</div>
 		<div class="4u">
@@ -67,9 +64,6 @@ if (isset($_SESSION['id_user'])) {
 				<?php
 				include('app/includes/accueil/matchs.php');
 				?>
-				<footer>
-					<a href="index.php?page=resultats" class="button">Tous les matchs</a>
-				</footer>
 			</section>
 
 		</div>
