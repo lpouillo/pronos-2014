@@ -13,7 +13,7 @@ if (time()<$timestamp_poules_debut) {
 	parier sur la phase de poules. La seconde phase concernant le tableau final débutera le '
 	.strftime('%A %d %B à %H:%M',$timestamp_poules_fin).'.<br/> Les matchs sur
 	<span class="special">&nbsp;fond vert&nbsp;</span> comptent double.';
-} elseif (time()<$timestamp_poules_fin) {
+} elseif (time()<$timestamp_poules_fin-6300) {
 	// On affiche tout en grisé avec la date de la seconde phase de paris
 	$en_premier=&$html_poules;
 	$en_second=&$html_tableau;
@@ -153,25 +153,27 @@ $html_poules.='</div></div></section>';
 
 // génération du tableau
 
+$tableau_edit=1;
+
 // On récupère toutes les données des matchs
 $s_pronos="SELECT M.id_match, M.date_match, M.heure, M.cote_1, M.cote_N, M.cote_2,
 				M.score1 AS m_score1, M.score2 AS m_score2, M.tab1 AS m_tab1, M.tab2 AS m_tab2, M.type,
 				M.id_equipe1 AS m_id1, M.id_equipe2 AS m_id2, M.joue,
-				P.score1, P.score2, 
+				P.score1, P.score2,
 				P.tab1, P.tab2, P.points,
-				
+
 				E1.nom AS m_eq1, E2.nom AS m_eq2,
 				E1.acronym AS m_ac1, E2.acronym AS m_ac2
 				FROM matchs M
 				LEFT JOIN pronos P
 					ON P.id_user='".$_SESSION['id_user']."'
 					AND P.id_match=M.id_match
-				LEFT JOIN equipes E1 
+				LEFT JOIN equipes E1
 					ON E1.id_equipe=M.id_equipe1
 				LEFT JOIN equipes E2
 					ON E2.id_equipe=M.id_equipe2
 				WHERE M.type<>'poule'";
-				
+
 $r_pronos=mysqli_query($db_pronos,$s_pronos)
 	or die($s_pronos.'<br/>'.mysqli_error($db_pronos));
 
@@ -193,12 +195,12 @@ $equipes[0] = array('nom' => 'à venir', 'acronym' => '');
 
 $sections = array(
 	'Huitieme' => 'Huitièmes de finales',
-	'Quart' => 'Quarts de finales', 
+	'Quart' => 'Quarts de finales',
 	'Demi' => 'Demi-finales',
 	'p_final' => 'Petite finale',
 	'Final' => 'Finale'
 	);
-	
+
 function find_match_by_type($type, $matchs) {
 	foreach($matchs as $key=>$data) {
         if($data['type']==$type) {
@@ -208,215 +210,73 @@ function find_match_by_type($type, $matchs) {
     return false;
 }
 
-$tableau_edit=true;
+//$tableau_edit=true;
 
-$html_tableau = '<header><h2>Tableau final</h2></header><div>';
+$html_tableau = '<header><h2>Tableau final</h2></header>';
 foreach($sections as $nom => $text) {
 	$html_tableau .= '<section id="'.$nom.'">' .
 		'<div class="12u">' .
 			'<div class="row">' .
 				'<div class="12u" ><h3>'.$text.'</h3></div>';
 	$n_u = (sizeof($mat_par_type[$nom])>4)?'3':12/sizeof($mat_par_type[$nom]);
-	foreach($mat_par_type[$nom] as $match) {
+	foreach($mat_par_type[$nom] as &$match) {
+
 		if ($nom == 'Huitieme') {
 			$match['id_equipe1'] = $match['m_id1'];
 			$match['id_equipe2'] = $match['m_id2'];
 		} else {
+			$perdant=false;
 			switch ($nom) {
 				case 'Quart':
 					$prev = 'Huitieme';
-				break;		
+				break;
 				case 'Demi':
 					$prev = 'Quart';
 				break;
 				case 'p_final':
 					$prev = 'Demi';
 					$match['type'] .= 1;
+					$perdant=true;
 				break;
 				case 'Final':
 					$prev = 'Demi';
 					$match['type'] .= 1;
 				break;
-				
-			} 
-			
-			$match['id_equipe1'] = vainqueur_match(find_match_by_type(
-				$prev.$regles[$nom][substr($match['type'],-1)][0],
-				$mat_par_type[$prev]));
-			$match['id_equipe2'] = vainqueur_match(find_match_by_type(
-				$prev.$regles[$nom][substr($match['type'],-1)][1],
-				$mat_par_type[$prev]));
-			print $match['id_equipe1'];
-			print $match['id_equipe2'];
+
+			}
+
+			if (!$perdant) {
+				$match['id_equipe1'] = vainqueur_match((find_match_by_type(
+					$prev.$regles[$nom][substr($match['type'],-1)][0],
+					$mat_par_type[$prev])));
+				$match['id_equipe2'] = vainqueur_match((find_match_by_type(
+					$prev.$regles[$nom][substr($match['type'],-1)][1],
+					$mat_par_type[$prev])));
+			} else {
+				$match['id_equipe1'] = perdant_match((find_match_by_type(
+					$prev.$regles[$nom][substr($match['type'],-1)][0],
+					$mat_par_type[$prev])));
+				$match['id_equipe2'] = perdant_match((find_match_by_type(
+					$prev.$regles[$nom][substr($match['type'],-1)][1],
+					$mat_par_type[$prev])));
+			}
 		}
 		$match['eq1'] = $equipes[$match['id_equipe1']]['nom'];
 		$match['ac1'] = $equipes[$match['id_equipe1']]['acronym'];
 		$match['eq2'] = $equipes[$match['id_equipe2']]['nom'];
-		$match['ac2'] = $equipes[$match['id_equipe2']]['acronym']; 
+		$match['ac2'] = $equipes[$match['id_equipe2']]['acronym'];
 		$html_tableau.='<div class="'.$n_u.'u" style="text-align:center;">'.
-			pronostableau($match, $tableau_edit).'</div>';	
+			pronostableau($match, $tableau_edit).'</div>';
 	}
-	
-	
+
+
 	$html_tableau .= '</div>' .
-		'</div>' .
+		($tableau_edit)?'<div class="12u" style="text-align:center">
+		<input type="submit" value="Sauvez mes pronos"/>
+		</div>':'';
+
 	'</section>';
 }
-
-
-// Création du html pour le tableau final
-/*
-$html_tableau.='<tr>
-	<td colspan="4"><h2>Tableau final</h2></td></tr>
-	<tr>
-	<td colspan="4">Il faut attendre la fin des matchs de poules avant de pouvoir parier sur le tableau final
-		soit dans '.transforme($timestamp_poules_fin-time()).' !';
-
-
-
-
-$html_tableau.='</tr>';
-/*
-$eq_huitieme=array();
-for ($i=1;$i<=4;$i++) {
-	$eq_huitieme[$i]=array('id_equipe1' => $poules[$i+$j][0]['nom'], 'id_equipe2' => $poules[$i+$j+1][1]['nom']);
-	$eq_huitieme[$i+4]=array('id_equipe1' => $poules[$i+$j][1]['nom'], 'id_equipe2' => $poules[$i+$j+1][0]['nom']);
-	$j++;
-}
-
-
-// Récupération de tous les matchs du tableau et des paris du joueur
-$s_tableau="SELECT M.id_match, M.date_match, M.heure, M.cote_1, M.cote_N, M.cote_2,
-					M.score1, M.score2, M.tab1, M.tab2, M.type, M.id_equipe1, M.id_equipe2,
-					P.score1 AS p_score1, P.score2 AS p_score2, P.tab1 AS p_tab1, P.tab2 AS p_tab2, P.points
-				FROM matchs M
-				LEFT JOIN pronos P
-					ON P.id_user='".$_SESSION['id_user']."'
-					AND P.id_match=M.id_match
-				WHERE M.type<>'poule'";
-$r_tableau=mysql_query($s_tableau)
-	or die(mysql_error());
-$matchs_tableau=array();
-while ($d_tableau=mysql_fetch_array($r_tableau)) {
-	$matchs_tableau[$d_tableau['type']]=$d_tableau;
-}
-
-
-// Traitement des quarts
-$quarts=array();
-$j=0;
-for ($i=1;$i<=4;$i++) {
-	$quarts[$i]=array(
-		'match' => array(
-			'id_match' => $matchs_tableau['Quart'.$i]['id_match'],
-			'date_match' => $matchs_tableau['Quart'.$i]['date_match'],
-			'heure' => $matchs_tableau['Quart'.$i]['heure'],
-			'cote_1' => $matchs_tableau['Quart'.$i]['cote_1'],
-			'cote_N' => $matchs_tableau['Quart'.$i]['cote_N'],
-			'cote_2' => $matchs_tableau['Quart'.$i]['cote_2'],
-			'id_equipe1' => $matchs_tableau['Quart'.$i]['id_equipe1'],
-			'id_equipe2' => $matchs_tableau['Quart'.$i]['id_equipe2'],
-			'score1' => $matchs_tableau['Quart'.$i]['score1'],
-			'score2' => $matchs_tableau['Quart'.$i]['score2'],
-			'tab1' => $matchs_tableau['Quart'.$i]['tab1'],
-			'tab2' => $matchs_tableau['Quart'.$i]['tab2']),
-		'pronos' => array(
-			'id_equipe1' => vainqueur_match($huitiemes[$i+$j]['pronos']),
-			'id_equipe2' => vainqueur_match($huitiemes[$i+$j+1]['pronos']),
-			'score1' => $matchs_tableau['Quart'.$i]['p_score1'],
-			'score2' => $matchs_tableau['Quart'.$i]['p_score2'],
-			'tab1' => $matchs_tableau['Quart'.$i]['p_tab1'],
-			'tab2' => $matchs_tableau['Quart'.$i]['p_tab2'],
-			'points' => $matchs_tableau['Quart'.$i]['points'])
-	);
-	$j++;
-}
-
-// Traitement des demi-finales
-$demis=array();
-$j=0;
-for ($i=1;$i<=2;$i++) {
-	$demis[$i]=array(
-		'match' => array(
-			'id_match' => $matchs_tableau['Demi'.$i]['id_match'],
-			'date_match' => $matchs_tableau['Demi'.$i]['date_match'],
-			'heure' => $matchs_tableau['Demi'.$i]['heure'],
-			'cote_1' => $matchs_tableau['Demi'.$i]['cote_1'],
-			'cote_N' => $matchs_tableau['Demi'.$i]['cote_N'],
-			'cote_2' => $matchs_tableau['Demi'.$i]['cote_2'],
-			'id_equipe1' => $matchs_tableau['Demi'.$i]['id_equipe1'],
-			'id_equipe2' => $matchs_tableau['Demi'.$i]['id_equipe2'],
-			'score1' => $matchs_tableau['Demi'.$i]['score1'],
-			'score2' => $matchs_tableau['Demi'.$i]['score2'],
-			'tab1' => $matchs_tableau['Demi'.$i]['tab1'],
-			'tab2' => $matchs_tableau['Demi'.$i]['tab2']),
-		'pronos' => array(
-			'id_equipe1' => vainqueur_match($quarts[$i+$j]['pronos']),
-			'id_equipe2' => vainqueur_match($quarts[$i+$j+1]['pronos']),
-			'score1' => $matchs_tableau['Demi'.$i]['p_score1'],
-			'score2' => $matchs_tableau['Demi'.$i]['p_score2'],
-			'tab1' => $matchs_tableau['Demi'.$i]['p_tab1'],
-			'tab2' => $matchs_tableau['Demi'.$i]['p_tab2'],
-			'points' => $matchs_tableau['Demi'.$i]['points'])
-	);
-	$j++;
-}
-// Traitement des finales
-$petite_finale=array(
-		'match' => array(
-			'id_match' => $matchs_tableau['p_finale']['id_match'],
-			'date_match' => $matchs_tableau['p_finale']['date_match'],
-			'heure' => $matchs_tableau['p_finale']['heure'],
-			'cote_1' => $matchs_tableau['p_finale']['cote_1'],
-			'cote_N' => $matchs_tableau['p_finale']['cote_N'],
-			'cote_2' => $matchs_tableau['p_finale']['cote_2'],
-			'id_equipe1' => $matchs_tableau['p_finale']['id_equipe1'],
-			'id_equipe2' => $matchs_tableau['p_finale']['id_equipe2'],
-			'score1' => $matchs_tableau['p_finale']['score1'],
-			'score2' => $matchs_tableau['p_finale']['score2'],
-			'tab1' => $matchs_tableau['p_finale']['tab1'],
-			'tab2' => $matchs_tableau['p_finale']['tab2']),
-		'pronos' => array(
-			'id_equipe1' => perdant_match($demis[1]['pronos']),
-			'id_equipe2' => perdant_match($demis[2]['pronos']),
-			'score1' => $matchs_tableau['p_finale']['p_score1'],
-			'score2' => $matchs_tableau['p_finale']['p_score2'],
-			'tab1' => $matchs_tableau['p_finale']['p_tab1'],
-			'tab2' => $matchs_tableau['p_finale']['p_tab2'],
-			'points' => $matchs_tableau['p_finale']['points'])
-	);
-$finale=array(
-		'match' => array(
-			'id_match' => $matchs_tableau['Finale']['id_match'],
-			'date_match' => $matchs_tableau['Finale']['date_match'],
-			'heure' => $matchs_tableau['Finale']['heure'],
-			'cote_1' => $matchs_tableau['Finale']['cote_1'],
-			'cote_N' => $matchs_tableau['Finale']['cote_N'],
-			'cote_2' => $matchs_tableau['Finale']['cote_2'],
-			'id_equipe1' => $matchs_tableau['Finale']['id_equipe1'],
-			'id_equipe2' => $matchs_tableau['Finale']['id_equipe2'],
-			'score1' => $matchs_tableau['Finale']['score1'],
-			'score2' => $matchs_tableau['Finale']['score2'],
-			'tab1' => $matchs_tableau['Finale']['tab1'],
-			'tab2' => $matchs_tableau['Finale']['tab2']),
-		'pronos' => array(
-			'id_equipe1' => vainqueur_match($demis[1]['pronos']),
-			'id_equipe2' => vainqueur_match($demis[2]['pronos']),
-			'score1' => $matchs_tableau['Finale']['p_score1'],
-			'score2' => $matchs_tableau['Finale']['p_score2'],
-			'tab1' => $matchs_tableau['Finale']['p_tab1'],
-			'tab2' => $matchs_tableau['Finale']['p_tab2'],
-			'points' => $matchs_tableau['Finale']['points'])
-	);
-if ($timestamp_tableau_debut<time()) {
-	$dis_tableau=' readonly ';
-}
-
-
-$html_tableau.='<p>La date limite est le samedi 26 juin à 16:00. Précision technique pour les non-footballers : TAB = Tirs aux buts, qui permet de déterminer le
-	vainqueur en cas de match nul.</p>
-*/
-
 
 
 /* Création de la structure totale */
@@ -428,7 +288,7 @@ $html.='<div class="12u" id="mes_pronos">
 // début du formulaire
 if ($poule_edit or $tableau_edit) {
 	$html.='<form method="post" id="frm_pronos">' .
-			'<div style="text-align:center">
+			'<div style="text-align:center;margin:auto;" >
 		<input type="submit" value="Sauvez mes pronos"/>
 		</div>
 
