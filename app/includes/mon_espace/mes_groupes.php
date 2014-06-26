@@ -113,7 +113,7 @@ if (empty($_GET['action'])) {
 				} else {
 					$s_groupes="SELECT id_groupe FROM groupes WHERE nom='".$_POST['nom']."'";
 					$r_groupes=mysqli_query($db_pronos, $s_groupes)
-						or die(mysql_error());
+						or die(mysqli_error($db_pronos));
 					if (mysqli_num_rows($r_groupes)) {
 						$error='<span class="special">CE NOM EXISTE DÉJA</span>';
 					}
@@ -150,7 +150,7 @@ if (empty($_GET['action'])) {
 
 
 				$r_user_group=mysqli_query($db_pronos, $s_user_group)
-					or die('impossible d\'ajouter le proprio au groupe'.mysqli_error());
+					or die('impossible d\'ajouter le proprio au groupe'.mysqli_error($db_pronos));
 
 				$html.='<p>Votre groupe a été créé. Veuillez attendre la validation par le webmaster du site</p>';
 				sendmail($admin_email,'Nouveau groupe créé par '.$_SESSION['login'],
@@ -175,11 +175,12 @@ if (empty($_GET['action'])) {
 			$s_insert="REPLACE INTO l_users_groupes (`id_user`,`id_groupe`,`date_in`,`date_modif`)
 				VALUES ('".$_SESSION['id_user']."','".$_GET['id']."',CURDATE(),CURDATE())";
 			$r_insert=mysqli_query($db_pronos, $s_insert)
-				or die(mysql_error());
+				or die(mysqli_error($db_pronos));
 		break;
 		case 'modifier':
 		case 'voir':
-			$s_groupe="SELECT G.nom, G.id_owner, U.id_user, U.login, U.nom_reel, UG.actif FROM groupes G
+			$s_groupe="SELECT G.nom, G.id_owner, U.id_user, U.login, U.nom_reel, UG.actif
+				FROM groupes G
 				INNER JOIN l_users_groupes UG
 					ON G.id_groupe=UG.id_groupe
 				INNER JOIN users U

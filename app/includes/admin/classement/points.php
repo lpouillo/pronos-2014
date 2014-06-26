@@ -40,10 +40,7 @@ mysqli_query($db_pronos, $s_classement)
 	or die(mysqli_error($db_pronos));
 
 
-//echo '<pre>';
-//print_r($users);
-//echo '</pre>';
-
+//
 
 //$html.='<h3>Mise a jour des points des parieurs</h3><p>';
 //foreach($users as $id_user => $data) {
@@ -64,7 +61,7 @@ mysqli_query($db_pronos, $s_classement)
 //	$s_update="UPDATE users SET points='".($data['points']+$bonus+$malus)."' WHERE id_user='".$id_user."'";
 //	$html.=$id_user.' => '. ($data['points']+$bonus+$malus).' - ';
 //	$r_update=mysqli_query($db_pronos,$s_update)
-//		or die(mysql_error());
+//		or die(mysqli_error($db_pronos));
 //}
 
 

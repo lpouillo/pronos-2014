@@ -15,7 +15,7 @@ $s_matchs="SELECT M.id_match, M.date_match, M.heure,
 			ORDER BY M.date_match, M.heure";
 
 $r_matchs=mysqli_query($db_pronos,$s_matchs)
-	or die($s_matchs.'<br/>'.mysql_error());
+	or die($s_matchs.'<br/>'.mysqli_error($db_pronos));
 $mat_par_type=array();
 
 while ($match=mysqli_fetch_array($r_matchs)) {
@@ -29,7 +29,8 @@ $sections = array(
 	'p_final' => 'Petite finale',
 	'Final' => 'Finale'
 	);
-$html .= '<header><h2>Tableau final</h2></header><div>';
+$html .= '<header><h2>Tableau final</h2></header>
+		<div>';
 foreach($sections as $nom => $text) {
 	$html .= '<section id="'.$nom.'">' .
 		'<div class="12u">' .

@@ -95,7 +95,7 @@ $from=$admin_email;
 					$token=md5(date('Y-m-d h:i:s'));
 					$s_insert="INSERT INTO users (`date_in`,`login`,`nom_reel`,`email`,`token`,`news`) VALUE (CURDATE(),'".$_POST['login']."','".$_POST['nom']."','".$_POST['email']."','".$token."','".$_POST['news']."')";
 					mysqli_query($db_pronos, $s_insert)
-						or die('Impossible de créer l\'utilisateur <br/>'.$s_insert.'<br/>'.mysql_error());
+						or die('Impossible de créer l\'utilisateur <br/>'.$s_insert.'<br/>'.mysqli_error($db_pronos));
 
 					// Envoi du mail de confirmation
 					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
@@ -124,41 +124,45 @@ $from=$admin_email;
 			}
 		} else {
 			// si il y a un token fourni et qu'il vaut new
-			if ($_GET['token']=='new' or $_POST['token']=='new') {
-				$s_check_user="SELECT email FROM users WHERE login='".$_POST['login']."' AND email='".$_POST['email']."'";
-				$r_check_user=mysqli_query($db_pronos, $s_check_user);
-				if (mysqli_num_rows($r_check_user)) {
-					$token=md5(date('Y-m-d h:i:s'));
-					$s_update="UPDATE users SET token='".$token."' WHERE login='".$_POST['login']."' AND email='".$_POST['email']."'";
-					mysqli_query($db_pronos, $s_update)
-						or die('Impossible de recréer un token <br/>'.$s_update.'<br/>'.mysql_error());
-					// Envoi du mail de confirmation
-					$headers ='From: "Pronos 2014" <'.$admin_email.">\n".
-						'Bcc: "Pronos 2014" <'.$admin_email.">\n";
-					$headers .='Content-Type: text/html; charset="utf-8"'."\n";
-					$headers .='Content-Transfer-Encoding: 8bit';
+			if ($_GET['token']=='new') {
+				$show_form=true;
+				if (isset($_POST['login'])) {
+					$s_check_user="SELECT email FROM users WHERE login='".$_POST['login']."' AND email='".$_POST['email']."'";
+					$r_check_user=mysqli_query($db_pronos, $s_check_user);
+					if (mysqli_num_rows($r_check_user)) {
+						$show_form=false;
+						$token=md5(date('Y-m-d h:i:s'));
+						$s_update="UPDATE users SET token='".$token."' WHERE login='".$_POST['login']."' AND email='".$_POST['email']."'";
+						mysqli_query($db_pronos, $s_update)
+							or die('Impossible de recréer un token <br/>'.$s_update.'<br/>'.mysqli_error($db_pronos));
+						// Envoi du mail de confirmation
+						$headers ='From: "Pronos 2014" <'.$admin_email.">\n".
+							'Bcc: "Pronos 2014" <'.$admin_email.">\n";
+						$headers .='Content-Type: text/html; charset="utf-8"'."\n";
+						$headers .='Content-Transfer-Encoding: 8bit';
 
-					$uri=explode('&',$_SERVER['REQUEST_URI']);
-					$message='Bonjour '.htmlentities($_POST['nom']).'.<br/><br/>
+						$uri=explode('&',$_SERVER['REQUEST_URI']);
+						$message='Bonjour '.htmlentities($_POST['login']).'.<br/><br/>
 
-						Quelqu\'un (probablement vous) a utilisé demander à réinitialiser votre mot de passe.<br/><br/>
-						Pour choisir un nouveau mot de passe, il vous suffit de cliquer sur le le lien suivant :<br/>
-						<a href="http://'.$_SERVER['HTTP_HOST'].$uri[0].'&token='.$token.'">
-						http://'.$_SERVER['HTTP_HOST'].'/'.$uri[0].'&token='.$token.'</a>
-						<br/><br/>
-						Cordialement
-						<br/>
-						Le webmaster du site de pronostiques ..
-							';
-					sendmail($_POST['email'],'Nouveau mot de passe sur le site de pronostiques 2014',$message);
+							Quelqu\'un (probablement vous) a utilisé demander à réinitialiser votre mot de passe.<br/><br/>
+							Pour choisir un nouveau mot de passe, il vous suffit de cliquer sur le le lien suivant :<br/>
+							<a href="http://'.$_SERVER['HTTP_HOST'].$uri[0].'&token='.$token.'">
+							http://'.$_SERVER['HTTP_HOST'].'/'.$uri[0].'&token='.$token.'</a>
+							<br/><br/>
+							Cordialement
+							<br/>
+							Le webmaster du site de pronostiques ..
+								';
+						sendmail($_POST['email'],'Nouveau mot de passe sur le site de pronostiques 2014',$message);
 
-					$html.='<p>Un lien pour réinitialiser votre mot de passe vous a été envoyé.</p>';
-				} else {
-					if (isset($_POST['login'])) {
-						$aucun='Aucun compte correspondant aux informations soumises n\'a été trouvé.';
+						$html.='<p>Un lien pour réinitialiser votre mot de passe vous a été envoyé.</p>';
 					} else {
-						$aucun='Veuillez renseignez les informations suivantes';
+						$aucun='Aucun compte correspondant aux informations soumises n\'a été trouvé.';
 					}
+				}  else {
+					$aucun='Veuillez renseignez les informations suivantes';
+				}
+				if ($show_form) {
 					$html.='
 							<div style="width:500px;margin:auto;">
 							<p>'.$aucun.'</p>
@@ -243,7 +247,7 @@ $from=$admin_email;
 							$_SESSION['points']=$d_user['points'];
 							$s_update="UPDATE users SET `password`='".md5($_POST['password'])."', token='', date_recup=CURDATE(), actif=1, classement=10000 WHERE token='".$token."'";
 							mysqli_query($db_pronos, $s_update)
-								or die(mysql_error());
+								or die(mysqli_error($db_pronos));
 							$html.='<div>Votre compte a été activé. <a href="index.php?page=mon_espace#mes_pronos">Accéder à mes pronostiques</a></div>';
 
 						}

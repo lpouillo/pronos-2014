@@ -4,7 +4,7 @@ $s_distrib="SELECT points, COUNT(id_user) AS n_users FROM users
 	GROUP BY points
 	ORDER BY points";
 $r_distrib=mysqli_query($db_pronos, $s_distrib)
-	or die(mysqli_error());
+	or die(mysqli_error($db_pronos));
 while ($d_distrib=mysqli_fetch_array($r_distrib)) {
 	$distrib[$d_distrib['points']]=$d_distrib['n_users'];
 }

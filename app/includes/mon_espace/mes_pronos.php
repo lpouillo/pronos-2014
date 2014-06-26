@@ -60,7 +60,7 @@ $s_matchs="SELECT M.id_match, M.date_match, M.heure, M.id_equipe1, M.score1 AS r
 			ORDER BY EQ1.poule, M.date_match, M.heure";
 
 $r_matchs=mysqli_query($db_pronos, $s_matchs)
-	or die($s_matchs.'<br/>'.mysqli_error());
+	or die($s_matchs.'<br/>'.mysqli_error($db_pronos));
 $mat_par_poule=array();
 while ($d_matchs=mysqli_fetch_array($r_matchs)) {
 	$mat_par_poule[$d_matchs['poule']][]=$d_matchs;
@@ -210,7 +210,9 @@ function find_match_by_type($type, $matchs) {
 
 //$tableau_edit=true;
 
-$html_tableau = '<header><h2>Tableau final</h2></header>';
+$html_tableau = '<header><h2>Tableau final</h2></header>
+		<div>Vous devez soummettre tous les paris pour le tableau final. Si vous sauvegardez,
+		le tableau basé sur vos paris sera affiché. Bonne chance !</div>';
 foreach($sections as $nom => $text) {
 	$html_tableau .= '<section id="'.$nom.'">' .
 		'<div class="12u">' .

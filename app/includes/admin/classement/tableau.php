@@ -33,7 +33,7 @@ $s_v_huitieme="SELECT type, CASE
 $r_v_huitieme=mysqli_query($db_pronos,$s_v_huitieme);
 $v_huitiemes = array_fill(0, 8, NULL);
 while ($d_v_huitieme=mysqli_fetch_array($r_v_huitieme)) {
-	$v_huitiemes[substr($d_v_huitieme['type'],-1)] = $d_v_huitieme['id_vainqueur']; 
+	$v_huitiemes[substr($d_v_huitieme['type'],-1)] = $d_v_huitieme['id_vainqueur'];
 }
 
 foreach ($regles['Quart'] as $i => $huitiemes) {
@@ -42,7 +42,7 @@ foreach ($regles['Quart'] as $i => $huitiemes) {
 			WHERE type='Quart".$i."'";
 	mysqli_query($db_pronos,$s_update);
 	$html.=($page == 'admin')?$s_update.'<br/>':'';
-} 
+}
 
 
 
@@ -58,17 +58,17 @@ $s_v_quart="SELECT type, CASE
 $r_v_quart=mysqli_query($db_pronos,$s_v_quart);
 $v_quarts = array_fill(0, 4, NULL);
 while ($d_v_quart=mysqli_fetch_array($r_v_quart)) {
-	$v_quarts[substr($d_v_quart['type'],-1)] = $d_v_quart['id_vainqueur']; 
+	$v_quarts[substr($d_v_quart['type'],-1)] = $d_v_quart['id_vainqueur'];
 }
 
-	
+
 foreach ($regles['Demi'] as $i => $quarts) {
 	$s_update="UPDATE matchs SET id_equipe1='".$v_quarts[$quarts[0]]."',
 			id_equipe2='".$v_quarts[$quarts[1]]."'
 			WHERE type='Demi".$i."'";
 	mysqli_query($db_pronos,$s_update);
 	$html.=($page == 'admin')?$s_update.'<br/>':'';
-} 
+}
 
 
 // Mise à jour des finales
@@ -89,7 +89,7 @@ $s_v_demies="SELECT type, CASE
 				FROM matchs WHERE `type` LIKE 'Demi%'";
 
 $r_v_demi=mysqli_query($db_pronos,$s_v_demies)
-	or die($s_v_demies.'<br/>'.mysqli_error());
+	or die($s_v_demies.'<br/>'.mysqli_error($db_pronos));
 $v_demis=array();
 $p_demis=array();
 while ($d_v_demi=mysqli_fetch_array($r_v_demi)) {
@@ -101,12 +101,12 @@ $s_update="UPDATE matchs SET id_equipe1='".$v_demis[1]."', " .
 		"id_equipe2='".$v_demis[2]."' WHERE `type`='Finale'";
 $html.=($page == 'admin')?$s_update.'<br/>':'';
 mysqli_query($db_pronos,$s_update)
-	or die(mysqli_error());
+	or die(mysqli_error($db_pronos));
 $s_update="UPDATE matchs SET id_equipe1='".$p_demis[1]."', " .
 		"id_equipe2='".$p_demis[2]."' WHERE `type`='p_finale'";
 $html.=($page == 'admin')?$s_update.'<br/>':'';
 mysqli_query($db_pronos,$s_update)
-	or die(mysqli_error());
+	or die(mysqli_error($db_pronos));
 
 ?>
 

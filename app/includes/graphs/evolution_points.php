@@ -1,7 +1,8 @@
 <?php
 
 // Selection des tous les pronostics des poules
-$s_pronos="SELECT P.id_user, P.id_match, P.score1 AS prono1, P.score2 AS prono2, M.score1, M.score2, M.special, M.type,
+$s_pronos="SELECT P.id_user, P.id_match, P.score1 AS prono1, P.score2 AS prono2,
+	M.score1, M.score2, M.special, M.type,
 	EQ1.acronym AS ac1, EQ2.acronym AS ac2 FROM pronos P
 	INNER JOIN matchs M
 		ON P.id_match=M.id_match

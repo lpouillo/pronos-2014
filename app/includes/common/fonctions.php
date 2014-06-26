@@ -19,7 +19,7 @@ function secure_mysql($string) {
 function recuperation_donnees ($sql) {
 	global $db_pronos;
 	$result=mysqli_query($db_pronos, $sql)
-		or die($sql.'<br/><strong>'.mysql_error().'</strong>');
+		or die($sql.'<br/><strong>'.mysqli_error($db_pronos).'</strong>');
 	$return_array=array();
 	$i=0;
 	while ($data=mysqli_fetch_array($result,MYSQL_ASSOC)) {

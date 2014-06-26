@@ -25,7 +25,7 @@ if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 			$r_insert=mysqli_query($db_pronos, $s_insert)
 				or die($s_insert.'<br/>'.mysqli_error($db_pronos));
 			$_POST['action']='modifier';
-			$_POST['id']=mysql_insert_id();
+			$_POST['id']=mysqli_insert_id($db_pronos);
 		break;
 		case 'modifier_equipe':
 			$s_update="UPDATE equipes SET `date_modif`=CURDATE(),`nom`='".$_POST['nom']."',`acronym`='".$_POST['acronym']."',
@@ -45,7 +45,7 @@ if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 			$r_insert=mysqli_query($db_pronos, $s_insert)
 				or die($s_insert.'<br/>'.mysqli_error($db_pronos));
 			$_POST['action']='modifier';
-			$_POST['id']=mysql_insert_id();
+			$_POST['id']=mysqli_insert_id($db_pronos);
 		break;
 		case 'modifier_match':
 			$s_update="REPLACE INTO matchs (`id_match`,`date_in`,`date_modif`,`id_equipe1`,`id_equipe2`,
@@ -65,7 +65,7 @@ if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 			$r_insert=mysqli_query($db_pronos, $s_insert)
 				or die($s_insert.'<br/>'.mysqli_error($db_pronos));
 			$_POST['action']='modifier';
-			$_POST['id']=mysql_insert_id();
+			$_POST['id']=mysqli_insert_id($db_pronos);
 		break;
 		case 'modifier_user':
 			$s_update="UPDATE users SET `date_modif`=CURDATE(),`login`='".$_POST['login']."',`nom_reel`='".$_POST['nom_reel']."',
@@ -80,7 +80,7 @@ if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 			$r_insert=mysqli_query($db_pronos, $s_insert)
 				or die($s_insert.'<br/>'.mysqli_error($db_pronos));
 			$_POST['action']='modifier';
-			$_POST['id']=mysql_insert_id();
+			$_POST['id']=mysqli_insert_id($db_pronos);
 		break;
 		case 'modifier_groupe':
 			$s_update="UPDATE groupes SET `date_modif`=CURDATE(),`nom`='".$_POST['nom']."',`description`='".$_POST['description']."',

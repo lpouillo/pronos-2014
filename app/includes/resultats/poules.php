@@ -28,7 +28,7 @@ $s_matchs="SELECT M.id_match, M.date_match, M.heure, " .
 			WHERE M.type='poule'
 			ORDER BY EQ1.poule, M.date_match, M.heure";
 $r_matchs=mysqli_query($db_pronos,$s_matchs)
-	or die($s_matchs.'<br/>'.mysql_error());
+	or die($s_matchs.'<br/>'.mysqli_error($db_pronos));
 $mat_par_poule=array();
 while ($match=mysqli_fetch_array($r_matchs)) {
 	$mat_par_poule[$match['poule']][]=$match;
