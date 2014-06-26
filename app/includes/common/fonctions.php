@@ -1,8 +1,8 @@
 <?php
 // Fonction d'échappement des quotes pour éviter les injections SQL
 function secure_mysql($string) {
- 	//$string=addslashes($string);
- 	$string=mysqli_real_escape_string($string);
+	global $db_pronos;
+ 	$string=mysqli_real_escape_string($db_pronos, $string);
  	return $string;
 }
 
