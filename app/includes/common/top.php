@@ -39,7 +39,7 @@
 									<?php
 									if (empty($_SESSION['id_user'])) {
 									?>
-										<form method="post" action="index.php" id="form_login">
+										<form method="post" action="<?=$_SERVER['REQUEST_URI']?>" id="form_login">
 											<table cellspacing="3" cellpadding="3" border="0" >
 												<tr>
 													<td>Login</td>
@@ -121,7 +121,7 @@
 												Concours</a>
 											<ul>
 												<li><a href="index.php?page=concours#general">Classement général</a></li>
-												<li><a href="index.php?page=concours#relief">Classement en relief</a></li>
+												<li><a href="index.php?page=concours&section=relief">Classement en relief</a></li>
 												<li><a href="index.php?page=concours#groupes">Classement par groupe</a></li>
 											</ul>
 										</li>

@@ -2,6 +2,9 @@
 foreach ($_POST as &$var) {
 	$var=secure_mysql($var);
 }
+foreach ($_GET as &$var) {
+	$var=secure_mysql($var);
+}
 if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 	switch ($_POST['requete']) {
 		case 'update_pronos':

@@ -2,8 +2,7 @@
 // Fonction d'échappement des quotes pour éviter les injections SQL
 function secure_mysql($string) {
  	//$string=addslashes($string);
- 	$string=str_replace("'","\'",$string);
- 	$string=str_replace('"','\"',$string);
+ 	$string=mysqli_real_escape_string($string);
  	return $string;
 }
 
@@ -154,12 +153,12 @@ function flux_match($rss) {
 function get_puce($classement) {
 	switch($classement) {
 		case 1:
-			$puce='<img height="20px" src="public/images/icons/concours.png" alt="'.
+			$puce='<img height="14px" src="public/images/icons/concours.png" alt="'.
 				$classement.'"/>';
 
 			break;
 		case 2:
-			$puce='<img height="17px" src="public/images/icons/medal_silver_2.png" alt="'.
+			$puce='<img height="14px" src="public/images/icons/medal_silver_2.png" alt="'.
 				$classement.'"/>';
 			break;
 		case 3:
@@ -316,9 +315,10 @@ function aff_match($match, $layout='horizontal') {
 	$eq2 = ($match['eq2']== '')?'en attente':$match['eq2'];
 	$flag1=($match['ac1'] == '')?'50px-Drapeau_noir.svg':$match['ac1'];
 	$flag2=($match['ac2'] == '')?'50px-Drapeau_noir.svg':$match['ac2'];
-	
+
 	$score = $aff1.'-'.$aff2;
-	$html='<table class="box match'.$spec.'">
+	$html='<a href="index.php?page=resultats&section=match&id='.$match['id_match'].
+			'"><table class="box match'.$spec.'">
 				<tbody>';
 	if ($layout=='horizontal') {
 		$html.=	' 	<tr>
@@ -326,21 +326,21 @@ function aff_match($match, $layout='horizontal') {
 						$type.', '.
 						$date.
 						'</th>
-					</tr>' .
-					'<tr>
-						<td class="flag">' .
-						'<img height="12px" alt="flag" src="public/images/flags/'.$flag1.'.png">' .
-						'</td>' .
-						'<td class="eq1'.$win1.'">&nbsp;'.$eq1.'</td>' .
-						'<td class="score">'.$score.'</td>' .
-						'<td class="eq2'.$win2.'">'.$eq2.'&nbsp;</td>' .
-						'<td class="flag">' .
-						'<img height="12px" alt="flag" src="public/images/flags/'.$flag2.'.png">' .
-						'</td>' .
-					'</tr>' .
-					'<tr>' .
-						'<td colspan="5" class="cote">Cote: '.$cote.'</td>' .
-					'</tr>';
+					</tr>
+					<tr>
+						<td class="flag">
+							<img height="12px" alt="flag" src="public/images/flags/'.$flag1.'.png">
+						</td>
+						<td class="eq1'.$win1.'">&nbsp;'.$eq1.'</td>
+						<td class="score">'.$score.'</td>
+						<td class="eq2'.$win2.'">'.$eq2.'&nbsp;</td>
+						<td class="flag">
+							<img height="12px" alt="flag" src="public/images/flags/'.$flag2.'.png">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="5" class="cote">Cote: '.$cote.'</td>
+					</tr>';
 	} else if ($layout=='vertical') {
 		$html.='			<th colspan="2"><strong>'.$type.'</strong></th><th>Cote</th><th>Rés</th></tr>
 					<tr>
@@ -355,18 +355,19 @@ function aff_match($match, $layout='horizontal') {
 						<td class="eq1">'.$eq2.'</td>
 						<td class="score">'.$aff2.'</td></tr>
 					<tr>
-						<td class="date link" colspan="4" ">'.$date.'</td>
-					</tr>
-				</tbody></table>';
+						<td class="date link" colspan="4">'.$date.'</td>
+					</tr>';
 	}
+
 	$html.='	</tbody>' .
-			'</table>';
+			'</table></a>';
+
 
 	return $html;
 }
 
 function aff_prono($match, $edit) {
-	
+
 	$cote=($edit)?'à venir':$match['cote_1'].' / '.$match['cote_N'].' / '.$match['cote_2'];
 	$pari1=($edit)?'<input class="score" type="text" size="1" name="pronos['.$match['id_match'].'][score1]" value="'.$match['score1'].'"/>':
 		'<span class="score">'.$match['score1'].'</span>';
@@ -375,7 +376,7 @@ function aff_prono($match, $edit) {
 	$resultat=($match['joue'])?'<td class="score">'.$match['res1'].'</td><td class="score">'.$match['res2'].'</td><td style="color:red;">'.$match['points'].' points</td>':
 		'<td colspan="3" style="text-align:center;">à venir</td>';
 	$spec=(array_key_exists('special', $match) and $match['special'])?'special ':'';
-	
+
 	// On constuire le bloc de ligne correspondant au match
 	$html= '<table class="prono box">' .
 				'<tbody>' .
@@ -441,9 +442,9 @@ function pronostableau($match, $edit) {
 				'-'.$res2.' '.$match['m_eq2']:'à venir';
 	$flag1=($match['ac1'] == '')?'50px-Drapeau_noir.svg':$match['ac1'];
 	$flag2=($match['ac2'] == '')?'50px-Drapeau_noir.svg':$match['ac2'];
-	$cote= ($edit)?'<div style="height:15px;">'.$match['cote_1'].
+	$cote= (!$edit)?'<div style="height:15px;">'.$match['cote_1'].
 			'</div><div style="height:15px;">'.$match['cote_N'].
-			'</div><div style="height:15px;">'.$match['cote_2']:
+			'</div><div style="height:15px;">'.$match['cote_2'].'</div>':
 		'à venir';
 	$html='<table class="prono box">
 		<tr>
@@ -457,7 +458,7 @@ function pronostableau($match, $edit) {
 		<tr>
 			<td class="eq1"><img src="public/images/flags/'.$flag1.'.png" height="12px"/> '
 				.$match['eq1'].'
-			</td> 
+			</td>
 			<td>
 				<input type="text" class="score" name="pronos['.$match['id_match'].'][score1]"
 			 	value="'.$match['score1'].'" />
@@ -466,12 +467,12 @@ function pronostableau($match, $edit) {
 				<input type="text" class="score" name="pronos['.$match['id_match'].'][tab1]"
 				value="'.$match['tab1'].'"/>
 			</td>
-			<td rowspan="2" style="text-align:center">'.$cote.'</td>
+			<td rowspan="2" style="text-align:center;vertical-align:middle;">'.$cote.'</td>
 			<td rowspan="2" style="vertical-align:middle;color:red;padding-left:20px;">'.$match['points'].'</strong></td>
 		</tr>
 		<tr>
 			<td class="eq1"><img src="public/images/flags/'.$flag2.'.png" height="12px"/> '
-			.$match['eq2'].'</td> 
+			.$match['eq2'].'</td>
 			<td>
 				<input type="text" class="score" name="pronos['.$match['id_match'].'][score2]"' .
 				' value="'.$match['score2'].'"/>
