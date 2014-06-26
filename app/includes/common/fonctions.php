@@ -2,7 +2,16 @@
 // Fonction d'échappement des quotes pour éviter les injections SQL
 function secure_mysql($string) {
 	global $db_pronos;
- 	$string=mysqli_real_escape_string($db_pronos, $string);
+	if (is_array($string)) {
+
+		foreach($string as &$el) {
+			$el = secure_mysql($el);
+		}
+	} else {
+		$string=mysqli_real_escape_string($db_pronos, $string);
+	}
+
+
  	return $string;
 }
 
@@ -364,6 +373,10 @@ function aff_match($match, $layout='horizontal') {
 
 
 	return $html;
+}
+
+function aff_parieur($parieur) {
+	print_r($parieur);
 }
 
 function aff_prono($match, $edit) {

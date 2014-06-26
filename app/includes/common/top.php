@@ -112,7 +112,7 @@
 												Résultats</a>
 											<ul>
 												<li><a href="index.php?page=resultats#poules">Poules</a></li>
-												<li><a href="index.php?page=concours#tableau_final">Tableau final</a></li>
+												<li><a href="index.php?page=resultats#tableau_final">Tableau final</a></li>
 											</ul>
 										</li>
 										<li<?=($page=='concours')?' class="current_page_item"':''?>>
