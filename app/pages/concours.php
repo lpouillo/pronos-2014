@@ -10,19 +10,15 @@ if (empty($_GET['section'])) {
 				    <header>' .
 				   		'<h2>Classement général du concours</h2>'.
 					'</header>' .
-					'Il y a '.mysqli_num_rows($r_parieurs).' participants au concours.' .
-					'<div class="row">' .
+					'Il y a '.mysqli_num_rows($r_parieurs).' participants au concours.'.
+					' Voir le <a href="index.php?page=concours&section=relief">classement en relief</a>.' .
 					$html_parieurs.
-					'</div>'.
 				'</div>' .
 				'<div class="4u box">' .
 				'	<header>' .
 				'		<h2>Classement par groupes</h2>' .
 				'   </header>' .
 				'   Il y a '.$n_groupes.' groupe(s) d\'utilisateurs.' .
-				'<div class="8u" style="margin:auto;">'.
-				'<a class="button" href="index.php?page=mon_espace&#mes_groupes">Accédez à mes groupes</a>'.
-				'</div>'.
 					$html_groupe.
 				'</div>';
 
@@ -30,6 +26,9 @@ if (empty($_GET['section'])) {
 	switch($_GET['section']) {
 		case 'groupe':
 			include('app/includes/concours/par_groupe.php');
+		break;
+		case 'relief':
+			include('app/includes/concours/relief.php');
 		break;
 	}
 }

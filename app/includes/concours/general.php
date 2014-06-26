@@ -14,14 +14,16 @@ $count_parieurs=0;
 $count_date=0;
 $old_date_in='';
 $old_classement=0;
+$show_dist=true;
 
 if (mysqli_num_rows($r_parieurs)) {
-	$html_parieurs='<div class="8u">' .
-		'<div class="8u" style="margin:auto;">'.
-		'<a class="button" href="#cestmoi">Accédez à mon classement</a>'.
-		'</div>';
-	while ($d_parieurs=mysqli_fetch_array($r_parieurs)) {
+	$html_parieurs='<div class="8u">';
+	$html_parieurs.=(isset($_SESSION['id_user']))?
+			'<div class="8u" style="margin:auto;">'.
+			'<a class="button" href="#cestmoi">Accédez à mon classement</a>'.
+			'</div>':'';
 
+	while ($d_parieurs=mysqli_fetch_array($r_parieurs)) {
 		$count_parieurs++;
 		$cestmoi=(isset($_SESSION['id_user']) and $_SESSION['id_user']==$d_parieurs['id_user'])?
 			'<strong id="cestmoi">'.htmlentities($d_parieurs['login'],ENT_QUOTES,'UTF-8').'</strong>':
@@ -38,8 +40,14 @@ if (mysqli_num_rows($r_parieurs)) {
 					$cestmoi.'</span>';
 		} else {
 
-			if ($old_classement<$d_parieurs['classement'] and $old_classement != 0) {
-				$html_parieurs .= '('.$d_parieurs['points'].')</div>';
+
+			if ($old_classement<$d_parieurs['classement'] and $old_classement!=0) {
+				$html_parieurs .= '('.$old_points.')</div>';
+				if ($d_parieurs['classement']>=10 and $show_dist) {
+					$html_parieurs.='<div><img src="index.php?page=graphs&type=distribution_generale"/>
+							</div>';
+					$show_dist=false;
+				}
 			}
 			$style = (($d_parieurs['classement']) % 10 == 0)?'color:#00774B;font-weight:bold;':
 				'';
@@ -56,8 +64,10 @@ if (mysqli_num_rows($r_parieurs)) {
 
 
 		$old_classement=$d_parieurs['classement'];
+
+		$old_points=$d_parieurs['points'];
 	}
-	$html_parieurs.='</div></div>';
+	$html_parieurs .= '('.$old_points.')</div></div>';
 } else {
 	$html_parieurs='<p>Il n\'y a aucun utilisateur actif.</p>';
 }
