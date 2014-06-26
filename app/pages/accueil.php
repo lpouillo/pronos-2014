@@ -1,48 +1,12 @@
 
 <div class="row">
-<?php
-/*if (isset($_SESSION['id_user'])) {
-	echo '<div class="9u">';
-} else {
-	echo '<div class="12u">';
-}*/
-?>
 	<div class="12u">
 		<section class="box" id="acc_message">
 	<?php
 		include('app/includes/accueil/message.php');
 	?>
-
 		</section>
 	</div>
-<?php
-if (isset($_SESSION['id_user'])) {
-/*
-?>
-	<div class="3u box" id="acces_mes_pronos">
-		<ul>
-			<li>
-				<a class="button" href="index.php?page=mon_espace" title="Voir mes informations">
-					<img border="0" src="public/images/icons/mon_espace.png" alt="mon_espace"/>
-					Mon compte</a>
-			</li>
-			<li>
-			<a class="button" href="index.php?page=mon_espace#mes_pronos">
-				<img border="0" src="public/images/icons/application_form.png" alt="mes_pronos"/>
-				Mes pronostiques</a>
-			</li>
-					<li>
-			<a class="button" href="index.php?page=mon_espace#mes_groupes">
-				<img border="0" src="public/images/icons/group.png" alt="mes_pronos"/>
-				Mes groupes</a>
-			</li>
-
-	</div>
-<?php
-*/
-}
-?>
-
 </div>
 
 <div>

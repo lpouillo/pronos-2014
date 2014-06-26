@@ -30,6 +30,9 @@ if (empty($_GET['section'])) {
 		case 'relief':
 			include('app/includes/concours/relief.php');
 		break;
+		case 'parieurs':
+			include('app/includes/concours/parieur.php');
+		break;
 	}
 }
 echo $html;

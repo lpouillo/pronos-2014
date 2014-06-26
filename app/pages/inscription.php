@@ -3,8 +3,8 @@ $html='';
 $from=$admin_email;
 
 
-// Les inscriptions sont ouvertes tant que le tournoi n'a pas démarré.
-if (time()<$timestamp_poules_debut) {
+//// Les inscriptions sont ouvertes tant que le tournoi n'a pas démarré.
+//if (time()<$timestamp_poules_debut) {
 	// Si aucun utilisateur n'est connecté, on regarde ce qui est passé comme variable dans l'url :
 	if (empty($_SESSION['id_user'])) {
 		// si pas de token, on affiche le formulaire
@@ -280,8 +280,8 @@ if (time()<$timestamp_poules_debut) {
 	} else {
 		$html.='Vous etes deja inscrit sur le site. N\'hesitez pas a partager ce site avec vos amis.';
 	}
-} else {
-	$html.='Les inscriptions sont terminees.';
-}
+//} else {
+//	$html.='Les inscriptions sont terminees.';
+//}
 echo $html;
 ?>
