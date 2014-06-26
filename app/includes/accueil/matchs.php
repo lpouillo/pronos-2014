@@ -35,7 +35,9 @@ if (mysqli_num_rows($r_matchs)>0) {
 	$html.='<p>Aucun match n\'a encore été joué.</p>';
 }
 
-
+$html.='<div style="margin:auto;width:300px;text-align:center;">
+					<a href="index.php?page=resultats" class="button">Tous les matchs</a>
+					</div>';
 $html.='<h3>Prochains matchs</h3>';
 $s_matchs="SELECT M.id_match, M.date_match, M.heure, " .
 		"M.id_equipe1, EQ1.nom AS eq1, EQ1.acronym AS ac1, " .
@@ -56,4 +58,5 @@ while ($match=mysqli_fetch_array($r_matchs)) {
 }
 
 echo $html;
+
 ?>

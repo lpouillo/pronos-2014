@@ -41,7 +41,8 @@ switch(abs($timestamp_poules_debut-time())-($timestamp_poules_debut-time())){
 		if (count($parieurs)>0) {
 			foreach($parieurs as $parieur) {
 				$color=(isset($_SESSION['id_user']) and $parieur['id_user']==$_SESSION['id_user'])?'style="color:red"':'';
-				$html.='<span title="'.$parieur['nom_reel'].'" '.$color.'>'.htmlentities($parieur['login'],ENT_QUOTES,'UTF-8').'</span>, ';
+				$html.='<span title="'.$parieur['nom_reel'].'" '.$color.'>'.
+					htmlentities($parieur['login'],ENT_QUOTES,'UTF-8').'</span>, ';
 			}
 			$html=substr($html, 0, -2);
 		} else{
@@ -74,39 +75,48 @@ switch(abs($timestamp_poules_debut-time())-($timestamp_poules_debut-time())){
 		if (count($parieurs)==0) {
 			$html.='<p>Aucun utilisateur actif.</p>';
 		} else {
-			$html.='<table width="250px;">';
+			$html.='<ul>';
 			$i_max=min(15,count($parieurs));
 			for ($i=0;$i<$i_max;$i++)  {
 				$puce=get_puce($parieurs[$i]['classement']);
-				$html.='<tr>
-							<td class="match" width="20px">'.$puce.'</td>
-							<td>'.htmlentities($parieurs[$i]['login'],ENT_QUOTES,'UTF-8').'</td>
-							<td  width="20px"><img border="0" src="public/images/icons/arrow_right.png" height="10px" alt="evolution"/></td>
-							<td>'.$parieurs[$i]['points'].'</td>
-						</tr>';
-				/*$html.='<li title="'.$parieurs[$i]['nom_reel'].'" style="width:200px;"><table><tr>
-				<td>'.$puce.'</td><td>'.htmlentities($parieurs[$i]['login'],ENT_QUOTES,'UTF-8').'</td>
-				<td style="padding-left:50px;text-align:right">'.$parieurs[$i]['points'].'</td>
-				</table></li>';*/
+				$html.='<li>
+							<span style="padding-right:10px;text-align:center">'.$puce.'</span>
+							<span>
+								<a style="text-decoration:none;"
+									href="index.php?page=concours&section=parieurs&id='.
+								$parieurs[$i]['id_user'].'">'.
+								htmlentities($parieurs[$i]['login'],ENT_QUOTES,'UTF-8').
+								'</a>' .
+							'</span>
+							<span width="20px">
+								<img border="0" src="public/images/icons/arrow_right.png"
+								height="10px" alt="evolution"/> '
+							.$parieurs[$i]['points'].'</span>
+						</li>';
+
 
 			}
-			$html.='</table>
-					<div class="bouton" style="text-align:center">
-						<a href="index.php?page=concours">Accéder au classement complet</a>
+			$html.='</ul>
+					<div style="margin:auto;margin-bottom:20px;width:250px;">
+						<a href="index.php?page=concours" class="button">Le classement complet</a>
 					</div>';
 		}
 		// on liste les groupes existant
 		$html.='<h3>Classement par groupes</h3>';
 		if (count($groupes)==0) {
 			$html.='<p style="text-align:center;">Aucun groupe actif.</p>';
-
 		} else {
-			$html.='<table width="250px;">';
+			$html.='<ul>';
 			foreach ($groupes as $groupe) {
-				$puce=get_puce($groupe['classement']);
-				$html.='<tr title="'.$groupe['description'].' - géré par '.$groupe['login'].'">
-							<td width="20px" style="text-align:center">'.$puce.'</td>
-							<td width="150px">'.htmlentities($groupe['nom'],ENT_QUOTES,'UTF-8').'</td>
+				$html.='<li>
+							<span style="padding-right:10px;text-align:center;">'.
+							get_puce($groupe['classement']).'</span>
+							<span>
+								<a style="text-decoration:none;" href="index.php?page=concours&section=groupe&id='.
+									$groupe['id_groupe'].'">'.
+									htmlentities($groupe['nom'],ENT_QUOTES,'UTF-8').
+								'</a>
+							</span>
 							<td><img height="12px" src="public/images/icons/user_green.png" alt="user" />'.$groupe['n_user'].'</td>
 							<td style="text-align:right">'. round($groupe['moyenne'],2).'</td>
 

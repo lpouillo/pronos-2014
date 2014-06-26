@@ -1,14 +1,10 @@
 <?php
 $html = '<div id="w">
-  <div id="content">' .
-  	'<div id="cdf" class="feedcontainer"></div>' .
-    '<hr>
+  <div id="content">
+  	<div id="cdf" class="feedcontainer"></div>
     <div id="horsjeu" class="feedcontainer"></div>
-    <hr>
     <div id="lequipe" class="feedcontainer"></div>
-    <hr>
     <div id="fifa" class="feedcontainer"></div>
-
   </div><!-- @end #content -->
 </div><!-- @end #w -->';
 $html .= "<script type=\"text/javascript\">
