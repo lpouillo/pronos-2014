@@ -13,7 +13,7 @@ if (time()<$timestamp_poules_debut) {
 	parier sur la phase de poules. La seconde phase concernant le tableau final débutera le '
 	.strftime('%A %d %B à %H:%M',$timestamp_poules_fin).'.<br/> Les matchs sur
 	<span class="special">&nbsp;fond vert&nbsp;</span> comptent double.';
-} elseif (time()<$timestamp_poules_fin-6300) {
+} elseif (time()<$timestamp_poules_fin) {
 	// On affiche tout en grisé avec la date de la seconde phase de paris
 	$en_premier=&$html_poules;
 	$en_second=&$html_tableau;
@@ -39,7 +39,6 @@ if (time()<$timestamp_poules_debut) {
 	$poule_edit=0;
 	$tableau_edit=0;
 	$message='Suivez les points que chacun des matchs vous ajouté ou retranché';
-
 }
 
 
@@ -208,11 +207,11 @@ function find_match_by_type($type, $matchs) {
     return false;
 }
 
-//$tableau_edit=true;
-
+$tableau_edit=false;
 $html_tableau = '<header><h2>Tableau final</h2></header>
 		<div>Vous devez soummettre tous les paris pour le tableau final. Si vous sauvegardez,
-		le tableau basé sur vos paris sera affiché. Bonne chance !</div>';
+		le tableau basé sur vos paris sera affiché. Si vous pronostiquez un match nul,
+		il vous faut indiquer qui gagne le match grâce aux cases TAB (tirs au but). Bonne chance !</div>';
 foreach($sections as $nom => $text) {
 	$html_tableau .= '<section id="'.$nom.'">' .
 		'<div class="12u">' .
@@ -266,12 +265,12 @@ foreach($sections as $nom => $text) {
 		$match['eq2'] = $equipes[$match['id_equipe2']]['nom'];
 		$match['ac2'] = $equipes[$match['id_equipe2']]['acronym'];
 		$html_tableau.='<div class="'.$n_u.'u" style="text-align:center;">'.
-			pronostableau($match, $tableau_edit).'</div>';
+			pronostableau($match, false).'</div>';
 	}
 
 
-	$html_tableau .= '</div>' .
-		($tableau_edit)?'<div class="12u" style="text-align:center">
+	$html_tableau .= '</div>';
+	$html_tableau .= ($tableau_edit)?'<div class="12u" style="text-align:center">
 		<input type="submit" value="Sauvez mes pronos"/>
 		</div>':'';
 
