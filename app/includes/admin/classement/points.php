@@ -2,12 +2,20 @@
 // Total des points gagnés par chaque user.
 $html.=($page == 'admin')?'<h3>Calcul du total de points pour chaque utilisateur</h3>':'';
 // récupération de la somme des points pour chaque utilisateur
-$s_pronos="SELECT id_user, SUM(points) as points FROM pronos GROUP BY id_user";
+$s_pronos="SELECT id_user, COUNT(id_match) as n_pronos, SUM(points) as points FROM pronos GROUP BY id_user";
 $r_pronos=mysqli_query($db_pronos,$s_pronos);
 
 // construction de la requète de mise à jour des points
 $s_points="INSERT INTO users (`id_user`, `points`) VALUES ";
 while ($joueur=mysqli_fetch_array($r_pronos)) {
+	switch($joueur['n_pronos']) {
+		case 48:
+			$joueur['points']+=50;
+		break;
+		case 16:
+			$joueur['points']+=30;
+		break;
+	}
 	$s_points.="(".$joueur['id_user'].",".$joueur['points']."),";
 }
 $s_points=rtrim($s_points, ",")." ON DUPLICATE KEY UPDATE points=VALUES(points)";
@@ -38,31 +46,6 @@ $s_classement=rtrim($s_classement, ",")." ON DUPLICATE KEY " .
 		"UPDATE classement=VALUES(classement)";
 mysqli_query($db_pronos, $s_classement)
 	or die(mysqli_error($db_pronos));
-
-
-//
-
-//$html.='<h3>Mise a jour des points des parieurs</h3><p>';
-//foreach($users as $id_user => $data) {
-//
-//	// Ajout du malus selon le nombre de pronos
-//	switch ($data['n_pronos']) {
-//		case 7:
-//			$malus=30;
-//		break;
-//		case 24:
-//			$malus=50;
-//		break;
-//		default:
-//			$malus=0;
-//	}
-//	// Ajout de la bonification pour le bon vainqueur
-//	$bonus=($vainqueur_finale==$vainqueur_user[$id_user]['Finale'] and $vainqueur_finale!=0)?-30:0;
-//	$s_update="UPDATE users SET points='".($data['points']+$bonus+$malus)."' WHERE id_user='".$id_user."'";
-//	$html.=$id_user.' => '. ($data['points']+$bonus+$malus).' - ';
-//	$r_update=mysqli_query($db_pronos,$s_update)
-//		or die(mysqli_error($db_pronos));
-//}
 
 
 // Calcul de la moyenne et du nombre d'utilisateur pour les groupes des groupes
