@@ -5,8 +5,7 @@ $s_pronos="SELECT P.id_user, P.id_match, P.score1 AS prono1, P.score2 AS prono2,
 	M.score1, M.score2, M.special, M.type, M.id_equipe1, M.id_equipe2, M.tab1, M.tab2, M.joue
 	FROM pronos P
 	LEFT JOIN matchs M
-		ON P.id_match=M.id_match " .
-				"WHERE P.id_user=241
+		ON P.id_match=M.id_match
 	ORDER BY P.id_user, M.date_match";
 
 $r_pronos=mysqli_query($db_pronos,$s_pronos)
@@ -97,12 +96,10 @@ while ($d_pronos=mysqli_fetch_array($r_pronos)) {
 $s_update_pronos=rtrim($s_update_pronos, ",")." ON DUPLICATE KEY " .
 		"UPDATE points=VALUES(points)";
 
-echo $s_update_pronos;
-exit;
 
 $html.= $s_update_pronos;
 
-//mysqli_query($db_pronos,$s_update_pronos)
-//		or die(mysqli_error($db_pronos));
+mysqli_query($db_pronos,$s_update_pronos)
+		or die(mysqli_error($db_pronos));
 
 ?>
