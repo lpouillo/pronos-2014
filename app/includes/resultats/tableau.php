@@ -26,11 +26,11 @@ $sections = array(
 	'Huitieme' => 'Huitièmes de finales',
 	'Quart' => 'Quarts de finales',
 	'Demi' => 'Demi-finales',
-	'p_final' => 'Petite finale',
 	'Final' => 'Finale'
 	);
-$html .= '<header><h2>Tableau final</h2></header>
-		<div>';
+$html .= '<div class="box">
+			<header><h2>Tableau final</h2></header>
+			<div class="row">';
 foreach($sections as $nom => $text) {
 	$html .= '<section id="'.$nom.'">' .
 		'<div class="12u">' .
@@ -44,6 +44,7 @@ foreach($sections as $nom => $text) {
 		'</div>' .
 	'</section>';
 }
+$html.='</div></div>';
 
 
 ?>

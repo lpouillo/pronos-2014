@@ -34,16 +34,17 @@ while ($match=mysqli_fetch_array($r_matchs)) {
 	$mat_par_poule[$match['poule']][]=$match;
 }
 
-$html.='<section id="poules">' .
-		'<div class="row">' .
-		'<header><h2>Poules</h2></header>' .
-		'<p style="text-align:center">Les matchs sur <span class="special">fond vert</span> comptent double.</p>' .
-		'</div>' .
-		'<div class="row">';
+$html.='<section id="poules">
+		<div class="box">
+		<div class="row">
+		<header><h2>Poules</h2></header>
+		<p style="text-align:center">Les matchs sur <span class="special">&nbsp;fond bleu&nbsp;</span> comptent double.</p>
+		</div>
+		<div class="row">';
 
 $i_poule = 1;
 foreach($poules as $poule) {
-	$html.='<div class="3u">' .
+	$html.='<div class="4u">' .
 			'<header><h3>Poule '.$i_poule.'</h3></header>';
 	// Classement de la poule
 	$html.=aff_poule($i_poule, $poule);
@@ -60,11 +61,11 @@ foreach($poules as $poule) {
 		$html.='<p>Aucun match dans la base pour l\'instant</p>';
 	}
 	$html .= '</div>';
-	if ($i_poule == 4) {
+	if ($i_poule == 3) {
 		$html.='</div><div class="row">';
 	}
 	$i_poule += 1;
 }
 
-$html.='</div></div></section>';
+$html.='</div></div></div></section>';
 ?>
