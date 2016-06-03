@@ -26,7 +26,7 @@
 		font-weight: 300;
 		background: #252122;
 		background-image: url('../images/background.png');
-		color: #5d5d5d;
+		color: #555555;
 	}
 
 	strong, b
@@ -37,7 +37,7 @@
 	
 	h1, h2, h3, h4, h5, h6
 	{
-		color: #00774B;
+		color: #417AA5;
 		font-weight: 700;
 	}
 
@@ -49,7 +49,7 @@
 
 	a
 	{
-		color: #00774B;
+		color: #417AA5;
 		text-decoration: underline;
 	}
 	
@@ -100,7 +100,7 @@
 	
 	p, ul, ol, dl, table
 	{
-		margin-bottom: 2em;
+		margin-bottom: 1.2em;
 	}
 	
 	section,
@@ -150,7 +150,7 @@
 			cursor: pointer;
 			border: 0;
 			border-radius: 5px;
-			background: #00774B;
+			background: #417AA5;
 			color: #fff !important;
 			font-weight: 700;
 			outline: 0;
@@ -340,7 +340,7 @@
 				position: absolute;
 				left: 0;
 				top: 1.3em;
-				background-color: #00774B;
+				background-color: #417AA5;
 				height: 3.5em;
 				text-align: center;
 				color: #fff;
@@ -356,7 +356,7 @@
 					position: absolute;
 					bottom: 0;
 					right: -1.2em;
-					border-left: solid 1.25em #00774B;
+					border-left: solid 1.25em #417AA5;
 					border-top: solid 1.8em transparent;
 					border-bottom: solid 1.8em transparent;
 				}
@@ -469,7 +469,7 @@
 		{
 			position: relative;
 			display: inline-block;
-			background-color: #00774B;
+			background-color: #417AA5;
 			width: 5em;
 			padding: 1.5em 0 0.5em 0;
 			border-top-left-radius: 5px;
@@ -483,7 +483,7 @@
 				position: absolute;
 				bottom: -1.98em;
 				left: 0;
-				border-top: solid 2em #00774B;
+				border-top: solid 2em #417AA5;
 				border-left: solid 2.5em transparent;
 				border-right: solid 2.5em transparent;
 			}
@@ -1014,7 +1014,7 @@
 			
 			#banner header .byline
 			{
-				color: #00774B;
+				color: #417AA5;
 				padding: 0;
 				font-style: normal;
 			}
@@ -1070,7 +1070,7 @@
 	#main-wrapper
 	{
 		position: relative;
-		background: #f7f7f7 url('../images/background.png');;
+		background: #f7f7f7 url('../images/background.png');
 	}
 
 		#main-wrapper:before
@@ -1203,14 +1203,14 @@
 	padding:0px;
 	vertical-align:top;
 	color:white;
-	background-color:#00774B;
+	background-color:#417AA5;
 	font-size:10px;
 }
 .poule td {
 	padding:0px;
 	vertical-align:top;
 	font-size:10px;
-	border:1px solid #00774B;
+	border:1px solid #417AA5;
 	text-align:center;
 	background-color:white;
 }
@@ -1222,7 +1222,7 @@
 }
 .equipe {
 	font-size:12px;
-	color:#00774B;
+	color:#417AA5;
 	font-weight:bold;
 	cursor:help;
 }
@@ -1234,8 +1234,8 @@
 	font-weight:bolder;
 }
 .match th {
-	color:#00774B;
-	border:1px solid #00774B;
+	color:#417AA5;
+	border:1px solid #417AA5;
 	text-align:center;
 	background-color:white;
 	font-weight:bolder;
@@ -1244,8 +1244,8 @@
 	font-weight: bolder;
 }
 .special {
-	background-color:#00774B;
-	border:1px solid #00774B;
+	background-color:#417AA5;
+	border:1px solid #417AA5;
 	color:white;
 }
 .winner {
@@ -1259,14 +1259,15 @@
 	width:15px;
 }
 .eq1, .eq2 {
-	width:100px;
+	width:110px;
+	font-size:13px;
 }
 .eq1 {
 	font-variant:small-caps;
 	text-align:left;
 }
 .match .score {
-	width:20px;
+	width:15px;
 	text-align:center;
 }
 .eq2 {
@@ -1293,9 +1294,8 @@
 
 .table_reglement {
 	background-color: #FFFFFF;
-	border: 2px solid #00774B;
-	border-radius: 8px;
-	margin: auto auto 10px;
+	border: 2px solid #417AA5;
+	margin: auto;
 	padding: 5px;
 	width: 300px
 }
@@ -1311,13 +1311,13 @@
 
 .prono {
 	margin:auto;
-	width: 250px;
+	width: 310px;
  }
 
 .prono th {
 	color:white;
 	font-weight: bold;
-	background-color:#00774B;
+	background-color:#417AA5;
 	padding-left:1px;
 	padding-right:1px;
 }
