@@ -18,7 +18,7 @@ if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 					}
 				}
 				mysqli_query($db_pronos, substr($s_update,0,-2));
-			} else {
+			} else {
 				echo "Vous ne pouvez plus modifier vos pronos";
 			}
 			
