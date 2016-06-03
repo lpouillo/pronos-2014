@@ -90,6 +90,7 @@ if (empty($_GET['action'])) {
 
 	'</div></div>';
 } else {
+	$html.='<div class="box">';
 	switch($_GET['action']) {
 		case 'activer':
 			$tmp_id=explode('_',$_GET['id']);
@@ -125,8 +126,8 @@ if (empty($_GET['action'])) {
 			if ($error!='') {
 				$html.='<h2>Ajouter un groupe</h2>
 
-				<form id="ajouter_groupe" method="post" action="#">' .
-						'<input type="submit" value="Valider" onclick="submitForm(\'ajouter_groupe\');"/>
+				<form id="ajouter_groupe" method="post" action="#">
+				<input type="submit" value="Valider" onclick="submitForm(\'ajouter_groupe\');"/>
 				<input type="hidden" name="page" value="mon_espace"/>
 				<input type="hidden" name="section" value="mes_groupes"/>
 				<input type="hidden" name="action" value="ajouter"/>
@@ -222,6 +223,7 @@ if (empty($_GET['action'])) {
 			$html.='<p>L\'utilisateur a été supprimé de votre groupe</p>';
 		break;
 	}
+	$html.='</div>	';
 }
 
 ?>

@@ -9,10 +9,10 @@ if (time()<$timestamp_poules_debut) {
 	$en_second=&$html_tableau;
 	$poule_edit=1;
 	$tableau_edit=0;
-	$message='Il vous reste encore '.transforme($timestamp_poules_debut-time()).' secondes pour
+	$message='Il vous reste encore <strong>'.transforme($timestamp_poules_debut-time()).' secondes</strong> pour
 	parier sur la phase de poules. La seconde phase concernant le tableau final débutera le '
 	.strftime('%A %d %B à %H:%M',$timestamp_poules_fin).'.<br/> Les matchs sur
-	<span class="special">&nbsp;fond vert&nbsp;</span> comptent double.';
+	<span class="special">&nbsp;fond bleu&nbsp;</span> comptent double.';
 } elseif (time()<$timestamp_poules_fin) {
 	// On affiche tout en grisé avec la date de la seconde phase de paris
 	$en_premier=&$html_poules;
@@ -20,8 +20,8 @@ if (time()<$timestamp_poules_debut) {
 	$poule_edit=0;
 	$tableau_edit=0;
 	$message='Voici vos pronostics pour les poules et les points qu\'ils vous ont rapportés. Vous pourrez
-	parier pour le tableau final à compter du '.strftime('%A %d %B à %H:%M',$timestamp_poules_fin).' et
-	jusqu\'au '.strftime('%A %d %B à %H:%M',$timestamp_tableau_debut).'.<br/> Les matchs encadrés en
+	parier pour le tableau final à compter du <strong>'.strftime('%A %d %B à %H:%M',$timestamp_poules_fin).'</strong> et
+	jusqu\'au <strong>'.strftime('%A %d %B à %H:%M',$timestamp_tableau_debut).'.</strong><br/> Les matchs encadrés en
 	<span class="special">&nbsp;fond vert&nbsp;</span> comptent double.';
 
 } elseif (time()<$timestamp_tableau_debut) {
@@ -30,7 +30,7 @@ if (time()<$timestamp_poules_debut) {
 	$en_second=&$html_poules;
 	$poule_edit=0;
 	$tableau_edit=1;
-	$message='Il vous reste encore '.transforme($timestamp_tableau_debut-time()).' secondes pour
+	$message='Il vous reste encore <strong>'.transforme($timestamp_tableau_debut-time()).'</strong> secondes pour
 	parier sur le tableau final.';
 } elseif (time()<$timestamp_tableau_fin) {
 	// On affiche tout en grisé avec la date de la finale de l'euro
@@ -68,7 +68,7 @@ while ($d_matchs=mysqli_fetch_array($r_matchs)) {
 // Création des poules
 $poules=array();
 // Initialisation des poules
-for ($i=1;$i<=8;$i++) {
+for ($i=1;$i<=6;$i++) {
 	foreach (array($mat_par_poule[$i][0], $mat_par_poule[$i][1]) as $match) {
 		$poules[$i][$match['id_equipe1']]['pts']=0;
 		$poules[$i][$match['id_equipe1']]['diff']=0;
@@ -90,7 +90,7 @@ for ($i=1;$i<=8;$i++) {
 		$poules[$i][$match['id_equipe2']]['D']=0;
 	}
 }
-for ($i=1;$i<=8;$i++) {
+for ($i=1;$i<=6;$i++) {
 // Pour toutes les poules, on calcule les V, N, D de chaque équipe
 	foreach($mat_par_poule[$i] as $match) {
 		$poules[$i][$match['id_equipe1']]['but_p']+=$match['score1'];
@@ -115,14 +115,13 @@ for ($i=1;$i<=8;$i++) {
 
 // Création du html des poules
 $html_poules.='<section id="poules">' .
-		'<div class="row">
-	<header><h3>Poules</h3></header></div>' .
-	'<div class="row">';
+	'<div class="row box">';
 
 $i_poule=1;
 foreach($poules as $poule) {
-	$html_poules.='<div class="3u">' .
+	$html_poules.='<div class="4u">' .
 			'<header><h3>Poule '.$i_poule.'</h3></header>';
+	$html_poules.=aff_poule($i_poule, $poule);
 	$html_poules.='<ul>';
 	if (sizeof($mat_par_poule[$i_poule])>0) {
 		foreach($mat_par_poule[$i_poule] as $match) {
@@ -134,20 +133,20 @@ foreach($poules as $poule) {
 	} else {
 		$html_poules.='<p>Aucun match dans la base pour l\'instant</p>';
 	}
-	$html_poules.=aff_poule($i_poule, $poule);
+	
 	$html_poules .= '</div>';
-	if ($i_poule == 4 ) {
+	if ($i_poule == 3 ) {
 		$html_poules.='</div>';
 		if ($poule_edit) {
 			$html_poules.='<div style="text-align:center">
 					<input type="submit" value="Sauvez mes pronos"/>
 				</div>';
 		}
-		$html_poules.='<div class="row">';
+		$html_poules.='<div class="row box">';
 	}
 	$i_poule += 1;
 }
-$html_poules.='</div></div></section>';
+$html_poules.='</div></section>';
 
 
 // génération du tableau
@@ -194,7 +193,7 @@ $sections = array(
 	'Huitieme' => 'Huitièmes de finales',
 	'Quart' => 'Quarts de finales',
 	'Demi' => 'Demi-finales',
-	'p_final' => 'Petite finale',
+	//'p_final' => 'Petite finale',
 	'Final' => 'Finale'
 	);
 
@@ -208,7 +207,9 @@ function find_match_by_type($type, $matchs) {
 }
 
 $tableau_edit=false;
-$html_tableau = '<header><h2>Tableau final</h2></header>
+$html_tableau = '
+		<div class="box">
+		<header><h2>Tableau final</h2></header>
 		<div>Vous devez soummettre tous les paris pour le tableau final. Si vous sauvegardez,
 		le tableau basé sur vos paris sera affiché. Si vous pronostiquez un match nul,
 		il vous faut indiquer qui gagne le match grâce aux cases TAB (tirs au but). Bonne chance !</div>';
@@ -276,14 +277,14 @@ foreach($sections as $nom => $text) {
 
 	'</section>';
 }
-
+$html.='</div>;
 
 /* Création de la structure totale */
 
 // message
 $html.='<div class="12u" id="mes_pronos">
 	<h2>Mes pronostics</h2>
-	<div>'.$message.'</div>';
+	<div class="box">'.$message.'</div>';
 // début du formulaire
 if ($poule_edit or $tableau_edit) {
 	$html.='<form method="post" id="frm_pronos">' .

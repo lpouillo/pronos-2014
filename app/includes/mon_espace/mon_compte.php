@@ -4,16 +4,18 @@ $r_user=mysqli_query($db_pronos, $s_user);
 $d_user=mysqli_fetch_array($r_user);
 
 $html.='<div class="row">
+		
 		<div id="mes_infos" class="6u">
-		<h2>Mes informations</h2>';
+		<h2>Mes informations</h2>
+		<div class="box">
+		';
 
 
 $checked=($d_user['news'])?'checked="checked"':'';
 $html.='<table>
-
 			<tr>
 				<td rowspan="4" style="vertical-align:bottom"><img width="100px" src="public/images/photos/inconnu.jpg" alt="mon_avatar"/></td>
-				<th>id_user</th><td><input type="text" name="id_user" value="'.$d_user['id_user'].'" size=3 readonly/></td>
+				<th>id_user</th><td><in	put type="text" name="id_user" value="'.$d_user['id_user'].'" size=3 readonly/></td>
 				<th>Login</th><td><input type="text" name="login" value="'.$d_user['login'].'" size=16 readonly/></td>
 
 			</tr>
@@ -29,11 +31,11 @@ $html.='<table>
 				(1 mail après chaque journée de poule et chaque tour) </td>
 
 			</tr>
-	</table></div>';
+	</table></div></div>';
 
 $html.='<div id="mon_classement" class="6u">
-		<h2>Mon classement</h2>';
-
+		<h2>Mon classement</h2>
+		<div class="box">';
 
 switch($d_user['classement']) {
 	case 1:
@@ -58,7 +60,7 @@ if ((time()<$timestamp_poules_debut) or ($puce==' - ')) {
 	$html.='Vous êtes '.get_puce($d_user['classement']).' avec '.$d_user['points'].'.';
 	$html.=	'<div><img src="index.php?page=graphs&type=evolution_points"/></div>';
 }
-$html.='</div></div>';
+$html.='</div></div></div>';
 
 
 ?>
