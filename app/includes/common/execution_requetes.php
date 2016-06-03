@@ -10,14 +10,18 @@ foreach ($_GET as &$var) {
 if (isset($_SESSION['id_user']) and isset($_POST['requete'])) {
 	switch ($_POST['requete']) {
 		case 'update_pronos':
-
-//			$s_update="REPLACE INTO pronos (`id_match`,`id_user`,`score1`,`score2`,`tab1`,`tab2`) VALUES ";
-//			foreach($_POST['pronos'] as $id_match => $scores) {
-//				if (array_key_exists('score1',$scores)) {
-//				 	$s_update.="('".$id_match."','".$_SESSION['id_user']."','".$scores['score1']."','".$scores['score2']."','".$scores['tab1']."','".$scores['tab2']."'), ";
-//				}
-//			}
-//			mysqli_query($db_pronos, substr($s_update,0,-2));
+			if (time()<$timestamp_poules_debut and time()<$timestamp_poules_fin) {
+				$s_update="REPLACE INTO pronos (`id_match`,`id_user`,`score1`,`score2`,`tab1`,`tab2`) VALUES ";
+				foreach($_POST['pronos'] as $id_match => $scores) {
+					if (array_key_exists('score1',$scores)) {
+					 	$s_update.="('".$id_match."','".$_SESSION['id_user']."','".$scores['score1']."','".$scores['score2']."','".$scores['tab1']."','".$scores['tab2']."'), ";
+					}
+				}
+				mysqli_query($db_pronos, substr($s_update,0,-2));
+			} else {
+				echo "Vous ne pouvez plus modifier vos pronos";
+			}
+			
 		break;
 		case 'ajouter_equipe':
 			$s_insert="INSERT INTO equipes (`date_in`,`date_modif`,`nom`,`acronym`,`poule`)
