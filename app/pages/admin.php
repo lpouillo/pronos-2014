@@ -1,4 +1,6 @@
 <?php
+
+$html='<div class="box">';
 if(isset($_SESSION['id_user']) AND $_SESSION['is_admin']) {
 	$html='';
 	if (isset($_POST['section'])) {
@@ -24,6 +26,6 @@ if(isset($_SESSION['id_user']) AND $_SESSION['is_admin']) {
 } else {
 	$html='<p>Vous n\'avez pas le droit d\'accéder à cette partie du site. Ou alors connectez-vous !!</p>';
 }
-
+$html.="</div>";
 echo $html;
 ?>

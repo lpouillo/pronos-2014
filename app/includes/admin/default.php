@@ -1,5 +1,5 @@
 <?php
-$html.='<div style="width:300px;margin:auto;">
+$html.='<div class="box center">
 	Veuillez choisir une section :
 	<form id="choix_admin" method="post" action="index.php">
 		<input type="hidden" name="page" value="admin"/>

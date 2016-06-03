@@ -1,4 +1,5 @@
 <?php
+$html='<div class="box">';
 $params=array(
 		'common' => array(
 				'titre' => 'Utilisateurs',
@@ -16,6 +17,8 @@ $params=array(
 	);
 if (isset($_POST['action'])) {
 	$action=$_POST['action'];
+} else {
+	$action='';
 }
 
 $texte_bouton=ucfirst($action);
@@ -23,7 +26,7 @@ $texte_bouton=ucfirst($action);
 if (empty($_POST['filtrage_soumis'])) {
 	$html.='<div id="content" class="content_tab">';
 }
-
+$mode="rw";
 switch($action) {
 	case 'modifier':
 	case 'ajouter':
@@ -116,5 +119,7 @@ switch($action) {
 if (empty($_POST['filtrage_soumis'])) {
 	$html.'</div>';
 }
+
+$html.='</div>';
 
 
